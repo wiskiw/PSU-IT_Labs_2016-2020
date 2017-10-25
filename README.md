@@ -1,5 +1,5 @@
-# Single-File Database (Coursework)
-This project has been developed as a coursework for C++ lessons in 2016. It represent simple console view single-file database application based on stack list. This database store informations about github repositories and their owners.
+# Single-File Database (Course Paper)
+This project has been developed as a course paper for C++ lessons in 2016. It represent simple console view single-file database application based on stack list. This database store informations about github repositories and their owners.
 
 ### Database fields:
 * A name of repository
