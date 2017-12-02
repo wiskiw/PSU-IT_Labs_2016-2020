@@ -1,0 +1,24 @@
+//
+// Created by wiskiw on 02.12.17.
+//
+
+#ifndef COURSE_PAPER_PREFERENCES_H
+#define COURSE_PAPER_PREFERENCES_H
+
+
+const int PREF_BULLET_Z_POS = 2;
+const int PREF_ENEMY_Z_POS = 3;
+
+const float PREF_PLAYER_DEFAULT_HEALTH = 100;
+const int PREF_PLAYER_DEFAULT_GUN_SPEED = 10;
+
+const int PREF_STARS_NUMBER = 16;
+const int PREF_BULLET_BUFFER_SIZE = 60;
+const int PREF_ENEMY_BUFFER_SIZE = 12;
+
+const int PREF_KEYBOARD_INPUT_BUFFER_SIZE = 4;
+
+const bool PREF_DRAW_HIT_BOX = false;
+
+
+#endif //COURSE_PAPER_PREFERENCES_H

@@ -1,9 +1,9 @@
 cmake_minimum_required(VERSION 3.8)
 project(Course_Paper)
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 
-set(SOURCE_FILES main.cpp GameStructs.h)
+set(SOURCE_FILES main.cpp GameStructs.h modules/player/ModulePlayer.cpp modules/player/ModulePlayer.h io/IOProcessor.cpp io/IOProcessor.h modules/background/ModuleBackground.cpp modules/background/ModuleBackground.h modules/bullets/ModuleBullet.cpp modules/bullets/ModuleBullet.h PREFERENCES.h modules/enemy/ModulEnemy.cpp modules/enemy/ModulEnemy.h utils/Utils.cpp utils/Utils.h)
 add_executable(Course_Paper ${SOURCE_FILES})
 
 
