@@ -36,10 +36,10 @@ struct SW_Pos {
 };
 
 struct SW_Borders {
-    int leftBottomX;
-    int leftBottomY;
-    int rightTopX;
-    int rightTopY;
+    float leftBottomX;
+    float leftBottomY;
+    float rightTopX;
+    float rightTopY;
 };
 
 struct SW_Star {
