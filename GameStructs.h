@@ -18,10 +18,10 @@ typedef int SW_State;
 typedef int SW_Type;
 
 struct SW_COLOR {
-    int R = 0;
-    int G = 0;
-    int B = 0;
-    int A = 0;
+    GLubyte R = 0;
+    GLubyte G = 0;
+    GLubyte B = 0;
+    GLubyte A = 255;
 };
 
 struct SW_Speed {

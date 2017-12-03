@@ -13,6 +13,8 @@
 #include "modules/background/ModuleBackground.h"
 #include "modules/bullets/ModuleBullet.h"
 #include "modules/enemy/ModulEnemy.h"
+#include "ui/UI.h"
+#include "utils/Utils.h"
 
 
 const int WINDOW_X = 990;
@@ -32,6 +34,8 @@ void onRedraw() {
     mdlEnemyDrawAll(&thisGame);
     mdlBackgroundDraw(&thisGame);
 
+    uiUpdate(&thisGame);
+
     glutSwapBuffers();
 }
 
@@ -48,7 +52,7 @@ void onPlayerShoot(SW_Bullet bullet) {
 }
 
 void onPlayerDamage(SW_Player player) {
-    std::cout << "player health: " << player.health << std::endl;
+    //std::cout << "player health: " << player.health << std::endl;
 }
 
 void initGame() {
@@ -56,7 +60,7 @@ void initGame() {
 
 
     // TODO: Left padding
-    const int STAT_X = 0;
+    const int STAT_X = 150;
 
 
     thisGame.borders.leftBottomX = STAT_X;
@@ -69,6 +73,8 @@ void initGame() {
     std::cout << "leftBottomY: " << thisGame.borders.leftBottomY << " rightTopY: " << thisGame.borders.rightTopY
               << std::endl;
 
+
+    uiInit(&thisGame, STAT_X);
 
     mdlPlayerInit(&thisGame);
     mdlPlayerSetShootListener(onPlayerShoot);

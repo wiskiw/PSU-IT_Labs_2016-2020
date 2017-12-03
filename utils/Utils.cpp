@@ -29,5 +29,8 @@ void utilsDrawBorders(SW_Borders borders) {
     glEnd();
 
     glPopMatrix();
+}
 
+void utilsSelectColor(SW_COLOR color) {
+    glColor4ub(color.R, color.G, color.B, color.A);
 }
