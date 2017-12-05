@@ -2,11 +2,15 @@
 // Created by wiskiw on 01.12.17.
 //
 
-#include <iostream>
 #include "ModulePlayer.h"
 #include "../../utils/Utils.h"
+#include "../../gp-elements/gun/gpeGun.h"
+#include "../../gp-elements/gun/list/gun-list.h"
+#include "../../gp-elements/bullet/list/bullet-list.h"
 
 const float SCALE = 4;
+const SW_Color PLAYER_HIT_BOX_COLOR = {255, 0, 255};
+
 
 int previewSideShoot = 1;
 
@@ -28,7 +32,7 @@ void checkPlayerForHit(GameFieldStruct *thisGame) {
     SW_Player *player = &thisGame->player;
     for (int i = 0; i < thisGame->bullets.maxsize; ++i) {
         SW_Bullet *bullet = &thisGame->bullets.list[i];
-        if (bullet->state == -1) {
+        if (bullet->state == BULLET_STATE_UNDEFINED) {
             continue;
         }
 
@@ -39,7 +43,7 @@ void checkPlayerForHit(GameFieldStruct *thisGame) {
             bY >= player->hitBox.leftBottomY && bY <= player->hitBox.rightTopY) {
             // hit
 
-            bullet->state = -1;
+            bullet->state = BULLET_STATE_UNDEFINED;
             player->health -= bullet->damage;
             if (playerHealthListener != nullptr) {
                 playerHealthListener(*player);
@@ -54,7 +58,7 @@ void checkPlayerForHit(GameFieldStruct *thisGame) {
                     k < thisGame->enemies.maxNumber; k++) {
 
         SW_Enemy *enemy = &thisGame->enemies.list[k];
-        if (enemy->state == -1) {
+        if (enemy->state == ENEMY_STATE_UNDEFINED) {
             continue;
         }
         enCounter++;
@@ -66,7 +70,7 @@ void checkPlayerForHit(GameFieldStruct *thisGame) {
             bY >= player->hitBox.leftBottomY && bY <= player->hitBox.rightTopY) {
             // hit
 
-            enemy->state = -1;
+            enemy->state = ENEMY_STATE_UNDEFINED;
             thisGame->enemies.number--;
             player->health -= enemy->health;
             if (playerHealthListener != nullptr) {
@@ -77,24 +81,23 @@ void checkPlayerForHit(GameFieldStruct *thisGame) {
 }
 
 void mdlPlayerDraw(GameFieldStruct *thisGame) {
-    thisGame->player.gun.waitBeforeShoot--;
-
-
     SW_Player *player = &thisGame->player;
+
+    gpeGunUpdateShootingDelay(&player->gun);
     glPushMatrix();
     glTranslatef(player->pos.x, player->pos.y, player->pos.z);
 
     switch (player->state) {
-        case 1:
+        case PLAYER_STATE_GOING_LEFT:
             // going left
             glRotated(15, false, true, false);
             glRotated(5, false, false, true);
             break;
-        case 2:
+        case PLAYER_STATE_STAY_FORWARD:
             // stay forward
 
             break;
-        case 3:
+        case PLAYER_STATE_GOING_RIGHT:
             // going right
             glRotated(-15, false, true, false);
             glRotated(-5, false, false, true);
@@ -116,7 +119,7 @@ void mdlPlayerDraw(GameFieldStruct *thisGame) {
     player->hitBox.rightTopY = static_cast<int>(player->pos.y + 5 * SCALE);
 
     if (PREF_DRAW_HIT_BOX)
-        utilsDrawBorders(player->hitBox);
+        utilsDrawBorders(player->hitBox, PLAYER_HIT_BOX_COLOR, 1);
 
     checkPlayerForHit(thisGame);
 }
@@ -126,32 +129,33 @@ void mdlPlayerInit(GameFieldStruct *thisGame) {
 
     player->speed.x = 5;
     player->pos.z = 2;
-    player->pos.x = thisGame->borders.leftBottomX;
-    player->pos.y = thisGame->borders.leftBottomY + 25;
+    player->pos.x = (thisGame->gameBorders.rightTopX - thisGame->gameBorders.leftBottomX) / 2 +
+            thisGame->gameBorders.leftBottomX;
+    player->pos.y = thisGame->gameBorders.leftBottomY + 25;
 
-    player->gun.bullet.damage = 5;
-    player->gun.bullet.speed.x = 0;
-    player->gun.bullet.speed.y = 5;
-
-    player->gun.gunSpeed = PREF_PLAYER_DEFAULT_GUN_SPEED;
+    player->gun = gunsGetBengalGun();
+    player->gun.bullet = bulletsGetSideneckBullet();
 }
 
 void mdlPlayerGoRight(GameFieldStruct *thisGame) {
-    if (thisGame->borders.rightTopX - thisGame->player.pos.x > thisGame->player.speed.x) {
+    float hitBoxWidth = thisGame->player.hitBox.rightTopX - thisGame->player.hitBox.leftBottomX;
+    if (thisGame->gameBorders.rightTopX - thisGame->player.hitBox.rightTopX > thisGame->player.speed.x) {
         thisGame->player.pos.x += thisGame->player.speed.x;
     } else {
-        thisGame->player.pos.x = thisGame->borders.rightTopX;
+        thisGame->player.pos.x = thisGame->gameBorders.rightTopX - hitBoxWidth / 2;
     }
-    thisGame->player.state = 3;
+    thisGame->player.state = PLAYER_STATE_GOING_RIGHT;
 }
 
 void mdlPlayerGoLeft(GameFieldStruct *thisGame) {
-    if (thisGame->player.pos.x - thisGame->borders.leftBottomX > thisGame->player.speed.x) {
+    float hitBoxWidth = thisGame->player.hitBox.rightTopX - thisGame->player.hitBox.leftBottomX;
+
+    if (thisGame->player.hitBox.leftBottomX - thisGame->gameBorders.leftBottomX > thisGame->player.speed.x) {
         thisGame->player.pos.x -= thisGame->player.speed.x;
     } else {
-        thisGame->player.pos.x = thisGame->borders.leftBottomX;
+        thisGame->player.pos.x = thisGame->gameBorders.leftBottomX + hitBoxWidth / 2;
     }
-    thisGame->player.state = 1;
+    thisGame->player.state = PLAYER_STATE_GOING_LEFT;
 }
 
 void mdlPlayerShot(GameFieldStruct *thisGame) {
@@ -159,25 +163,19 @@ void mdlPlayerShot(GameFieldStruct *thisGame) {
         return;
     }
 
-    SW_Bullet bullet = thisGame->player.gun.bullet;
-    SW_Gun *gun = &thisGame->player.gun;
+    SW_Pos shotFrom = thisGame->player.pos;
+    if (previewSideShoot > 0) {
+        shotFrom.x = shotFrom.x + 5;
+        previewSideShoot = -1;
+    } else {
+        shotFrom.x = shotFrom.x - 5;
+        previewSideShoot = 1;
+    }
+    shotFrom.y = thisGame->player.hitBox.rightTopY + 1;
 
-    if (gun->waitBeforeShoot <= 0) {
-        gun->waitBeforeShoot = gun->gunSpeed;
-
-        bullet.pos = thisGame->player.pos;
-        if (previewSideShoot > 0) {
-            bullet.pos.x = bullet.pos.x + 5;
-            previewSideShoot = -1;
-        } else {
-            bullet.pos.x = bullet.pos.x - 5;
-            previewSideShoot = 1;
-        }
-        bullet.pos.y = thisGame->player.hitBox.rightTopY + 1;
+    SW_Bullet bullet = gpeGunShoot(&thisGame->player.gun, shotFrom);
+    if (bullet.state != BULLET_STATE_UNDEFINED) {
         playerShootListener(bullet);
-
-
-        gun->ammorLeft--;
     }
 
 }

@@ -5,11 +5,11 @@
 #ifndef COURSE_PAPER_PAINTER_H
 #define COURSE_PAPER_PAINTER_H
 
-#include "../../../GameStructs.h"
+#include "../../../../GameStructs.h"
+#include "../../../../utils/Utils.h"
 
 
-void drawEnemy(GameFieldStruct *thisGame, SW_Enemy *enemy);
-
+void redrawEnemy(GameFieldStruct *thisGame, SW_Enemy *thisEnemy);
 
 
 #endif //COURSE_PAPER_PAINTER_H

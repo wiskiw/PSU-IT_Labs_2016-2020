@@ -8,7 +8,7 @@
 #include "../GameStructs.h"
 
 
-void uiInit(GameFieldStruct *thisGame, float leftPX);
+void uiInit(GameFieldStruct *thisGame);
 
 void uiUpdate(GameFieldStruct *thisGame);
 

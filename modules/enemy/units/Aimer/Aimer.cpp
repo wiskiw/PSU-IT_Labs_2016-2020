@@ -1,11 +1,11 @@
 //
-// Created by wiskiw on 03.12.17.
+// Created by wiskiw on 05.12.17.
 //
 
-#include "Thinker.h"
+#include "Aimer.h"
 
 
-bool shouldShoot1(GameFieldStruct *thisGame, SW_Enemy *enemy) {
+bool isTargetLocked1(GameFieldStruct *thisGame, SW_Enemy *thisEnemy){
     // стрелять или нет
 
     SW_Player player = thisGame->player;
@@ -15,13 +15,13 @@ bool shouldShoot1(GameFieldStruct *thisGame, SW_Enemy *enemy) {
     const int START_SHOOTING_IF_PLAYER_GO_TO_ENEMY_FAR_RANGE = 200;
     const int START_SHOOTING_IF_PLAYER_GO_TO_ENEMY_NEAR_RANGE = 15;
 
-    const float topY = thisGame->borders.rightTopY;
+    const float topY = thisGame->gameBorders.rightTopY;
     const float bottomY = player.pos.y;
     const float midY = abs(topY - bottomY);
 
-    int xDiff = player.pos.x - enemy->pos.x; // расстояние до игрока от врага по оX (+/-)
-    int yDiff = abs(player.pos.y - enemy->pos.y); // расстояние до игрока от врага по оУ (+)
-    float bulletSpeedY = abs(enemy->gun.bullet.speed.y);
+    float xDiff = player.pos.x - thisEnemy->pos.x; // расстояние до игрока от врага по оX (+/-)
+    float yDiff = abs(player.pos.y - thisEnemy->pos.y); // расстояние до игрока от врага по оУ (+)
+    float bulletSpeedY = abs(thisEnemy->gun.bullet.speed.y);
 
     const float SPEED_K = abs(player.speed.x / 1.67f); // Коэффициент горизонтальной скорости игрока
 
@@ -35,7 +35,7 @@ bool shouldShoot1(GameFieldStruct *thisGame, SW_Enemy *enemy) {
             break;
         case 2:
             // user staw forward
-            if (player.hitBox.leftBottomX < enemy->pos.x && player.hitBox.rightTopX > enemy->pos.x) {
+            if (player.hitBox.leftBottomX < thisEnemy->pos.x && player.hitBox.rightTopX > thisEnemy->pos.x) {
                 // если игрок под врагом
                 return true;
             }
@@ -49,19 +49,17 @@ bool shouldShoot1(GameFieldStruct *thisGame, SW_Enemy *enemy) {
             break;
 
     }
-
-
     return false;
-
 }
 
-
-bool shouldShoot(GameFieldStruct *thisGame, SW_Enemy *enemy) {
-
-    switch (enemy->type) {
+// вызов функции ведения стрельбы по типу врага
+// функция решает нужно ли стрелять
+// возвращает true/false соответственное
+bool isTargetLocked(GameFieldStruct *thisGame, SW_Enemy *thisEnemy){
+    switch (thisEnemy->type){
         case 1:
-            return shouldShoot1(thisGame, enemy);
-
+            return isTargetLocked1(thisGame, thisEnemy);
     }
+    return false;
 
 }

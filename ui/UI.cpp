@@ -14,37 +14,36 @@ const float UI_BACKGROUND_Z = 0;
 
 
 const int HEALTH_BAR_POS = 2;
-const SW_COLOR HEALTH_BAR_COLOR = {255, 0, 0};
+const SW_Color HEALTH_BAR_COLOR = {255, 0, 0};
 
 
 const int RELOAD_BAR_POS = 3;
-const SW_COLOR RELOAD_BAR_COLOR = {255, 0, 255};
+const SW_Color RELOAD_BAR_COLOR = {255, 0, 255};
 
 
-const SW_COLOR GAME_BORDER_LINE_COLOR = {100, 100, 100};
-const SW_COLOR UI_BACKGROUND_COLOR = {50, 50, 50};
+const SW_Color GAME_BORDER_LINE_COLOR = {100, 100, 100};
+const SW_Color UI_BACKGROUND_COLOR = {50, 50, 50};
 
 
-float uiLineX;
-
+SW_Borders interfaceBorders;
 
 float getHeight(int pos) {
     return (DIVINER_Y + ELEMENT_HEIGHT) * pos;
 }
 
 float getWidth() {
-    return uiLineX - DIVINER_Y * 2;
+    return (interfaceBorders.rightTopX - interfaceBorders.leftBottomX) - DIVINER_Y * 2;
 }
 
-void drawBar(float maxValue, float currentValue, SW_COLOR color, int pos) {
+void drawBar(float maxValue, float currentValue, SW_Color color, int pos) {
     float percent = currentValue * 100 / maxValue;
     percent = percent < 0 ? 0 : percent;
     percent = percent > 100 ? 100 : percent;
     float xPX = getWidth() * percent / 100;
 
 
-    const float startY = getHeight(pos);
-    const float startX = DIVINER_X;
+    const float startY = interfaceBorders.leftBottomY + getHeight(pos);
+    const float startX = interfaceBorders.leftBottomX + DIVINER_X;
 
     glPushMatrix();
     glBegin(GL_POLYGON);
@@ -81,34 +80,24 @@ void drawGunReload(GameFieldStruct *thisGame) {
 }
 
 void drawGameBorder(GameFieldStruct *thisGame) {
-    glPushMatrix();
-    glLineWidth(4);
-    glBegin(GL_LINES);
-    utilsSelectColor(GAME_BORDER_LINE_COLOR);
-    glVertex3f(uiLineX, thisGame->borders.leftBottomY, UI_Z);
-    glVertex3f(uiLineX, thisGame->borders.rightTopY, UI_Z);
-    glEnd();
-    glLineWidth(1);
-    glPopMatrix();
-
+    utilsDrawBorders(thisGame->gameBorders, GAME_BORDER_LINE_COLOR, 4);
 }
 
 void drawInterfaceBackground(GameFieldStruct *thisGame) {
     glPushMatrix();
     glBegin(GL_POLYGON);
     utilsSelectColor(UI_BACKGROUND_COLOR);
-    glVertex3f(0, 0, UI_BACKGROUND_Z);
-    glVertex3f(0, thisGame->borders.rightTopY, UI_BACKGROUND_Z);
-    glVertex3f(uiLineX, thisGame->borders.rightTopY, UI_BACKGROUND_Z);
-    glVertex3f(uiLineX, 0, UI_BACKGROUND_Z);
+    glVertex3f(interfaceBorders.leftBottomX, interfaceBorders.leftBottomY, UI_BACKGROUND_Z);
+    glVertex3f(interfaceBorders.leftBottomX, interfaceBorders.rightTopY, UI_BACKGROUND_Z);
+    glVertex3f(interfaceBorders.rightTopX, interfaceBorders.rightTopY, UI_BACKGROUND_Z);
+    glVertex3f(interfaceBorders.rightTopX, interfaceBorders.leftBottomY, UI_BACKGROUND_Z);
     glEnd();
     glPopMatrix();
 }
 
 
-void uiInit(GameFieldStruct *thisGame, float leftPX) {
-    uiLineX = leftPX;
-
+void uiInit(GameFieldStruct *thisGame) {
+    interfaceBorders = thisGame->interfaceBorders;
 
 }
 

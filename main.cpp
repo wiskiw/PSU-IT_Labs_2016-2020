@@ -7,6 +7,7 @@
 
 #include <GL/glut.h>
 #include <iostream>
+#include <climits>
 #include "GameStructs.h"
 #include "modules/player/ModulePlayer.h"
 #include "io/IOProcessor.h"
@@ -24,9 +25,18 @@ const float SCREEN_CROP_FACTOR = 2;
 
 GameFieldStruct thisGame;
 
+void updateGameTickTimer() {
+    if (thisGame.globalTickTimer >= ULONG_MAX) {
+        thisGame.globalTickTimer = 0;
+    } else {
+        thisGame.globalTickTimer++;
+    }
+}
+
 
 void onRedraw() {
     checkKeysBuffer(); // проверка буфера клавиш
+    updateGameTickTimer();
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     mdlPlayerDraw(&thisGame);
@@ -62,19 +72,23 @@ void initGame() {
     // TODO: Left padding
     const int STAT_X = 150;
 
+    thisGame.gameBorders.leftBottomX = STAT_X;
+    thisGame.gameBorders.rightTopX = static_cast<int>(WINDOW_X / SCREEN_CROP_FACTOR);
+    thisGame.gameBorders.leftBottomY = 0;
+    thisGame.gameBorders.rightTopY = static_cast<int>(WINDOW_Y / SCREEN_CROP_FACTOR);
 
-    thisGame.borders.leftBottomX = STAT_X;
-    thisGame.borders.rightTopX = static_cast<int>(WINDOW_X / SCREEN_CROP_FACTOR);
-    thisGame.borders.leftBottomY = 0;
-    thisGame.borders.rightTopY = static_cast<int>(WINDOW_Y / SCREEN_CROP_FACTOR);
+    thisGame.interfaceBorders.leftBottomX = 0;
+    thisGame.interfaceBorders.leftBottomY = 0;
+    thisGame.interfaceBorders.rightTopX = thisGame.gameBorders.leftBottomX;
+    thisGame.interfaceBorders.rightTopY = thisGame.gameBorders.rightTopY;
 
-    std::cout << "leftBottomX: " << thisGame.borders.leftBottomX
-              << " rightTopX: " << thisGame.borders.rightTopX << std::endl;
-    std::cout << "leftBottomY: " << thisGame.borders.leftBottomY << " rightTopY: " << thisGame.borders.rightTopY
+    std::cout << "leftBottomX: " << thisGame.gameBorders.leftBottomX
+              << " rightTopX: " << thisGame.gameBorders.rightTopX << std::endl;
+    std::cout << "leftBottomY: " << thisGame.gameBorders.leftBottomY << " rightTopY: " << thisGame.gameBorders.rightTopY
               << std::endl;
 
 
-    uiInit(&thisGame, STAT_X);
+    uiInit(&thisGame);
 
     mdlPlayerInit(&thisGame);
     mdlPlayerSetShootListener(onPlayerShoot);

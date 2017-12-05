@@ -10,7 +10,6 @@ const int PREF_BULLET_Z_POS = 2;
 const int PREF_ENEMY_Z_POS = 3;
 
 const float PREF_PLAYER_DEFAULT_HEALTH = 100;
-const int PREF_PLAYER_DEFAULT_GUN_SPEED = 10;
 
 const int PREF_STARS_NUMBER = 16;
 const int PREF_BULLET_BUFFER_SIZE = 30;

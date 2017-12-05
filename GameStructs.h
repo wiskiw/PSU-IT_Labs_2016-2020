@@ -17,7 +17,7 @@ enum GameState {
 typedef int SW_State;
 typedef int SW_Type;
 
-struct SW_COLOR {
+struct SW_Color {
     GLubyte R = 0;
     GLubyte G = 0;
     GLubyte B = 0;
@@ -25,7 +25,7 @@ struct SW_COLOR {
 };
 
 struct SW_Speed {
-    float x = 1;
+    float x = 0;
     float y = 0;
 };
 
@@ -49,56 +49,66 @@ struct SW_Star {
     float size = 1;
 };
 
+enum BulletState {
+    BULLET_STATE_NORMAL, BULLET_STATE_UNDEFINED
+};
+
 struct SW_Bullet {
+    SW_Color color = {0, 255, 0};
     SW_Pos pos;
-    SW_Speed speed;
-
-    SW_State state = 1;
-    // state -1 для пустой пули
-
+    SW_Speed speed ;
+    SW_State state = BULLET_STATE_NORMAL;
     float damage;
 };
 
+enum GunState {
+    GUN_STATE_OK, GUN_STATE_RELOAD, GUN_STATE_SHOOTING_DELAY,
+};
 struct SW_Gun {
     int waitBeforeShoot = 0; // переменная для хранения оставшихся тиков до выстрела
     int gunSpeed; // тики между выстрелами
     int reloadTicks; // количество тиков для перезарядки
-    int leftTicksForReload; // оставшееся количество тиков до конца перезарядки
     int ammorSize; // количество патронов в обойме
     int ammorLeft = 0; // количество оставшихся патронов в обойме
     SW_Bullet bullet;
 
-    SW_State state = 1;
+    SW_State state = GUN_STATE_OK;
     // state 1 - ready
     // state 2 - reload
 };
 
+enum EnemyState {
+    ENEMY_STATE_GOING_LEFT, ENEMY_STATE_GOING_RIGHT, ENEMY_STATE_STAY_FORWARD, ENEMY_STATE_UNDEFINED
+};
+
 struct SW_Enemy {
     SW_Pos pos;
+    SW_Pos gunPosValue; // относительно центра родителя;
     SW_Speed speed;
     SW_Type type;
-    SW_State state = -1;
     SW_Borders hitBox;
     float health;
     SW_Gun gun;
-
+    EnemyState state = ENEMY_STATE_UNDEFINED;
 };
 
 struct SW_Enemies {
+    float enemiesHealth = 0; // здоровье всех врагов на поле
     const static int maxNumber = PREF_ENEMY_BUFFER_SIZE;
     SW_Enemy list[maxNumber];
     int number;
+};
+
+
+enum PlayerState {
+    PLAYER_STATE_GOING_LEFT, PLAYER_STATE_GOING_RIGHT, PLAYER_STATE_STAY_FORWARD,
 };
 
 struct SW_Player {
     SW_Borders hitBox;
     SW_Gun gun;
 
-    SW_State state;
-    // 1 - going left
-    // 2 - going forward
-    // 3 - going right
-    // TODO: dead[1-4];
+    SW_State state = PLAYER_STATE_STAY_FORWARD;
 
     float health = PREF_PLAYER_DEFAULT_HEALTH;
     SW_Pos pos;
@@ -120,17 +130,22 @@ struct SW_Bullets {
 };
 
 struct GameFieldStruct {
+    unsigned long int globalTickTimer = 0;
+
     // состояние
     GameState gameState = GAME_STATE_MENU;
+
     int difficult = 3;
-    SW_Background background;
 
     // границы игрового поля
-    SW_Borders borders;
+    SW_Borders gameBorders;
 
+    SW_Borders interfaceBorders;
+
+
+    SW_Background background;
     SW_Bullets bullets;
     SW_Enemies enemies;
-
     SW_Player player;
 
 };

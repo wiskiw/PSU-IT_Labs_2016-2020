@@ -44,8 +44,8 @@ void mdlBackgroundInit(GameFieldStruct *thisGame) {
     const int number = thisGame->background.starNumber;
     for (int k = 0; k < number; k++) {
         SW_Star *star = &thisGame->background.stars[k];
-        star->pos.x = random(thisGame->borders.leftBottomX, thisGame->borders.rightTopX);
-        star->pos.y = random(thisGame->borders.leftBottomY, thisGame->borders.rightTopY);
+        star->pos.x = random(thisGame->gameBorders.leftBottomX, thisGame->gameBorders.rightTopX);
+        star->pos.y = random(thisGame->gameBorders.leftBottomY, thisGame->gameBorders.rightTopY);
         setBaseStarPreferences(star);
     }
 }
@@ -53,8 +53,8 @@ void mdlBackgroundInit(GameFieldStruct *thisGame) {
 // создание новой звезда с верху игрового поля
 void createStar(GameFieldStruct *thisGame, SW_Star *star) {
     setBaseStarPreferences(star);
-    star->pos.x = random(thisGame->borders.leftBottomX, thisGame->borders.rightTopX);
-    star->pos.y = thisGame->borders.rightTopY;
+    star->pos.x = random(thisGame->gameBorders.leftBottomX, thisGame->gameBorders.rightTopX);
+    star->pos.y = thisGame->gameBorders.rightTopY;
 };
 
 void mdlBackgroundDraw(GameFieldStruct *thisGame) {
@@ -74,7 +74,7 @@ void mdlBackgroundDraw(GameFieldStruct *thisGame) {
         glPopMatrix();
 
         star->pos.y -= star->speed.y;
-        if (star->pos.y <= thisGame->borders.leftBottomY) {
+        if (star->pos.y <= thisGame->gameBorders.leftBottomY) {
             // отрисовка новой звезды, если старая выходит за границы игрового поля
             createStar(thisGame, star);
         }

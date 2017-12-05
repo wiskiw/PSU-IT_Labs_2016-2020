@@ -5,13 +5,14 @@
 #include "ModulEnemy.h"
 #include "../../utils/Utils.h"
 
-#include "units/Mover.h"
-#include "units/Drawer.h"
-#include "units/Thinker.h"
+#include "units/EnemyGenerator.h"
+#include "../../gp-elements/gun/gpeGun.h"
+#include "units/Mover/Mover.h"
+#include "units/Aimer/Aimer.h"
+#include "units/Drawer/Painter.h"
 
 
 const int MAX_RE_SPAWN_TICK_COUNTER = 350;
-int reSpawnTickCounter = MAX_RE_SPAWN_TICK_COUNTER;
 
 
 void (*enemyShootListener)(SW_Bullet) = nullptr;
@@ -20,51 +21,15 @@ void mdlEnemySetShootListener(void (*callback)(SW_Bullet)) {
     enemyShootListener = callback;
 }
 
-
-// тип врага по параметрам игры
-SW_Type getEnemyType(GameFieldStruct *thisGame) {
-
-
-    return 1;
-}
-
-// задавать типы противников тут
 void spawnEnemy(GameFieldStruct *thisGame) {
-    SW_Enemy newEnemy;
+    SW_Enemy newEnemy = getEnemy(thisGame);
+    newEnemy.state = ENEMY_STATE_STAY_FORWARD;
 
-    newEnemy.pos.x = random(thisGame->borders.leftBottomX + 50, thisGame->borders.rightTopX - 50);
-    newEnemy.pos.y = thisGame->borders.rightTopY;
-    newEnemy.pos.z = PREF_ENEMY_Z_POS;
-
-    newEnemy.state = 2;
-    newEnemy.type = getEnemyType(thisGame);
-    switch (newEnemy.type) {
-        case 1:
-            newEnemy.health = 15;
-            newEnemy.gun.gunSpeed = 15;
-
-            newEnemy.speed.y = -0.6f;
-            newEnemy.speed.x = 1.1f;
-
-            newEnemy.gun.bullet.speed.y = -5;
-            newEnemy.gun.bullet.speed.x = 0;
-
-            newEnemy.gun.bullet.damage = 0.5;
-
-            newEnemy.gun.ammorSize = 50;
-            newEnemy.gun.ammorLeft = 50;
-
-            newEnemy.gun.reloadTicks = 150;
-            break;
-
-        default:
-            return;
-    }
-
+    thisGame->enemies.enemiesHealth += newEnemy.health;
 
     // добавление в лист врагов
     for (int i = 0; i < thisGame->enemies.maxNumber; ++i) {
-        if (thisGame->enemies.list[i].state == -1) {
+        if (thisGame->enemies.list[i].state == ENEMY_STATE_UNDEFINED) {
             thisGame->enemies.number++;
             thisGame->enemies.list[i] = newEnemy;
             break;
@@ -76,7 +41,7 @@ void spawnEnemy(GameFieldStruct *thisGame) {
 void checkEnemyForHit(GameFieldStruct *thisGame, SW_Enemy *enemy) {
     for (int i = 0; i < thisGame->bullets.maxsize; ++i) {
         SW_Bullet *bullet = &thisGame->bullets.list[i];
-        if (bullet->state == -1) {
+        if (bullet->state == BULLET_STATE_UNDEFINED) {
             continue;
         }
 
@@ -87,64 +52,23 @@ void checkEnemyForHit(GameFieldStruct *thisGame, SW_Enemy *enemy) {
             bY >= enemy->hitBox.leftBottomY && bY <= enemy->hitBox.rightTopY) {
             // hit
 
-            bullet->state = -1;
+
+            bullet->state = BULLET_STATE_UNDEFINED;
             enemy->health -= bullet->damage;
+            thisGame->enemies.enemiesHealth -= bullet->damage;
             if (enemy->health <= 0) {
                 thisGame->enemies.number--;
-                enemy->state = -1;
+                enemy->state = ENEMY_STATE_UNDEFINED;
             }
         }
     }
 }
 
-void enemyShot(GameFieldStruct *thisGame, SW_Enemy *enemy) {
-    SW_Gun *gun = &enemy->gun;
-
-    switch (gun->state) {
-        case 1:
-            // ready
-            if (shouldShoot(thisGame, enemy)) {
-                if (gun->ammorLeft <= 0) {
-                    gun->state = 2;
-                    gun->leftTicksForReload = gun->reloadTicks;
-                } else {
-                    if (gun->waitBeforeShoot <= 0) {
-                        gun->waitBeforeShoot = gun->gunSpeed;
-
-                        gun->bullet.state = 1;
-                        gun->bullet.pos = enemy->pos;
-                        gun->bullet.pos.y = enemy->hitBox.leftBottomY - 1;
-                        if (enemyShootListener != nullptr) {
-                            enemyShootListener(gun->bullet);
-                        }
-                        gun->ammorLeft--;
-                    }
-                }
-            }
-            gun->waitBeforeShoot--;
-            break;
-        case 2:
-            // reload
-            gun->leftTicksForReload--;
-            if (gun->leftTicksForReload <= 0) {
-                gun->state = 1;
-                gun->ammorLeft = gun->ammorSize;
-                gun->waitBeforeShoot = gun->gunSpeed;
-            }
-            break;
-        default:
-            return;
-    }
-
-
-}
-
 void mdlEnemyDrawAll(GameFieldStruct *thisGame) {
-    reSpawnTickCounter++;
 
     if (thisGame->enemies.number < thisGame->enemies.maxNumber &&
-        reSpawnTickCounter >= MAX_RE_SPAWN_TICK_COUNTER / (thisGame->difficult / 2.0f)) {
-        reSpawnTickCounter = 0;
+        (thisGame->globalTickTimer % (MAX_RE_SPAWN_TICK_COUNTER / (thisGame->difficult / 2)) == 0) ||
+        thisGame->globalTickTimer == 10) {
         spawnEnemy(thisGame);
     }
 
@@ -155,15 +79,31 @@ void mdlEnemyDrawAll(GameFieldStruct *thisGame) {
                     k < thisGame->enemies.maxNumber; k++) {
 
         SW_Enemy *enemy = &thisGame->enemies.list[k];
-        if (enemy->state == -1) {
+        if (enemy->state == ENEMY_STATE_UNDEFINED) {
             continue;
         }
         enCounter++;
 
-        moveEnemy(thisGame, enemy);
-        enemyShot(thisGame, enemy);
+        // перемещение врага и его хитбокса
+        SW_Pos movPosValue = moveEnemy(thisGame, enemy);
+        utilsMovePos(&enemy->pos, movPosValue);
+        utilsMoveBorers(&enemy->hitBox, movPosValue);
+
+
+        SW_Pos gunPos = enemy->pos;
+        utilsMovePos(&gunPos, enemy->gunPosValue);
+
+
+        gpeGunUpdateShootingDelay(&enemy->gun);
+        if (enemyShootListener != nullptr && isTargetLocked(thisGame, enemy)) {
+            SW_Bullet bullet = gpeGunShoot(&enemy->gun, gunPos);
+            if (bullet.state != BULLET_STATE_UNDEFINED) {
+                enemyShootListener(bullet);
+            }
+        }
+
         checkEnemyForHit(thisGame, enemy);
-        drawEnemy(thisGame, enemy);
+        redrawEnemy(thisGame, enemy);
 
     }
 
@@ -173,6 +113,6 @@ void mdlEnemyDrawAll(GameFieldStruct *thisGame) {
 
 void mdlEnemyInitAll(GameFieldStruct *thisGame) {
     for (int i = 0; i < thisGame->enemies.maxNumber; ++i) {
-        thisGame->enemies.list[i].state = -1;
+        thisGame->enemies.list[i].state = ENEMY_STATE_UNDEFINED;
     }
 }
