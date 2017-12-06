@@ -56,7 +56,7 @@ enum BulletState {
 struct SW_Bullet {
     SW_Color color = {0, 255, 0};
     SW_Pos pos;
-    SW_Speed speed ;
+    SW_Speed speed;
     SW_State state = BULLET_STATE_NORMAL;
     float damage;
 };
@@ -150,6 +150,8 @@ struct SW_Drop_Map {
 
 struct GameFieldStruct {
     unsigned long int globalTickTimer = 0;
+    float windowX = 0;
+    float windowY = 0;
 
     // состояние
     GameState gameState = GAME_STATE_MENU;

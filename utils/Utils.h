@@ -20,4 +20,6 @@ void utilsMoveBorers(SW_Borders *borders, SW_Pos movPosValue);
 
 void utilsMovePos(SW_Pos *pos, SW_Pos movPosValue);
 
+void utilsDrawText(SW_Pos pos, SW_Color color, void *font, char *string);
+
 #endif //COURSE_PAPER_UTILS_H

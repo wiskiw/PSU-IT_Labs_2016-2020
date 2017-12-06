@@ -2,8 +2,10 @@
 // Created by wiskiw on 03.12.17.
 //
 
+#include <iostream>
 #include "UI.h"
 #include "../utils/Utils.h"
+#include "menu/Menu.h"
 
 const float ELEMENT_HEIGHT = 15;
 const float DIVINER_X = 10;
@@ -107,4 +109,37 @@ void uiUpdate(GameFieldStruct *thisGame) {
     drawGameBorder(thisGame);
     drawInterfaceBackground(thisGame);
 
+
+    switch (thisGame->gameState) {
+        case GAME_STATE_PLAY:
+
+
+            break;
+        case GAME_STATE_PAUSE:
+            menuDrawPause(thisGame);
+            break;
+    }
+}
+
+void uiProcessInputClick(GameFieldStruct *thisGame, int key, int x, int y) {
+    switch (thisGame->gameState) {
+        case GAME_STATE_PLAY:
+
+            break;
+        case GAME_STATE_PAUSE:
+            menuProcessPauseMenuItemClick(thisGame, key, x, y);
+            break;
+    }
+}
+
+void uiProcessMouseMove(GameFieldStruct *thisGame, int x, int y) {
+    switch (thisGame->gameState) {
+        case GAME_STATE_PLAY:
+
+
+            break;
+        case GAME_STATE_PAUSE:
+            menuProcessPauseMenuItemFocus(thisGame, x, y);
+            break;
+    }
 }

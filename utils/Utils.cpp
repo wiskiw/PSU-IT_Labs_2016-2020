@@ -4,6 +4,7 @@
 
 #include <cstdlib>
 #include <cmath>
+#include <cstring>
 #include "Utils.h"
 
 int random(int start, int end) {
@@ -47,4 +48,22 @@ void utilsMovePos(SW_Pos *pos, SW_Pos movPosValue) {
 
 void utilsSelectColor(SW_Color color) {
     glColor4ub(color.R, color.G, color.B, color.A);
+}
+
+
+void utilsDrawText(SW_Pos pos, SW_Color color, void *font, char *string) {
+    // fonts https://www.opengl.org/resources/libraries/glut/spec3/node76.html
+
+    /*
+     GLUT_BITMAP_9_BY_15
+
+
+     */
+
+    size_t j = strlen(string);
+    utilsSelectColor(color);
+    glRasterPos3f(pos.x, pos.y, pos.z);
+    for (int i = 0; i < j; i++) {
+        glutBitmapCharacter(font, string[i]);
+    }
 }

@@ -11,7 +11,7 @@ void mdlEnemySetShootListener(void (*callback)(SW_Bullet));
 
 void mdlEnemySetEnemyKilledListener(void (*callback)(SW_Enemy));
 
-void mdlEnemyDrawAll(GameFieldStruct *thisGame);
+void mdlEnemyUpdateAll(GameFieldStruct *thisGame);
 
 void mdlEnemyInitAll(GameFieldStruct *thisGame);
 

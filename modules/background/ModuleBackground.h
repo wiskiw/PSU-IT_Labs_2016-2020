@@ -9,7 +9,7 @@
 
 void mdlBackgroundInit(GameFieldStruct *thisGame);
 
-void mdlBackgroundDraw(GameFieldStruct *thisGame);
+void mdlBackgroundUpdate(GameFieldStruct *thisGame);
 
 
 #endif //COURSE_PAPER_DRAWABLEBACKGROUND_H

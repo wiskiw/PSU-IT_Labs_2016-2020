@@ -19,10 +19,8 @@
 #include "modules/drop/ModuleDrop.h"
 
 
-const int WINDOW_X = 990;
-const int WINDOW_Y = 550;
-
-const float SCREEN_CROP_FACTOR = 2;
+const int WINDOW_X = 1100;
+const int WINDOW_Y = 590;
 
 GameFieldStruct thisGame;
 
@@ -40,11 +38,13 @@ void onRedraw() {
     updateGameTickTimer();
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    mdlPlayerDraw(&thisGame);
-    mdlBulletDrawAll(&thisGame);
-    mdlEnemyDrawAll(&thisGame);
-    mdlBackgroundDraw(&thisGame);
+
+    mdlPlayerUpdate(&thisGame);
+    mdlBulletUpdateAll(&thisGame);
+    mdlEnemyUpdateAll(&thisGame);
+    mdlBackgroundUpdate(&thisGame);
     mdlDropUpdate(&thisGame);
+
 
     uiUpdate(&thisGame);
 
@@ -83,14 +83,16 @@ void onPlayerDamage(SW_Player player) {
 void initGame() {
     srand(time(0));
 
+    thisGame.windowX = WINDOW_X;
+    thisGame.windowY = WINDOW_Y;
 
     // TODO: Left padding
     const int STAT_X = 150;
 
     thisGame.gameBorders.leftBottomX = STAT_X;
-    thisGame.gameBorders.rightTopX = static_cast<int>(WINDOW_X / SCREEN_CROP_FACTOR);
+    thisGame.gameBorders.rightTopX = static_cast<int>(WINDOW_X / PREF_SCREEN_CROP_FACTOR);
     thisGame.gameBorders.leftBottomY = 0;
-    thisGame.gameBorders.rightTopY = static_cast<int>(WINDOW_Y / SCREEN_CROP_FACTOR);
+    thisGame.gameBorders.rightTopY = static_cast<int>(WINDOW_Y / PREF_SCREEN_CROP_FACTOR);
 
     thisGame.interfaceBorders.leftBottomX = 0;
     thisGame.interfaceBorders.leftBottomY = 0;
@@ -117,42 +119,61 @@ void initGame() {
     mdlEnemySetEnemyKilledListener(onEnemyKilled);
     mdlEnemyInitAll(&thisGame);
     mdlBackgroundInit(&thisGame);
+
+    thisGame.gameState = GAME_STATE_PLAY;
 }
 
 void onKeyPress(int key, int x, int y) {
-
+    uiProcessInputClick(&thisGame, key, x, y);
     switch (key) {
         case IO_KEY_SHOOT:
-            mdlPlayerShot(&thisGame);
+            if (thisGame.gameState == GAME_STATE_PLAY) {
+                mdlPlayerShot(&thisGame);
+            }
+            break;
+        case 27:
+            // esc
+            switch (thisGame.gameState) {
+                case GAME_STATE_PLAY:
+                    thisGame.gameState = GAME_STATE_PAUSE;
+                    break;
+                case GAME_STATE_PAUSE:
+                    thisGame.gameState = GAME_STATE_PLAY;
+                    break;
+            }
             break;
     }
 }
 
 void onKeyHold(int key, int x, int y) {
-    switch (key) {
-        case IO_KEY_GO_LEFT:
-            // left arrow
-            mdlPlayerGoLeft(&thisGame);
-            break;
-        case IO_KEY_GO_RIGHT:
-            //right arrow
-            mdlPlayerGoRight(&thisGame);
-            break;
+    if (thisGame.gameState == GAME_STATE_PLAY) {
+        switch (key) {
+            case IO_KEY_GO_LEFT:
+                // left arrow
+                mdlPlayerGoLeft(&thisGame);
+                break;
+            case IO_KEY_GO_RIGHT:
+                //right arrow
+                mdlPlayerGoRight(&thisGame);
+                break;
+        }
     }
 }
 
 void onKeyRelease(int key, int x, int y) {
-    switch (key) {
-        case IO_KEY_GO_RIGHT:
-        case IO_KEY_GO_LEFT:
-            //сбрасываем состояние игрока если отпущена клавиша вправо/влево
-            thisGame.player.state = 2;
-            break;
+    if (thisGame.gameState == GAME_STATE_PLAY) {
+        switch (key) {
+            case IO_KEY_GO_RIGHT:
+            case IO_KEY_GO_LEFT:
+                //сбрасываем состояние игрока если отпущена клавиша вправо/влево
+                thisGame.player.state = 2;
+                break;
+        }
     }
 }
 
 void onMouseMove(int x, int y) {
-
+    uiProcessMouseMove(&thisGame, x, y);
 }
 
 int main(int args, char **argv) {
@@ -164,7 +185,11 @@ int main(int args, char **argv) {
 
 
     glutInit(&args, argv);
-    glutInitWindowPosition(240, 70);
+
+    int posX = (glutGet(GLUT_SCREEN_WIDTH) - WINDOW_X) / 2;
+    int posY = (glutGet(GLUT_SCREEN_HEIGHT) - WINDOW_Y) / 2;
+
+    glutInitWindowPosition(posX, posY);
     glutInitWindowSize(WINDOW_X, WINDOW_Y);
     glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
     glutCreateWindow("Star Wars");
@@ -177,7 +202,7 @@ int main(int args, char **argv) {
     glViewport(0, 0, WINDOW_X, WINDOW_Y);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    glOrtho(0, WINDOW_X / SCREEN_CROP_FACTOR, 0, WINDOW_Y / SCREEN_CROP_FACTOR, -50, 50);
+    glOrtho(0, WINDOW_X / PREF_SCREEN_CROP_FACTOR, 0, WINDOW_Y / PREF_SCREEN_CROP_FACTOR, -50, 50);
     glMatrixMode(GL_MODELVIEW);
 
     initGame();
@@ -192,6 +217,7 @@ int main(int args, char **argv) {
 
     glutMouseFunc(ioProcessMouseClick);
     glutMotionFunc(ioProcessMouseMove);
+    glutPassiveMotionFunc(ioProcessMouseMove);
 
     glutDisplayFunc(onRedraw);
 

@@ -12,5 +12,9 @@ void uiInit(GameFieldStruct *thisGame);
 
 void uiUpdate(GameFieldStruct *thisGame);
 
+void uiProcessInputClick(GameFieldStruct *thisGame, int key, int x, int y);
+
+void uiProcessMouseMove(GameFieldStruct *thisGame, int x, int y);
+
 
 #endif //COURSE_PAPER_UI_H

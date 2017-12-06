@@ -5,16 +5,16 @@
 #include "ModuleBullet.h"
 #include "../../utils/Utils.h"
 
-void mdlBulletDrawAll(GameFieldStruct *thisGame) {
+void mdlBulletUpdateAll(GameFieldStruct *thisGame) {
     for (int i = 0; i < thisGame->bulletMap.maxNumber; ++i) {
         SW_Bullet bullet = thisGame->bulletMap.list[i];
         if (bullet.state != BULLET_STATE_UNDEFINED) {
 
             glPushMatrix();
+
             const float SPEED_K = bullet.speed.y * 0.3f;
             glTranslatef(bullet.pos.x, bullet.pos.y + 6 * SPEED_K, 0);
             utilsSelectColor(bullet.color);
-
 
             glBegin(GL_POLYGON);
             glVertex3f(0, 1, bullet.pos.z);
@@ -25,11 +25,14 @@ void mdlBulletDrawAll(GameFieldStruct *thisGame) {
             glPopMatrix();
 
 
-            bullet.pos.y += bullet.speed.y;
-            if (bullet.pos.y >= thisGame->gameBorders.rightTopY || bullet.pos.y <= thisGame->gameBorders.leftBottomY) {
-                thisGame->bulletMap.list[i].state = BULLET_STATE_UNDEFINED;
-            } else {
-                thisGame->bulletMap.list[i] = bullet;
+            if (thisGame->gameState == GAME_STATE_PLAY) {
+                bullet.pos.y += bullet.speed.y;
+                if (bullet.pos.y >= thisGame->gameBorders.rightTopY ||
+                    bullet.pos.y <= thisGame->gameBorders.leftBottomY) {
+                    thisGame->bulletMap.list[i].state = BULLET_STATE_UNDEFINED;
+                } else {
+                    thisGame->bulletMap.list[i] = bullet;
+                }
             }
         }
     }

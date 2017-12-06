@@ -112,7 +112,7 @@ void checkPlayerForHit(GameFieldStruct *thisGame) {
 
 }
 
-void mdlPlayerDraw(GameFieldStruct *thisGame) {
+void mdlPlayerUpdate(GameFieldStruct *thisGame) {
     SW_Player *player = &thisGame->player;
 
     gpeGunUpdateShootingDelay(&player->gun);

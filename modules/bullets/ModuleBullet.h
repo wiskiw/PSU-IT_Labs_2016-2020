@@ -7,7 +7,7 @@
 
 #include "../../GameStructs.h"
 
-void mdlBulletDrawAll(GameFieldStruct *thisGame);
+void mdlBulletUpdateAll(GameFieldStruct *thisGame);
 
 void mdlBulletInitAll(GameFieldStruct *thisGame);
 

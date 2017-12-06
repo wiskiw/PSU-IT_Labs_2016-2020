@@ -16,6 +16,7 @@ const int MAX_RE_SPAWN_TICK_COUNTER = 350;
 
 
 void (*enemyShootListener)(SW_Bullet) = nullptr;
+
 void (*enemyKilledListener)(SW_Enemy) = nullptr;
 
 void mdlEnemySetShootListener(void (*callback)(SW_Bullet)) {
@@ -64,7 +65,7 @@ void checkEnemyForHit(GameFieldStruct *thisGame, SW_Enemy *enemy) {
             if (enemy->health <= 0) {
                 // killed
 
-                if (enemyKilledListener != nullptr){
+                if (enemyKilledListener != nullptr) {
                     enemyKilledListener(*enemy);
                 }
 
@@ -75,12 +76,13 @@ void checkEnemyForHit(GameFieldStruct *thisGame, SW_Enemy *enemy) {
     }
 }
 
-void mdlEnemyDrawAll(GameFieldStruct *thisGame) {
-
-    if (thisGame->enemyMap.number < thisGame->enemyMap.maxNumber &&
-        (thisGame->globalTickTimer % (MAX_RE_SPAWN_TICK_COUNTER / (thisGame->difficult / 2)) == 0) ||
-        thisGame->globalTickTimer == 10) {
-        spawnEnemy(thisGame);
+void mdlEnemyUpdateAll(GameFieldStruct *thisGame) {
+    if (thisGame->gameState == GAME_STATE_PLAY) {
+        if (thisGame->enemyMap.number < thisGame->enemyMap.maxNumber &&
+            (thisGame->globalTickTimer % (MAX_RE_SPAWN_TICK_COUNTER / (thisGame->difficult / 2)) == 0) ||
+            thisGame->globalTickTimer == 10) {
+            spawnEnemy(thisGame);
+        }
     }
 
 
@@ -95,25 +97,28 @@ void mdlEnemyDrawAll(GameFieldStruct *thisGame) {
         }
         enCounter++;
 
-        // перемещение врага и его хитбокса
-        SW_Pos movPosValue = moveEnemy(thisGame, enemy);
-        utilsMovePos(&enemy->pos, movPosValue);
-        utilsMoveBorers(&enemy->hitBox, movPosValue);
+        if (thisGame->gameState == GAME_STATE_PLAY) {
+            // перемещение врага и его хитбокса
+            SW_Pos movPosValue = moveEnemy(thisGame, enemy);
+            utilsMovePos(&enemy->pos, movPosValue);
+            utilsMoveBorers(&enemy->hitBox, movPosValue);
 
 
-        SW_Pos gunPos = enemy->pos;
-        utilsMovePos(&gunPos, enemy->gunPosValue);
+            SW_Pos gunPos = enemy->pos;
+            utilsMovePos(&gunPos, enemy->gunPosValue);
 
 
-        gpeGunUpdateShootingDelay(&enemy->gun);
-        if (enemyShootListener != nullptr && isTargetLocked(thisGame, enemy)) {
-            SW_Bullet bullet = gpeGunShoot(&enemy->gun, gunPos);
-            if (bullet.state != BULLET_STATE_UNDEFINED) {
-                enemyShootListener(bullet);
+            gpeGunUpdateShootingDelay(&enemy->gun);
+            if (enemyShootListener != nullptr && isTargetLocked(thisGame, enemy)) {
+                SW_Bullet bullet = gpeGunShoot(&enemy->gun, gunPos);
+                if (bullet.state != BULLET_STATE_UNDEFINED) {
+                    enemyShootListener(bullet);
+                }
             }
+
+            checkEnemyForHit(thisGame, enemy);
         }
 
-        checkEnemyForHit(thisGame, enemy);
         redrawEnemy(thisGame, enemy);
 
     }

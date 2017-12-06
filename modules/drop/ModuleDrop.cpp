@@ -62,12 +62,15 @@ void mdlDropAddNew(GameFieldStruct *thisGame, SW_Drop drop) {
 void mdlDropUpdate(GameFieldStruct *thisGame) {
     for (int i = 0; i < thisGame->dropMap.maxNumber; ++i) {
         SW_Drop *drop = &thisGame->dropMap.list[i];
-        if (drop->state != DROP_STATE_UNDEFINED) {
-            moveDrop(thisGame, drop);
 
-            if (drop->timeToLive > 0 && drop->livingTime >= drop->timeToLive) {
-                // время жизни истекло
-                drop->state = DROP_STATE_UNDEFINED;
+        if (drop->state != DROP_STATE_UNDEFINED) {
+            if (thisGame->gameState == GAME_STATE_PLAY) {
+                moveDrop(thisGame, drop);
+
+                if (drop->timeToLive > 0 && drop->livingTime >= drop->timeToLive) {
+                    // время жизни истекло
+                    drop->state = DROP_STATE_UNDEFINED;
+                }
             }
 
             redrawDrop(thisGame, drop);
@@ -79,7 +82,7 @@ void mdlDropAction(GameFieldStruct *thisGame, SW_Drop drop) {
     activateDropAction(thisGame, &drop);
 }
 
-SW_Drop mdlDropGetNew(GameFieldStruct *thisGame,DropSpawnType dropSpawnType) {
+SW_Drop mdlDropGetNew(GameFieldStruct *thisGame, DropSpawnType dropSpawnType) {
 
     SW_Type type = dropSpawnType == DROP_SPAWN_TYPE_ENEMY ? getRandomEnemyDropType() : getRandomWorldDropType();
 

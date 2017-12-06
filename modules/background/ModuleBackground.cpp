@@ -2,7 +2,6 @@
 // Created by wiskiw on 01.12.17.
 //
 
-#include <cmath>
 #include "ModuleBackground.h"
 #include "../../utils/Utils.h"
 
@@ -57,14 +56,16 @@ void createStar(GameFieldStruct *thisGame, SW_Star *star) {
     star->pos.y = thisGame->gameBorders.rightTopY;
 };
 
-void mdlBackgroundDraw(GameFieldStruct *thisGame) {
+void mdlBackgroundUpdate(GameFieldStruct *thisGame) {
     const int number = thisGame->background.starNumber;
     for (int k = 0; k < number; k++) {
 
         SW_Star *star = &thisGame->background.stars[k];
 
         glPushMatrix();
+
         glTranslatef(star->pos.x, star->pos.y, 0);
+
         glBegin(GL_POLYGON);
         chooseColor(star->color);
         glVertex3f(0, 1 * star->size, star->pos.z);
@@ -73,10 +74,12 @@ void mdlBackgroundDraw(GameFieldStruct *thisGame) {
         glEnd();
         glPopMatrix();
 
-        star->pos.y -= star->speed.y;
-        if (star->pos.y <= thisGame->gameBorders.leftBottomY) {
-            // отрисовка новой звезды, если старая выходит за границы игрового поля
-            createStar(thisGame, star);
+        if (thisGame->gameState == GAME_STATE_PLAY) {
+            star->pos.y -= star->speed.y;
+            if (star->pos.y <= thisGame->gameBorders.leftBottomY) {
+                // отрисовка новой звезды, если старая выходит за границы игрового поля
+                createStar(thisGame, star);
+            }
         }
     }
 }

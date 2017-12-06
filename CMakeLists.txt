@@ -30,7 +30,7 @@ set(SOURCE_FILES
         gp-elements/gun/list/gun-list.cpp
         gp-elements/bullet/list/bullet-list.cpp
         gp-elements/bullet/list/bullet-list.h
-        gp-elements/gun/list/gun-list.h modules/drop/ModuleDrop.cpp modules/drop/ModuleDrop.h modules/drop/utils/Painter/Painter.cpp modules/drop/utils/Painter/Painter.h modules/drop/utils/Action/Action.cpp modules/drop/utils/Action/Action.h modules/drop/utils/DropConfigurator.cpp modules/drop/utils/DropConfigurator.h)
+        gp-elements/gun/list/gun-list.h modules/drop/ModuleDrop.cpp modules/drop/ModuleDrop.h modules/drop/utils/Painter/Painter.cpp modules/drop/utils/Painter/Painter.h modules/drop/utils/Action/Action.cpp modules/drop/utils/Action/Action.h modules/drop/utils/DropConfigurator.cpp modules/drop/utils/DropConfigurator.h ui/menu/Menu.cpp ui/menu/Menu.h)
 
 add_executable(Course_Paper ${SOURCE_FILES})
 

@@ -53,7 +53,7 @@ float getScaleFactor(SW_Drop *thisDrop) {
     return deltaScale;
 }
 
-void setDropScale(SW_Drop *thisDrop) {
+void updateDropScale(SW_Drop *thisDrop) {
     float *scale = &thisDrop->scaleState;
     if (*scale >= PREF_DROP_MAX_SCALE_STATE) {
         thisDrop->scaleGrownUp = false;
@@ -71,7 +71,10 @@ void setDropScale(SW_Drop *thisDrop) {
 
 // вызов функции отрисовки по типу дропа
 void redrawDrop(GameFieldStruct *thisGame, SW_Drop *thisDrop) {
-    setDropScale(thisDrop);
+    if (thisGame->gameState == GAME_STATE_PLAY) {
+        updateDropScale(thisDrop);
+    }
+
 
     glPushMatrix();
     glTranslatef(thisDrop->pos.x, thisDrop->pos.y, thisDrop->pos.z);
