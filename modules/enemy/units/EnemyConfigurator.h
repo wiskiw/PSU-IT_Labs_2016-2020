@@ -9,7 +9,9 @@
 #include "../../../GameStructs.h"
 #include "../../../utils/Utils.h"
 
-SW_Enemy getEnemy(GameFieldStruct *thisGame);
+SW_Enemy getEnemy(GameFieldStruct *thisGame, SW_Type enemyType);
+
+SW_Type getRandomEnemyType();
 
 
 #endif //COURSE_PAPER_ENEMYGENERATOR_H

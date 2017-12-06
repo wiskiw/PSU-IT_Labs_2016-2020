@@ -6,8 +6,8 @@
 #include "../../utils/Utils.h"
 
 void mdlBulletDrawAll(GameFieldStruct *thisGame) {
-    for (int i = 0; i < thisGame->bullets.maxsize; ++i) {
-        SW_Bullet bullet = thisGame->bullets.list[i];
+    for (int i = 0; i < thisGame->bulletMap.maxNumber; ++i) {
+        SW_Bullet bullet = thisGame->bulletMap.list[i];
         if (bullet.state != BULLET_STATE_UNDEFINED) {
 
             glPushMatrix();
@@ -27,9 +27,9 @@ void mdlBulletDrawAll(GameFieldStruct *thisGame) {
 
             bullet.pos.y += bullet.speed.y;
             if (bullet.pos.y >= thisGame->gameBorders.rightTopY || bullet.pos.y <= thisGame->gameBorders.leftBottomY) {
-                thisGame->bullets.list[i].state = BULLET_STATE_UNDEFINED;
+                thisGame->bulletMap.list[i].state = BULLET_STATE_UNDEFINED;
             } else {
-                thisGame->bullets.list[i] = bullet;
+                thisGame->bulletMap.list[i] = bullet;
             }
         }
     }
@@ -43,13 +43,13 @@ void mdlBulletAddNew(GameFieldStruct *thisGame, SW_Bullet bullet) {
         bullet.pos.z = PREF_BULLET_Z_POS;
     }
 
-    for (int i = 0; i < thisGame->bullets.maxsize; ++i) {
-        if (thisGame->bullets.list[i].state == BULLET_STATE_UNDEFINED) {
-            thisGame->bullets.list[i] = bullet;
-            if (i + 1 < thisGame->bullets.maxsize) {
-                thisGame->bullets.list[i + 1].state = BULLET_STATE_UNDEFINED;
+    for (int i = 0; i < thisGame->bulletMap.maxNumber; ++i) {
+        if (thisGame->bulletMap.list[i].state == BULLET_STATE_UNDEFINED) {
+            thisGame->bulletMap.list[i] = bullet;
+            if (i + 1 < thisGame->bulletMap.maxNumber) {
+                thisGame->bulletMap.list[i + 1].state = BULLET_STATE_UNDEFINED;
             } else {
-                thisGame->bullets.list[0].state = BULLET_STATE_UNDEFINED;
+                thisGame->bulletMap.list[0].state = BULLET_STATE_UNDEFINED;
             }
             break;
         }
@@ -57,7 +57,7 @@ void mdlBulletAddNew(GameFieldStruct *thisGame, SW_Bullet bullet) {
 }
 
 void mdlBulletInitAll(GameFieldStruct *thisGame) {
-    for (int i = 0; i < thisGame->bullets.maxsize; ++i) {
-        thisGame->bullets.list[i].state = BULLET_STATE_UNDEFINED;
+    for (int i = 0; i < thisGame->bulletMap.maxNumber; ++i) {
+        thisGame->bulletMap.list[i].state = BULLET_STATE_UNDEFINED;
     }
 }

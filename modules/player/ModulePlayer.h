@@ -12,6 +12,8 @@ void mdlPlayerSetShootListener(void (*callback)(SW_Bullet));
 
 void mdlPlayerSetHealthListener(void (*callback)(SW_Player));
 
+void mdlPlayerSetTakeDropListener(void (*callback)(SW_Drop));
+
 void mdlPlayerDraw(GameFieldStruct *thisGame);
 
 void mdlPlayerInit(GameFieldStruct *thisGame);

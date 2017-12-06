@@ -92,7 +92,7 @@ struct SW_Enemy {
     EnemyState state = ENEMY_STATE_UNDEFINED;
 };
 
-struct SW_Enemies {
+struct SW_Enemy_Map {
     float enemiesHealth = 0; // здоровье всех врагов на поле
     const static int maxNumber = PREF_ENEMY_BUFFER_SIZE;
     SW_Enemy list[maxNumber];
@@ -120,13 +120,32 @@ struct SW_Background {
     const static int starNumber = PREF_STARS_NUMBER;
 
     SW_Star stars[starNumber];
-
 };
 
 
-struct SW_Bullets {
-    const static int maxsize = PREF_BULLET_BUFFER_SIZE;
-    SW_Bullet list[maxsize];
+struct SW_Bullet_Map {
+    const static int maxNumber = PREF_BULLET_BUFFER_SIZE;
+    SW_Bullet list[maxNumber];
+};
+
+enum DropState {
+    DROP_STATE_NORMAL, DROP_STATE_UNDEFINED
+};
+
+struct SW_Drop {
+    int timeToLive = -1; // -1 пока есть место в буфере
+    int livingTime = 0; // сколько прожил после падения
+    SW_Type type;
+    DropState state = DROP_STATE_UNDEFINED;
+    SW_Pos pos;
+    SW_Borders hitBox;
+    float scaleState = 1;
+    bool scaleGrownUp = true;
+};
+
+struct SW_Drop_Map {
+    const static int maxNumber = PREF_DROP_BUFFER_SIZE;
+    SW_Drop list[maxNumber];
 };
 
 struct GameFieldStruct {
@@ -144,8 +163,9 @@ struct GameFieldStruct {
 
 
     SW_Background background;
-    SW_Bullets bullets;
-    SW_Enemies enemies;
+    SW_Bullet_Map bulletMap;
+    SW_Enemy_Map enemyMap;
+    SW_Drop_Map dropMap;
     SW_Player player;
 
 };

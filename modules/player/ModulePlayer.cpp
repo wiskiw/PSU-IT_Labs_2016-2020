@@ -18,6 +18,8 @@ void (*playerShootListener)(SW_Bullet) = nullptr;
 
 void (*playerHealthListener)(SW_Player) = nullptr;
 
+void (*playerTakeDrop)(SW_Drop) = nullptr;
+
 
 void mdlPlayerSetShootListener(void (*callback)(SW_Bullet)) {
     playerShootListener = callback;
@@ -27,11 +29,17 @@ void mdlPlayerSetHealthListener(void (*callback)(SW_Player)) {
     playerHealthListener = callback;
 }
 
+void mdlPlayerSetTakeDropListener(void (*callback)(SW_Drop)) {
+    playerTakeDrop = callback;
+}
+
 
 void checkPlayerForHit(GameFieldStruct *thisGame) {
     SW_Player *player = &thisGame->player;
-    for (int i = 0; i < thisGame->bullets.maxsize; ++i) {
-        SW_Bullet *bullet = &thisGame->bullets.list[i];
+
+    // в игрока попала пуля
+    for (int i = 0; i < thisGame->bulletMap.maxNumber; ++i) {
+        SW_Bullet *bullet = &thisGame->bulletMap.list[i];
         if (bullet->state == BULLET_STATE_UNDEFINED) {
             continue;
         }
@@ -52,12 +60,13 @@ void checkPlayerForHit(GameFieldStruct *thisGame) {
     }
 
 
+    // игроком задел врага
     int enCounter = 0; // кол-во проверенных врагов из списка
-    for (int k = 0; thisGame->enemies.number > 0 &&
-                    enCounter < thisGame->enemies.number &&
-                    k < thisGame->enemies.maxNumber; k++) {
+    for (int k = 0; thisGame->enemyMap.number > 0 &&
+                    enCounter < thisGame->enemyMap.number &&
+                    k < thisGame->enemyMap.maxNumber; k++) {
 
-        SW_Enemy *enemy = &thisGame->enemies.list[k];
+        SW_Enemy *enemy = &thisGame->enemyMap.list[k];
         if (enemy->state == ENEMY_STATE_UNDEFINED) {
             continue;
         }
@@ -71,13 +80,36 @@ void checkPlayerForHit(GameFieldStruct *thisGame) {
             // hit
 
             enemy->state = ENEMY_STATE_UNDEFINED;
-            thisGame->enemies.number--;
+            thisGame->enemyMap.number--;
             player->health -= enemy->health;
             if (playerHealthListener != nullptr) {
                 playerHealthListener(*player);
             }
         }
     }
+
+    // игрок подобрал дроп
+    for (int i = 0; i < thisGame->dropMap.maxNumber; ++i) {
+        SW_Drop *drop = &thisGame->dropMap.list[i];
+        if (drop->state == DROP_STATE_UNDEFINED) {
+            continue;
+        }
+
+        const float dX = drop->pos.x;
+        const float dY = drop->pos.y;
+
+        if (dX >= player->hitBox.leftBottomX && dX <= player->hitBox.rightTopX &&
+            dY >= player->hitBox.leftBottomY && dY <= player->hitBox.rightTopY) {
+            // hit
+
+            drop->state = DROP_STATE_UNDEFINED;
+            if (playerTakeDrop != nullptr) {
+                playerTakeDrop(*drop);
+            }
+        }
+    }
+
+
 }
 
 void mdlPlayerDraw(GameFieldStruct *thisGame) {
@@ -130,7 +162,7 @@ void mdlPlayerInit(GameFieldStruct *thisGame) {
     player->speed.x = 5;
     player->pos.z = 2;
     player->pos.x = (thisGame->gameBorders.rightTopX - thisGame->gameBorders.leftBottomX) / 2 +
-            thisGame->gameBorders.leftBottomX;
+                    thisGame->gameBorders.leftBottomX;
     player->pos.y = thisGame->gameBorders.leftBottomY + 25;
 
     player->gun = gunsGetBengalGun();

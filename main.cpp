@@ -9,13 +9,14 @@
 #include <iostream>
 #include <climits>
 #include "GameStructs.h"
+#include "utils/Utils.h"
 #include "modules/player/ModulePlayer.h"
 #include "io/IOProcessor.h"
 #include "modules/background/ModuleBackground.h"
 #include "modules/bullets/ModuleBullet.h"
 #include "modules/enemy/ModulEnemy.h"
 #include "ui/UI.h"
-#include "utils/Utils.h"
+#include "modules/drop/ModuleDrop.h"
 
 
 const int WINDOW_X = 990;
@@ -43,6 +44,7 @@ void onRedraw() {
     mdlBulletDrawAll(&thisGame);
     mdlEnemyDrawAll(&thisGame);
     mdlBackgroundDraw(&thisGame);
+    mdlDropUpdate(&thisGame);
 
     uiUpdate(&thisGame);
 
@@ -57,8 +59,21 @@ void onEnemyShoot(SW_Bullet bullet) {
     mdlBulletAddNew(&thisGame, bullet);
 }
 
+void onEnemyKilled(SW_Enemy enemy) {
+    // PREF_DROP_SPAWN_ENEMY_DROP_CHANCE - просчитывать динамически
+    if (PREF_DROP_SPAWN_ENEMY_DROP_CHANCE != 0 && random(PREF_DROP_SPAWN_ENEMY_DROP_CHANCE, 10) == 10) {
+        SW_Drop enemyDrop = mdlDropGetNew(&thisGame, DROP_SPAWN_TYPE_ENEMY);
+        enemyDrop.pos = enemy.pos;
+        mdlDropAddNew(&thisGame, enemyDrop);
+    }
+}
+
 void onPlayerShoot(SW_Bullet bullet) {
     mdlBulletAddNew(&thisGame, bullet);
+}
+
+void onPlayerTakeDrop(SW_Drop drop) {
+    mdlDropAction(&thisGame, drop);
 }
 
 void onPlayerDamage(SW_Player player) {
@@ -93,10 +108,13 @@ void initGame() {
     mdlPlayerInit(&thisGame);
     mdlPlayerSetShootListener(onPlayerShoot);
     mdlPlayerSetHealthListener(onPlayerDamage);
+    mdlPlayerSetTakeDropListener(onPlayerTakeDrop);
 
     mdlBulletInitAll(&thisGame);
+    mdlDropInit(&thisGame);
 
     mdlEnemySetShootListener(onEnemyShoot);
+    mdlEnemySetEnemyKilledListener(onEnemyKilled);
     mdlEnemyInitAll(&thisGame);
     mdlBackgroundInit(&thisGame);
 }

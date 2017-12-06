@@ -3,7 +3,7 @@
 //
 
 #include <iostream>
-#include "EnemyGenerator.h"
+#include "EnemyConfigurator.h"
 #include "../../../gp-elements/gun/list/gun-list.h"
 #include "../../../gp-elements/bullet/list/bullet-list.h"
 
@@ -20,11 +20,13 @@ SW_Type getRandomEnemyType() {
 
 
 // дописывать описание врагов внутри
-SW_Enemy getEnemy(GameFieldStruct *thisGame) {
+SW_Enemy getEnemy(GameFieldStruct *thisGame, SW_Type enemyType) {
     SW_Enemy newEnemy;
-    newEnemy.type = getRandomEnemyType();
+    newEnemy.type = enemyType;
+    newEnemy.state = ENEMY_STATE_STAY_FORWARD;
 
-    switch (newEnemy.type) {
+
+    switch (enemyType) {
 
         // описание типа врага
         case 1:
@@ -52,6 +54,8 @@ SW_Enemy getEnemy(GameFieldStruct *thisGame) {
             newEnemy.hitBox.rightTopX = newEnemy.pos.x + 10;
             newEnemy.hitBox.rightTopY = newEnemy.pos.y + 10;
             break;
+        default:
+            newEnemy.state = ENEMY_STATE_UNDEFINED;
     }
 
     return newEnemy;

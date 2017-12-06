@@ -17,12 +17,12 @@ set(SOURCE_FILES
         modules/enemy/ModulEnemy.cpp
         modules/enemy/ModulEnemy.h
         utils/Utils.cpp utils/Utils.h
-        modules/enemy/units/Drawer/Painter.h
+        modules/enemy/units/Painter/Painter.h
         ui/UI.cpp ui/UI.h
-        modules/enemy/units/EnemyGenerator.cpp
-        modules/enemy/units/EnemyGenerator.h
+        modules/enemy/units/EnemyConfigurator.cpp
+        modules/enemy/units/EnemyConfigurator.h
         modules/enemy/units/Aimer/Aimer.h
-        modules/enemy/units/Drawer/Painter.cpp
+        modules/enemy/units/Painter/Painter.cpp
         modules/enemy/units/Mover/Mover.cpp
         modules/enemy/units/Aimer/Aimer.cpp
         gp-elements/gun/gpeGun.cpp
@@ -30,7 +30,7 @@ set(SOURCE_FILES
         gp-elements/gun/list/gun-list.cpp
         gp-elements/bullet/list/bullet-list.cpp
         gp-elements/bullet/list/bullet-list.h
-        gp-elements/gun/list/gun-list.h)
+        gp-elements/gun/list/gun-list.h modules/drop/ModuleDrop.cpp modules/drop/ModuleDrop.h modules/drop/utils/Painter/Painter.cpp modules/drop/utils/Painter/Painter.h modules/drop/utils/Action/Action.cpp modules/drop/utils/Action/Action.h modules/drop/utils/DropConfigurator.cpp modules/drop/utils/DropConfigurator.h)
 
 add_executable(Course_Paper ${SOURCE_FILES})
 
