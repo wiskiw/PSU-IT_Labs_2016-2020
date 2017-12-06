@@ -119,7 +119,7 @@ void initGame() {
     mdlBackgroundInit(&thisGame);
 }
 
-void onKeyPress(int key) {
+void onKeyPress(int key, int x, int y) {
 
     switch (key) {
         case IO_KEY_SHOOT:
@@ -128,7 +128,7 @@ void onKeyPress(int key) {
     }
 }
 
-void onKeyHold(int key) {
+void onKeyHold(int key, int x, int y) {
     switch (key) {
         case IO_KEY_GO_LEFT:
             // left arrow
@@ -141,7 +141,7 @@ void onKeyHold(int key) {
     }
 }
 
-void onKeyRelease(int key) {
+void onKeyRelease(int key, int x, int y) {
     switch (key) {
         case IO_KEY_GO_RIGHT:
         case IO_KEY_GO_LEFT:
@@ -151,11 +151,16 @@ void onKeyRelease(int key) {
     }
 }
 
+void onMouseMove(int x, int y) {
+
+}
+
 int main(int args, char **argv) {
 
     setKeyHoldListener(onKeyHold);
     setKeyPressListener(onKeyPress);
     setKeyReleaseListener(onKeyRelease);
+    setMouseMoveListener(onMouseMove);
 
 
     glutInit(&args, argv);
@@ -179,11 +184,14 @@ int main(int args, char **argv) {
 
     glutReshapeFunc(onChangeSize);
 
-    glutKeyboardFunc(processNormalKeyDown);
-    glutKeyboardUpFunc(processNormalKeyUp);
+    glutKeyboardFunc(ioProcessNormalKeyDown);
+    glutKeyboardUpFunc(ioProcessNormalKeyUp);
 
-    glutSpecialFunc(processSpecialKeyDown);
-    glutSpecialUpFunc(processSpecialKeyUp);
+    glutSpecialFunc(ioProcessSpecialKeyDown);
+    glutSpecialUpFunc(ioProcessSpecialKeyUp);
+
+    glutMouseFunc(ioProcessMouseClick);
+    glutMotionFunc(ioProcessMouseMove);
 
     glutDisplayFunc(onRedraw);
 

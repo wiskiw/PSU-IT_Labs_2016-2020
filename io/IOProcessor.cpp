@@ -2,34 +2,50 @@
 // Created by wiskiw on 01.12.17.
 //
 
+#include <GL/glut.h>
 #include "IOProcessor.h"
 #include "../PREFERENCES.h"
 
 int keysDownBuffer[PREF_KEYBOARD_INPUT_BUFFER_SIZE];
 
-void (*keyHoldListener)(int) = nullptr;
+void (*keyHoldListener)(int, int x, int y) = nullptr;
 
-void (*keyPressListener)(int) = nullptr;
+void (*keyPressListener)(int, int x, int y) = nullptr;
 
-void (*keyReleaseListener)(int) = nullptr;
+void (*keyReleaseListener)(int, int x, int y) = nullptr;
 
-void setKeyHoldListener(void (*callback)(int)) {
+void (*mouseMoveListener)(int x, int y) = nullptr;
+
+int mouseXpos = 0;
+int mouseYpos = 0;
+
+
+void setKeyHoldListener(void (*callback)(int, int, int)) {
     keyHoldListener = callback;
 };
 
-void setKeyPressListener(void (*callback)(int)) {
+void setKeyPressListener(void (*callback)(int, int, int)) {
     keyPressListener = callback;
 };
 
-void setKeyReleaseListener(void (*callback)(int)) {
+void setKeyReleaseListener(void (*callback)(int, int, int)) {
     keyReleaseListener = callback;
 };
+
+void setMouseMoveListener(void (*callback)(int, int)) {
+    mouseMoveListener = callback;
+}
+
+void updateMousePosition(int x, int y) {
+    mouseXpos = x;
+    mouseYpos = y;
+}
 
 void checkKeysBuffer() {
     for (int k = 0; k < PREF_KEYBOARD_INPUT_BUFFER_SIZE; k++) {
         int key = keysDownBuffer[k];
         if (keyHoldListener != nullptr) {
-            keyHoldListener(key);
+            keyHoldListener(key, mouseXpos, mouseYpos);
         }
     }
 }
@@ -37,12 +53,12 @@ void checkKeysBuffer() {
 void processKeyDown(int key) {
     // обязательно удаляем нажатие клавиши влево/вправо, если нажата клавиша вправо/влево
     if (key == IO_KEY_GO_LEFT) {
-        processSpecialKeyUp(IO_KEY_GO_RIGHT, 0, 0);
+        ioProcessSpecialKeyUp(IO_KEY_GO_RIGHT, 0, 0);
     } else if (key == IO_KEY_GO_RIGHT) {
-        processSpecialKeyUp(IO_KEY_GO_LEFT, 0, 0);
+        ioProcessSpecialKeyUp(IO_KEY_GO_LEFT, 0, 0);
     }
     if (keyPressListener != nullptr) {
-        keyPressListener(key);
+        keyPressListener(key, mouseXpos, mouseYpos);
     }
     for (int k = 0; k < PREF_KEYBOARD_INPUT_BUFFER_SIZE; k++) {
         if (keysDownBuffer[k] == key) {
@@ -60,7 +76,7 @@ void processKeyDown(int key) {
                 keysDownBuffer[0] = -1;
             }
             if (keyReleaseListener != nullptr) {
-                keyReleaseListener(releaseKey);
+                keyReleaseListener(releaseKey, mouseXpos, mouseYpos);
             }
             return;
         }
@@ -73,26 +89,60 @@ void processKeyUp(int key) {
             keysDownBuffer[k] = -1;
 
             if (keyReleaseListener != nullptr) {
-                keyReleaseListener(key);
+                keyReleaseListener(key, mouseXpos, mouseYpos);
             }
         }
     }
 }
 
 
-void processNormalKeyDown(unsigned char key, int x, int y) {
+void ioProcessNormalKeyDown(unsigned char key, int x, int y) {
+    updateMousePosition(x, y);
     processKeyDown(key);
 };
 
-void processNormalKeyUp(unsigned char key, int x, int y) {
+void ioProcessNormalKeyUp(unsigned char key, int x, int y) {
+    updateMousePosition(x, y);
     processKeyUp(key);
 };
 
 
-void processSpecialKeyUp(int key, int x, int y) {
+void ioProcessSpecialKeyUp(int key, int x, int y) {
+    updateMousePosition(x, y);
     processKeyUp(key);
 }
 
-void processSpecialKeyDown(int key, int x, int y) {
+void ioProcessSpecialKeyDown(int key, int x, int y) {
+    updateMousePosition(x, y);
     processKeyDown(key);
+}
+
+
+int getMouseKey(int btn) {
+    switch (btn) {
+        case GLUT_RIGHT_BUTTON:
+            return IO_MOUSE_RIGHT_BUTTON;
+        case GLUT_LEFT_BUTTON:
+            return IO_MOUSE_LEFT_BUTTON;
+        case GLUT_MIDDLE_BUTTON:
+            return IO_MOUSE_MIDDLE_BUTTON;
+    }
+}
+
+void ioProcessMouseClick(int button, int state, int x, int y) {
+    updateMousePosition(x, y);
+
+    int mouseKey = getMouseKey(button);
+    if (state == GLUT_UP) {
+        processKeyUp(mouseKey);
+    } else {
+        processKeyDown(mouseKey);
+    }
+}
+
+void ioProcessMouseMove(int x, int y) {
+    updateMousePosition(x, y);
+    if (mouseMoveListener != nullptr) {
+        mouseMoveListener(mouseXpos, mouseYpos);
+    }
 }
