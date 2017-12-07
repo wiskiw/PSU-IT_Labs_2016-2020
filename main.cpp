@@ -7,7 +7,7 @@
 
 #include <GL/glut.h>
 #include <iostream>
-#include <climits>
+#include <cstring>
 #include "GameStructs.h"
 #include "utils/Utils.h"
 #include "modules/player/ModulePlayer.h"
@@ -25,25 +25,40 @@ const int WINDOW_Y = 590;
 GameFieldStruct thisGame;
 
 void updateGameTickTimer() {
-    if (thisGame.globalTickTimer >= ULONG_MAX) {
+    if (thisGame.globalTickTimer >= 10000) {
         thisGame.globalTickTimer = 0;
     } else {
         thisGame.globalTickTimer++;
     }
 }
 
+int getPlayerPositionInRecordTable() {
+    // TODO: загрузка рекордов из файла
+    // возвращает позицию в таблице рекордов для записи
+
+    SW_Record record;
+    record.type = RECORD_TYPE_OK;
+    record.score = 123;
+    strncpy(record.name, "USer 1", 7);
+
+    thisGame.recordList[0] = record;
+
+    return random(1, PREF_RECORD_LIST_SIZE);
+}
 
 void onRedraw() {
     checkKeysBuffer(); // проверка буфера клавиш
     updateGameTickTimer();
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-
-    mdlPlayerUpdate(&thisGame);
-    mdlBulletUpdateAll(&thisGame);
-    mdlEnemyUpdateAll(&thisGame);
-    mdlBackgroundUpdate(&thisGame);
-    mdlDropUpdate(&thisGame);
+    // вызываем методы обновления игровых структур только в состоянии PLAY или PAUSE_MENU
+    if (thisGame.gameState == GAME_STATE_PLAY || thisGame.gameState == GAME_STATE_PAUSE_MENU) {
+        mdlPlayerUpdate(&thisGame);
+        mdlBulletUpdateAll(&thisGame);
+        mdlEnemyUpdateAll(&thisGame);
+        mdlBackgroundUpdate(&thisGame);
+        mdlDropUpdate(&thisGame);
+    }
 
 
     uiUpdate(&thisGame);
@@ -59,12 +74,20 @@ void onEnemyShoot(SW_Bullet bullet) {
     mdlBulletAddNew(&thisGame, bullet);
 }
 
-void onEnemyKilled(SW_Enemy enemy) {
-    // PREF_DROP_SPAWN_ENEMY_DROP_CHANCE - просчитывать динамически
-    if (PREF_DROP_SPAWN_ENEMY_DROP_CHANCE != 0 && random(PREF_DROP_SPAWN_ENEMY_DROP_CHANCE, 10) == 10) {
-        SW_Drop enemyDrop = mdlDropGetNew(&thisGame, DROP_SPAWN_TYPE_ENEMY);
-        enemyDrop.pos = enemy.pos;
-        mdlDropAddNew(&thisGame, enemyDrop);
+void onEnemyDamage(SW_Enemy enemy, SW_Bullet bullet) {
+    if (enemy.health <= 0) {
+        // убит
+
+        // TODO: PREF_DROP_SPAWN_ENEMY_DROP_CHANCE - просчитывать динамически
+        if (PREF_DROP_SPAWN_ENEMY_DROP_CHANCE != 0 &&
+            random(PREF_DROP_SPAWN_ENEMY_DROP_CHANCE, 10) == 10) {
+
+            SW_Drop enemyDrop = mdlDropGetNew(&thisGame, DROP_SPAWN_TYPE_ENEMY);
+            enemyDrop.pos = enemy.pos;
+            mdlDropAddNew(&thisGame, enemyDrop);
+        }
+
+        thisGame.score += enemy.originHealth;
     }
 }
 
@@ -76,8 +99,31 @@ void onPlayerTakeDrop(SW_Drop drop) {
     mdlDropAction(&thisGame, drop);
 }
 
-void onPlayerDamage(SW_Player player) {
-    //std::cout << "player health: " << player.health << std::endl;
+void updateRecordTable(int pos, int score) {
+    // обновление массива рекордов
+    SW_Record *list = thisGame.recordList;
+    const int posIndex = pos - 1;
+    for (int i = PREF_RECORD_LIST_SIZE - 1; i < posIndex; ++i) {
+        list[i] = list[i - 1];
+    }
+    list[posIndex].score = score;
+}
+
+void onPlayerHealthChanged(SW_Player player) {
+    if (player.health <= 0) {
+        thisGame.positionInRecordTable = getPlayerPositionInRecordTable();
+        if (thisGame.positionInRecordTable <= PREF_RECORD_LIST_SIZE) {
+            // игра окончена: новый рекорд
+
+            updateRecordTable(thisGame.positionInRecordTable, thisGame.score);
+            thisGame.gameState = GAME_STATE_ADD_NEW_RECORD;
+        } else {
+            // игра окончена
+
+            // TODO: debug only
+            thisGame.gameState = GAME_STATE_PAUSE_MENU;
+        }
+    }
 }
 
 void initGame() {
@@ -104,67 +150,73 @@ void initGame() {
     std::cout << "leftBottomY: " << thisGame.gameBorders.leftBottomY << " rightTopY: " << thisGame.gameBorders.rightTopY
               << std::endl;
 
+}
 
-    uiInit(&thisGame);
+GameFieldStruct createNewGame() {
+
+    thisGame.globalTickTimer = 0;
+    thisGame.positionInRecordTable = PREF_RECORD_LIST_SIZE + 1;
+    thisGame.score = 0;
+    thisGame.difficult = PREF_GAME_DEFAULT_DIFFICULT;
 
     mdlPlayerInit(&thisGame);
     mdlPlayerSetShootListener(onPlayerShoot);
-    mdlPlayerSetHealthListener(onPlayerDamage);
+    mdlPlayerSetHealthListener(onPlayerHealthChanged);
     mdlPlayerSetTakeDropListener(onPlayerTakeDrop);
 
     mdlBulletInitAll(&thisGame);
     mdlDropInit(&thisGame);
 
     mdlEnemySetShootListener(onEnemyShoot);
-    mdlEnemySetEnemyKilledListener(onEnemyKilled);
+    mdlEnemySetEnemyDamageListener(onEnemyDamage);
     mdlEnemyInitAll(&thisGame);
     mdlBackgroundInit(&thisGame);
 
-    thisGame.gameState = GAME_STATE_PLAY;
+    return thisGame;
 }
 
-void onKeyPress(int key, int x, int y) {
-    uiProcessInputClick(&thisGame, key, x, y);
-    switch (key) {
-        case IO_KEY_SHOOT:
-            if (thisGame.gameState == GAME_STATE_PLAY) {
+void onKeyPress(int key, int x, int y, bool special) {
+    std::cout << "KEY PRESSED[" << (special == true ? 's' : 'n') << "]: " << key << std::endl;
+
+    uiProcessInput(&thisGame, key, x, y, special);
+    switch (thisGame.gameState) {
+        case GAME_STATE_PLAY:
+
+            // обязательно удаляем нажатие клавиши влево/вправо, если нажата клавиша вправо/влево
+            if (key == PREF_IO_KEY_GO_LEFT) {
+                ioProcessSpecialKeyUp(PREF_IO_KEY_GO_RIGHT, 0, 0);
+            } else if (key == PREF_IO_KEY_GO_RIGHT) {
+                ioProcessSpecialKeyUp(PREF_IO_KEY_GO_LEFT, 0, 0);
+            }
+
+            if (key == PREF_IO_KEY_SHOOT) {
                 mdlPlayerShot(&thisGame);
             }
-            break;
-        case 27:
-            // esc
-            switch (thisGame.gameState) {
-                case GAME_STATE_PLAY:
-                    thisGame.gameState = GAME_STATE_PAUSE;
-                    break;
-                case GAME_STATE_PAUSE:
-                    thisGame.gameState = GAME_STATE_PLAY;
-                    break;
-            }
+
             break;
     }
 }
 
-void onKeyHold(int key, int x, int y) {
+void onKeyHold(int key, int x, int y, bool special) {
     if (thisGame.gameState == GAME_STATE_PLAY) {
         switch (key) {
-            case IO_KEY_GO_LEFT:
+            case PREF_IO_KEY_GO_LEFT:
                 // left arrow
-                mdlPlayerGoLeft(&thisGame);
+                if (special) mdlPlayerGoLeft(&thisGame);
                 break;
-            case IO_KEY_GO_RIGHT:
+            case PREF_IO_KEY_GO_RIGHT:
                 //right arrow
-                mdlPlayerGoRight(&thisGame);
+                if (special) mdlPlayerGoRight(&thisGame);
                 break;
         }
     }
 }
 
-void onKeyRelease(int key, int x, int y) {
+void onKeyRelease(int key, int x, int y, bool special) {
     if (thisGame.gameState == GAME_STATE_PLAY) {
         switch (key) {
-            case IO_KEY_GO_RIGHT:
-            case IO_KEY_GO_LEFT:
+            case PREF_IO_KEY_GO_RIGHT:
+            case PREF_IO_KEY_GO_LEFT:
                 //сбрасываем состояние игрока если отпущена клавиша вправо/влево
                 thisGame.player.state = 2;
                 break;
@@ -174,6 +226,55 @@ void onKeyRelease(int key, int x, int y) {
 
 void onMouseMove(int x, int y) {
     uiProcessMouseMove(&thisGame, x, y);
+}
+
+void onUIItemSelect(GameState state, int select) {
+    switch (state) {
+        case GAME_STATE_MAIN_MENU:
+            switch (select) {
+                case 2:
+                    // play
+                    createNewGame();
+                    thisGame.gameState = GAME_STATE_PLAY;
+                    break;
+                case 1:
+                    // record list
+                    thisGame.gameState = GAME_STATE_RECORD_LIST;
+                    break;
+                default:
+                    // exit
+                    exit(0);
+            }
+            break;
+        case GAME_STATE_PAUSE_MENU:
+            switch (select) {
+                case 0:
+                    // main menu
+                    thisGame.gameState = GAME_STATE_MAIN_MENU;
+                    break;
+                case 1:
+                    // continue
+                    thisGame.gameState = GAME_STATE_PLAY;
+                    break;
+            }
+            break;
+        case GAME_STATE_RECORD_LIST:
+            switch (select) {
+                case 0:
+                    // back
+                    thisGame.gameState = GAME_STATE_MAIN_MENU;
+                    break;
+            }
+            break;
+        case GAME_STATE_ADD_NEW_RECORD:
+            switch (select) {
+                case 0:
+                    // save
+                    thisGame.gameState = GAME_STATE_MAIN_MENU;
+                    break;
+            }
+            break;
+    }
 }
 
 int main(int args, char **argv) {
@@ -206,6 +307,8 @@ int main(int args, char **argv) {
     glMatrixMode(GL_MODELVIEW);
 
     initGame();
+
+    uiInit(&thisGame, onUIItemSelect);
 
     glutReshapeFunc(onChangeSize);
 

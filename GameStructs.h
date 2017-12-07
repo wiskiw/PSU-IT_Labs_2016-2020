@@ -11,7 +11,7 @@
 // SW_State = -1 - undefined
 
 enum GameState {
-    GAME_STATE_MENU, GAME_STATE_PLAY, GAME_STATE_PAUSE
+    GAME_STATE_MAIN_MENU, GAME_STATE_PLAY, GAME_STATE_PAUSE_MENU, GAME_STATE_ADD_NEW_RECORD, GAME_STATE_RECORD_LIST
 };
 
 typedef int SW_State;
@@ -88,6 +88,7 @@ struct SW_Enemy {
     SW_Type type;
     SW_Borders hitBox;
     float health;
+    float originHealth;
     SW_Gun gun;
     EnemyState state = ENEMY_STATE_UNDEFINED;
 };
@@ -110,7 +111,7 @@ struct SW_Player {
 
     SW_State state = PLAYER_STATE_STAY_FORWARD;
 
-    float health = PREF_PLAYER_DEFAULT_HEALTH;
+    float health;
     SW_Pos pos;
     SW_Speed speed;
 };
@@ -148,15 +149,29 @@ struct SW_Drop_Map {
     SW_Drop list[maxNumber];
 };
 
+enum RecordType {
+    RECORD_TYPE_OK, RECORD_TYPE_UNDEFINED
+};
+
+struct SW_Record {
+    RecordType type = RECORD_TYPE_UNDEFINED;
+    char name[PREF_RECORD_LIST_MAX_NAME_LENGTH + 1] = "none";
+    int score = 0;
+};
+
 struct GameFieldStruct {
     unsigned long int globalTickTimer = 0;
     float windowX = 0;
     float windowY = 0;
 
     // состояние
-    GameState gameState = GAME_STATE_MENU;
+    GameState gameState = GAME_STATE_MAIN_MENU;
 
-    int difficult = 3;
+    int difficult;
+    int score = 0;
+
+    // TODO: DEBUG ON:Y
+    int positionInRecordTable = PREF_RECORD_LIST_SIZE - 4;
 
     // границы игрового поля
     SW_Borders gameBorders;
@@ -170,6 +185,7 @@ struct GameFieldStruct {
     SW_Drop_Map dropMap;
     SW_Player player;
 
+    SW_Record recordList[PREF_RECORD_LIST_SIZE];
 };
 
 #endif //COURSE_PAPER_GAME_STRUCTS_H

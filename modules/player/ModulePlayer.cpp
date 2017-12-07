@@ -44,11 +44,7 @@ void checkPlayerForHit(GameFieldStruct *thisGame) {
             continue;
         }
 
-        const float bX = bullet->pos.x;
-        const float bY = bullet->pos.y;
-
-        if (bX >= player->hitBox.leftBottomX && bX <= player->hitBox.rightTopX &&
-            bY >= player->hitBox.leftBottomY && bY <= player->hitBox.rightTopY) {
+        if (utilsIsPosInBorders(bullet->pos, player->hitBox)) {
             // hit
 
             bullet->state = BULLET_STATE_UNDEFINED;
@@ -72,13 +68,8 @@ void checkPlayerForHit(GameFieldStruct *thisGame) {
         }
         enCounter++;
 
-        const float bX = enemy->pos.x;
-        const float bY = enemy->pos.y;
-
-        if (bX >= player->hitBox.leftBottomX && bX <= player->hitBox.rightTopX &&
-            bY >= player->hitBox.leftBottomY && bY <= player->hitBox.rightTopY) {
+        if (utilsIsPosInBorders(enemy->pos, player->hitBox)) {
             // hit
-
             enemy->state = ENEMY_STATE_UNDEFINED;
             thisGame->enemyMap.number--;
             player->health -= enemy->health;
@@ -95,16 +86,15 @@ void checkPlayerForHit(GameFieldStruct *thisGame) {
             continue;
         }
 
-        const float dX = drop->pos.x;
-        const float dY = drop->pos.y;
-
-        if (dX >= player->hitBox.leftBottomX && dX <= player->hitBox.rightTopX &&
-            dY >= player->hitBox.leftBottomY && dY <= player->hitBox.rightTopY) {
+        if (utilsIsPosInBorders(drop->pos, player->hitBox)) {
             // hit
-
             drop->state = DROP_STATE_UNDEFINED;
+            const float previewPlayerHealth = player->health;
             if (playerTakeDrop != nullptr) {
                 playerTakeDrop(*drop);
+            }
+            if (player->health != previewPlayerHealth){
+                playerHealthListener(*player);
             }
         }
     }
@@ -159,6 +149,7 @@ void mdlPlayerUpdate(GameFieldStruct *thisGame) {
 void mdlPlayerInit(GameFieldStruct *thisGame) {
     SW_Player *player = &thisGame->player;
 
+    player->health = PREF_PLAYER_DEFAULT_HEALTH;
     player->speed.x = 5;
     player->pos.z = 2;
     player->pos.x = (thisGame->gameBorders.rightTopX - thisGame->gameBorders.leftBottomX) / 2 +

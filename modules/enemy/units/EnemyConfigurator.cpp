@@ -18,7 +18,6 @@ SW_Type getRandomEnemyType() {
 }
 
 
-
 // дописывать описание врагов внутри
 SW_Enemy getEnemy(GameFieldStruct *thisGame, SW_Type enemyType) {
     SW_Enemy newEnemy;
@@ -58,5 +57,6 @@ SW_Enemy getEnemy(GameFieldStruct *thisGame, SW_Type enemyType) {
             newEnemy.state = ENEMY_STATE_UNDEFINED;
     }
 
+    newEnemy.originHealth = newEnemy.health;
     return newEnemy;
 }

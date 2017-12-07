@@ -12,11 +12,28 @@ const int PREF_BULLET_Z_POS = 2;
 const int PREF_ENEMY_Z_POS = 3;
 const float PREF_DROP_Z_POS = 1.9f;
 
-const float PREF_PLAYER_DEFAULT_HEALTH = 100;
+const float PREF_PLAYER_DEFAULT_HEALTH = 2;
+const int PREF_GAME_DEFAULT_DIFFICULT = 3;
 
 const int PREF_STARS_NUMBER = 16;
 const int PREF_BULLET_BUFFER_SIZE = 30;
 const int PREF_ENEMY_BUFFER_SIZE = 12;
+
+
+// ==== DIALOG / MENU ======
+const int PREF_RECORD_LIST_SIZE = 10;
+const int PREF_RECORD_LIST_MAX_NAME_LENGTH = 16;
+const int PREF_POINTER_BLINK_TICKS = 24;
+
+
+// ==== INPUT / OUTPUT ======
+const int PREF_IO_KEY_ENTER = 13;
+const int PREF_IO_KEY_BACK = 27; // esc
+const int PREF_IO_KEY_GO_LEFT = 100;
+const int PREF_IO_KEY_GO_RIGHT = 102;
+const int PREF_IO_KEY_SHOOT = 32;
+const int PREF_IO_KEY_BACKSPACE = 8;
+// ================
 
 
 // ==== DROP ======

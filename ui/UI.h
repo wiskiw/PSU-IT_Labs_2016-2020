@@ -8,11 +8,11 @@
 #include "../GameStructs.h"
 
 
-void uiInit(GameFieldStruct *thisGame);
+void uiInit(GameFieldStruct *thisGame, void(*uiItemSelectListener)(GameState, int));
 
 void uiUpdate(GameFieldStruct *thisGame);
 
-void uiProcessInputClick(GameFieldStruct *thisGame, int key, int x, int y);
+void uiProcessInput(GameFieldStruct *thisGame, int key, int x, int y, bool special);
 
 void uiProcessMouseMove(GameFieldStruct *thisGame, int x, int y);
 

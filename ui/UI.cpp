@@ -2,10 +2,9 @@
 // Created by wiskiw on 03.12.17.
 //
 
-#include <iostream>
 #include "UI.h"
 #include "../utils/Utils.h"
-#include "menu/Menu.h"
+#include "dialog/Dialog.h"
 
 const float ELEMENT_HEIGHT = 15;
 const float DIVINER_X = 10;
@@ -28,6 +27,8 @@ const SW_Color UI_BACKGROUND_COLOR = {50, 50, 50};
 
 
 SW_Borders interfaceBorders;
+
+void (*uiItemSelectListener)(GameState, int) = nullptr;
 
 float getHeight(int pos) {
     return (DIVINER_Y + ELEMENT_HEIGHT) * pos;
@@ -98,37 +99,81 @@ void drawInterfaceBackground(GameFieldStruct *thisGame) {
 }
 
 
-void uiInit(GameFieldStruct *thisGame) {
+void uiInit(GameFieldStruct *thisGame, void(*callback)(GameState, int)) {
     interfaceBorders = thisGame->interfaceBorders;
-
+    uiItemSelectListener = callback;
 }
 
 void uiUpdate(GameFieldStruct *thisGame) {
-    drawHealth(thisGame);
-    drawGunReload(thisGame);
-    drawGameBorder(thisGame);
-    drawInterfaceBackground(thisGame);
+    GameState state = thisGame->gameState;
 
+    if (state == GAME_STATE_PLAY || state == GAME_STATE_PAUSE_MENU) {
+        drawHealth(thisGame);
+        drawGunReload(thisGame);
+        drawGameBorder(thisGame);
+        drawInterfaceBackground(thisGame);
+    }
 
     switch (thisGame->gameState) {
         case GAME_STATE_PLAY:
 
-
             break;
-        case GAME_STATE_PAUSE:
-            menuDrawPause(thisGame);
+        case GAME_STATE_MAIN_MENU:
+            dialogDrawMainMenu(thisGame);
+            break;
+        case GAME_STATE_PAUSE_MENU:
+            dialogDrawPauseMenu(thisGame);
+            break;
+        case GAME_STATE_RECORD_LIST:
+            dialogDrawRecordList(thisGame);
+            break;
+        case GAME_STATE_ADD_NEW_RECORD:
+            dialogDrawRecordListAddNew(thisGame);
             break;
     }
 }
 
-void uiProcessInputClick(GameFieldStruct *thisGame, int key, int x, int y) {
-    switch (thisGame->gameState) {
+void uiProcessInput(GameFieldStruct *thisGame, int key, int x, int y, bool special) {
+    const GameState state = thisGame->gameState;
+    int select = -1;
+    switch (state) {
         case GAME_STATE_PLAY:
+            if (key == PREF_IO_KEY_BACK) {
+                thisGame->gameState = GAME_STATE_PAUSE_MENU;
+            }
+            break;
+        case GAME_STATE_MAIN_MENU:
+            if (key == PREF_IO_KEY_ENTER) {
+                select = 2;
+            } else {
+                select = dialogProcessMainMenuRowClick(thisGame, key, x, y);
+            }
+            break;
+        case GAME_STATE_PAUSE_MENU:
+            if (key == PREF_IO_KEY_BACK || key == PREF_IO_KEY_ENTER) {
+                select = 1;
+            } else {
+                select = dialogProcessPauseMenuRowClick(thisGame, key, x, y);
+            }
+            break;
+        case GAME_STATE_RECORD_LIST:
+            if (key == PREF_IO_KEY_BACK) {
+                select = 0;
+            } else {
+                select = dialogProcessRecordListBottomButtonClick(thisGame, key, x, y);
+            }
+            break;
+        case GAME_STATE_ADD_NEW_RECORD:
+            if (key == PREF_IO_KEY_BACK || key == PREF_IO_KEY_ENTER) {
+                select = 0;
+            } else {
+                select = dialogProcessRecordListAddNewInput(thisGame, key, x, y, special);
+            }
+            break;
+    }
 
-            break;
-        case GAME_STATE_PAUSE:
-            menuProcessPauseMenuItemClick(thisGame, key, x, y);
-            break;
+    if (select != -1 && uiItemSelectListener != nullptr) {
+        uiItemSelectListener(state, select);
     }
 }
 
@@ -136,10 +181,16 @@ void uiProcessMouseMove(GameFieldStruct *thisGame, int x, int y) {
     switch (thisGame->gameState) {
         case GAME_STATE_PLAY:
 
-
             break;
-        case GAME_STATE_PAUSE:
-            menuProcessPauseMenuItemFocus(thisGame, x, y);
+        case GAME_STATE_MAIN_MENU:
+            dialogProcessMainMenuRowFocus(thisGame, x, y);
+            break;
+        case GAME_STATE_PAUSE_MENU:
+            dialogProcessPauseMenuRowFocus(thisGame, x, y);
+            break;
+        case GAME_STATE_RECORD_LIST:
+        case GAME_STATE_ADD_NEW_RECORD:
+            dialogProcessRecordListBottomButtonFocus(thisGame, x, y);
             break;
     }
 }

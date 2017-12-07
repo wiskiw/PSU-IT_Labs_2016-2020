@@ -22,4 +22,8 @@ void utilsMovePos(SW_Pos *pos, SW_Pos movPosValue);
 
 void utilsDrawText(SW_Pos pos, SW_Color color, void *font, char *string);
 
+bool utilsIsPosInBorders(SW_Pos pos, SW_Borders borders);
+
+void utilsConvertToGameWindowPosition(GameFieldStruct *thisGame, SW_Pos *pos);
+
 #endif //COURSE_PAPER_UTILS_H

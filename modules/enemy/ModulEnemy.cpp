@@ -17,14 +17,14 @@ const int MAX_RE_SPAWN_TICK_COUNTER = 350;
 
 void (*enemyShootListener)(SW_Bullet) = nullptr;
 
-void (*enemyKilledListener)(SW_Enemy) = nullptr;
+void (*enemyDamageListener)(SW_Enemy, SW_Bullet) = nullptr;
 
 void mdlEnemySetShootListener(void (*callback)(SW_Bullet)) {
     enemyShootListener = callback;
 }
 
-void mdlEnemySetEnemyKilledListener(void (*callback)(SW_Enemy)) {
-    enemyKilledListener = callback;
+void mdlEnemySetEnemyDamageListener(void (*callback)(SW_Enemy, SW_Bullet)) {
+    enemyDamageListener = callback;
 }
 
 void spawnEnemy(GameFieldStruct *thisGame) {
@@ -51,26 +51,19 @@ void checkEnemyForHit(GameFieldStruct *thisGame, SW_Enemy *enemy) {
             continue;
         }
 
-        const float bX = bullet->pos.x;
-        const float bY = bullet->pos.y;
-
-        if (bX >= enemy->hitBox.leftBottomX && bX <= enemy->hitBox.rightTopX &&
-            bY >= enemy->hitBox.leftBottomY && bY <= enemy->hitBox.rightTopY) {
+        if (utilsIsPosInBorders(bullet->pos, enemy->hitBox)) {
             // hit
-
 
             bullet->state = BULLET_STATE_UNDEFINED;
             enemy->health -= bullet->damage;
             thisGame->enemyMap.enemiesHealth -= bullet->damage;
             if (enemy->health <= 0) {
                 // killed
-
-                if (enemyKilledListener != nullptr) {
-                    enemyKilledListener(*enemy);
-                }
-
                 thisGame->enemyMap.number--;
                 enemy->state = ENEMY_STATE_UNDEFINED;
+            }
+            if (enemyDamageListener != nullptr) {
+                enemyDamageListener(*enemy, *bullet);
             }
         }
     }

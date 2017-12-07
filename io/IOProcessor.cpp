@@ -6,13 +6,18 @@
 #include "IOProcessor.h"
 #include "../PREFERENCES.h"
 
-int keysDownBuffer[PREF_KEYBOARD_INPUT_BUFFER_SIZE];
+struct IO_KeyInput {
+    int key = 0;
+    bool special = false;
+};
 
-void (*keyHoldListener)(int, int x, int y) = nullptr;
+IO_KeyInput keysDownBuffer[PREF_KEYBOARD_INPUT_BUFFER_SIZE];
 
-void (*keyPressListener)(int, int x, int y) = nullptr;
+void (*keyHoldListener)(int, int x, int y, bool special) = nullptr;
 
-void (*keyReleaseListener)(int, int x, int y) = nullptr;
+void (*keyPressListener)(int, int x, int y, bool special) = nullptr;
+
+void (*keyReleaseListener)(int, int x, int y, bool special) = nullptr;
 
 void (*mouseMoveListener)(int x, int y) = nullptr;
 
@@ -20,15 +25,19 @@ int mouseXpos = 0;
 int mouseYpos = 0;
 
 
-void setKeyHoldListener(void (*callback)(int, int, int)) {
+bool compare(IO_KeyInput keyA, IO_KeyInput keyB) {
+    return keyA.key == keyB.key && keyA.special == keyB.special;
+}
+
+void setKeyHoldListener(void (*callback)(int, int, int, bool)) {
     keyHoldListener = callback;
 };
 
-void setKeyPressListener(void (*callback)(int, int, int)) {
+void setKeyPressListener(void (*callback)(int, int, int, bool)) {
     keyPressListener = callback;
 };
 
-void setKeyReleaseListener(void (*callback)(int, int, int)) {
+void setKeyReleaseListener(void (*callback)(int, int, int, bool)) {
     keyReleaseListener = callback;
 };
 
@@ -43,53 +52,49 @@ void updateMousePosition(int x, int y) {
 
 void checkKeysBuffer() {
     for (int k = 0; k < PREF_KEYBOARD_INPUT_BUFFER_SIZE; k++) {
-        int key = keysDownBuffer[k];
+        IO_KeyInput key = keysDownBuffer[k];
         if (keyHoldListener != nullptr) {
-            keyHoldListener(key, mouseXpos, mouseYpos);
+            keyHoldListener(key.key, mouseXpos, mouseYpos, key.special);
         }
     }
 }
 
-void processKeyDown(int key) {
-    // обязательно удаляем нажатие клавиши влево/вправо, если нажата клавиша вправо/влево
-    if (key == IO_KEY_GO_LEFT) {
-        ioProcessSpecialKeyUp(IO_KEY_GO_RIGHT, 0, 0);
-    } else if (key == IO_KEY_GO_RIGHT) {
-        ioProcessSpecialKeyUp(IO_KEY_GO_LEFT, 0, 0);
-    }
+void processKeyDown(int key, bool special) {
+
     if (keyPressListener != nullptr) {
-        keyPressListener(key, mouseXpos, mouseYpos);
+        keyPressListener(key, mouseXpos, mouseYpos, special);
     }
     for (int k = 0; k < PREF_KEYBOARD_INPUT_BUFFER_SIZE; k++) {
-        if (keysDownBuffer[k] == key) {
+        if (compare(keysDownBuffer[k], {key, special})) {
             return;
         }
 
-        if (keysDownBuffer[k] == -1 || k == PREF_KEYBOARD_INPUT_BUFFER_SIZE - 1) {
-            keysDownBuffer[k] = key;
-            int releaseKey = 0;
+        if (keysDownBuffer[k].key == -1 || k == PREF_KEYBOARD_INPUT_BUFFER_SIZE - 1) {
+            keysDownBuffer[k].key = key;
+            keysDownBuffer[k].special = special;
+            IO_KeyInput releaseKey;
             if (k + 1 < PREF_KEYBOARD_INPUT_BUFFER_SIZE) {
                 releaseKey = keysDownBuffer[k + 1];
-                keysDownBuffer[k + 1] = -1;
+                keysDownBuffer[k + 1].key = -1;
             } else {
                 releaseKey = keysDownBuffer[0];
-                keysDownBuffer[0] = -1;
+                keysDownBuffer[0].key = -1;
             }
             if (keyReleaseListener != nullptr) {
-                keyReleaseListener(releaseKey, mouseXpos, mouseYpos);
+                keyReleaseListener(releaseKey.key, mouseXpos, mouseYpos, releaseKey.special);
             }
             return;
         }
     }
 }
 
-void processKeyUp(int key) {
+void processKeyUp(int key, bool special) {
     for (int k = 0; k < PREF_KEYBOARD_INPUT_BUFFER_SIZE; k++) {
-        if (keysDownBuffer[k] == key) {
-            keysDownBuffer[k] = -1;
+        if (compare(keysDownBuffer[k], {key, special})) {
+            keysDownBuffer[k].key = -1;
 
             if (keyReleaseListener != nullptr) {
-                keyReleaseListener(key, mouseXpos, mouseYpos);
+                keyReleaseListener(key, mouseXpos, mouseYpos, special);
             }
         }
     }
@@ -98,23 +103,23 @@ void processKeyUp(int key) {
 
 void ioProcessNormalKeyDown(unsigned char key, int x, int y) {
     updateMousePosition(x, y);
-    processKeyDown(key);
+    processKeyDown(key, false);
 };
 
 void ioProcessNormalKeyUp(unsigned char key, int x, int y) {
     updateMousePosition(x, y);
-    processKeyUp(key);
+    processKeyUp(key, false);
 };
 
 
 void ioProcessSpecialKeyUp(int key, int x, int y) {
     updateMousePosition(x, y);
-    processKeyUp(key);
+    processKeyUp(key, true);
 }
 
 void ioProcessSpecialKeyDown(int key, int x, int y) {
     updateMousePosition(x, y);
-    processKeyDown(key);
+    processKeyDown(key, true);
 }
 
 
@@ -134,9 +139,9 @@ void ioProcessMouseClick(int button, int state, int x, int y) {
 
     int mouseKey = getMouseKey(button);
     if (state == GLUT_UP) {
-        processKeyUp(mouseKey);
+        processKeyUp(mouseKey, false);
     } else {
-        processKeyDown(mouseKey);
+        processKeyDown(mouseKey, false);
     }
 }
 

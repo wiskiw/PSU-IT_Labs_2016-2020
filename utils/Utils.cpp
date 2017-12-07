@@ -67,3 +67,22 @@ void utilsDrawText(SW_Pos pos, SW_Color color, void *font, char *string) {
         glutBitmapCharacter(font, string[i]);
     }
 }
+
+bool utilsIsPosInBorders(SW_Pos pos, SW_Borders borders) {
+    const float bX = pos.x;
+    const float bY = pos.y;
+
+    if (bX >= borders.leftBottomX && bX <= borders.rightTopX &&
+        bY >= borders.leftBottomY && bY <= borders.rightTopY) {
+        // hit
+        return true;
+    } else {
+        return false;
+    }
+
+}
+
+void utilsConvertToGameWindowPosition(GameFieldStruct *thisGame, SW_Pos *pos) {
+    pos->y = (thisGame->windowY - pos->y) / PREF_SCREEN_CROP_FACTOR;
+    pos->x = pos->x / PREF_SCREEN_CROP_FACTOR;
+}

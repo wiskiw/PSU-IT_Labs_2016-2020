@@ -5,20 +5,19 @@
 #ifndef COURSE_PAPER_IOPROCESSOR_H
 #define COURSE_PAPER_IOPROCESSOR_H
 
-
-const int IO_KEY_GO_LEFT = 100;
-const int IO_KEY_GO_RIGHT = 102;
-const int IO_KEY_SHOOT = 32;
-
+// коды клавиш мыши
+// *клавиши мыши возвращаются с параметром special = false
 const int IO_MOUSE_LEFT_BUTTON = -2;
 const int IO_MOUSE_RIGHT_BUTTON = -3;
 const int IO_MOUSE_MIDDLE_BUTTON = -4;
 
 void setKeyPressListener(void (*keyPressListener)(int, int x, int y));
 
-void setKeyHoldListener(void (*keyHoldListener)(int, int x, int y));
+void setKeyPressListener(void (*keyPressListener)(int, int x, int y, bool special));
 
-void setKeyReleaseListener(void (*keyReleaseListener)(int, int x, int y));
+void setKeyHoldListener(void (*keyHoldListener)(int, int x, int y, bool special));
+
+void setKeyReleaseListener(void (*keyReleaseListener)(int, int x, int y, bool special));
 
 void setMouseMoveListener(void (*callback)(int, int));
 
