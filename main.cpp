@@ -168,6 +168,11 @@ void updateRecordTable(int pos, int score) {
 
     list[posIndex].score = score;
     list[posIndex].type = RECORD_TYPE_OK;
+
+    // очистка предыдущей записи
+    for (int j = 0; j < PREF_RECORD_LIST_MAX_NAME_LENGTH + 1; ++j) {
+        list[posIndex].name[j] = '\0';
+    }
     strncpy(list[posIndex].name, PREF_DEFAULT_RECORD_NAME, strlen(PREF_DEFAULT_RECORD_NAME) + 1);
 }
 
