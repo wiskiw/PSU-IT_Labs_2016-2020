@@ -177,15 +177,12 @@ void onPlayerHealthChanged(SW_Player player) {
         if (thisGame.positionInRecordTable <= PREF_RECORD_LIST_SIZE) {
             // игра окончена: новый рекорд
             std::cout << "[INFO] GAME OVER - New record: " << thisGame.score << std::endl;
-
             updateRecordTable(thisGame.positionInRecordTable, thisGame.score);
-            thisGame.gameState = GAME_STATE_ADD_NEW_RECORD;
+            thisGame.gameState = GAME_STATE_GAME_OVER_NEW_RECORD_SCREEN;
         } else {
             // игра окончена
             std::cout << "[INFO] GAME OVER: " << thisGame.score << std::endl;
-
-            // TODO: debug only
-            thisGame.gameState = GAME_STATE_PAUSE_MENU;
+            thisGame.gameState = GAME_STATE_GAME_OVER_SCREEN;
         }
     }
 }
@@ -211,7 +208,8 @@ void initGame() {
 
     std::cout << "[DEBUG] leftBottomX: " << thisGame.gameBorders.leftBottomX
               << " rightTopX: " << thisGame.gameBorders.rightTopX << std::endl;
-    std::cout << "[DEBUG] leftBottomY: " << thisGame.gameBorders.leftBottomY << " rightTopY: " << thisGame.gameBorders.rightTopY
+    std::cout << "[DEBUG] leftBottomY: " << thisGame.gameBorders.leftBottomY << " rightTopY: "
+              << thisGame.gameBorders.rightTopY
               << std::endl;
 
     readRecordsTableFromFile();
@@ -340,6 +338,14 @@ void onUIItemSelect(GameState state, int select) {
                     break;
             }
             break;
+        case GAME_STATE_GAME_OVER_SCREEN:
+        case GAME_STATE_GAME_OVER_NEW_RECORD_SCREEN:
+            switch (select) {
+                case 1:
+                    // enter to continue
+                    thisGame.gameState = GAME_STATE_ADD_NEW_RECORD;
+                    break;
+            }
     }
 }
 

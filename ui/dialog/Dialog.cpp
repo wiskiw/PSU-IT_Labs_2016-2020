@@ -520,3 +520,67 @@ int dialogProcessRecordListAddNewInput(GameFieldStruct *thisGame, int key, int x
     }
 }
 // ====================
+
+
+// ==== Game over ====
+void drawEnterToContinue(GameFieldStruct *thisGame){
+    void * font = GLUT_BITMAP_HELVETICA_12;
+    const char text[] = "Press Enter to continue...";
+
+    glPushMatrix();
+    glTranslatef(0, 0, DIALOG_Z_POS - 0.05f);
+
+    float textWidth = 0;
+    const size_t len = strlen(text);
+    for (unsigned int i = 0; i < len; i++)
+        textWidth += glutBitmapWidth(font, text[i]);
+    textWidth = textWidth / PREF_SCREEN_CROP_FACTOR;
+
+
+    SW_Color textColor = {255, 255, 255, 100};
+    SW_Pos textPos = {thisGame->windowX / PREF_SCREEN_CROP_FACTOR / 2 - textWidth / 2,
+                      DIVINER_Y + MENU_ITEM_FONT_CHAR_HEIGHT / 2};
+    utilsDrawText(textPos, textColor, font, const_cast<char *>(text));
+    glPopMatrix();
+}
+
+void dialogDrawGameOver(GameFieldStruct *thisGame) {
+    drawEnterToContinue(thisGame);
+
+    glPushMatrix();
+    glTranslatef(0, 0, DIALOG_Z_POS - 0.05f);
+    char textGameOver[] = "GAME OVER!";
+    SW_Color textColor = {255, 0, 0};
+    SW_Pos textPos = {thisGame->windowX / PREF_SCREEN_CROP_FACTOR / 2 - getStringWidthPX(textGameOver) / 2,
+                      thisGame->windowY / PREF_SCREEN_CROP_FACTOR / 2 - MENU_ITEM_FONT_CHAR_HEIGHT / 2};
+    utilsDrawText(textPos, textColor, MENU_ITEM_FONT, textGameOver);
+    glPopMatrix();
+}
+
+void dialogDrawGameOverNewRecord(GameFieldStruct *thisGame) {
+    drawEnterToContinue(thisGame);
+
+    glPushMatrix();
+    glTranslatef(0, 0, DIALOG_Z_POS - 0.05f);
+    char textGameOver[] = "GAME OVER!";
+    char textNewRecord[] = "NEW RECORD!";
+    SW_Color textColor = {255, 0, 0};
+    SW_Pos gameOverTextPos = {thisGame->windowX / PREF_SCREEN_CROP_FACTOR / 2 - getStringWidthPX(textGameOver) / 2,
+                      thisGame->windowY / PREF_SCREEN_CROP_FACTOR / 2 + MENU_ITEM_FONT_CHAR_HEIGHT / 2};
+    utilsDrawText(gameOverTextPos, textColor, MENU_ITEM_FONT, textGameOver);
+
+
+    SW_Pos newRecordTextPos = {thisGame->windowX / PREF_SCREEN_CROP_FACTOR / 2 - getStringWidthPX(textNewRecord) / 2,
+                              thisGame->windowY / PREF_SCREEN_CROP_FACTOR / 2 - MENU_ITEM_FONT_CHAR_HEIGHT / 2};
+    utilsDrawText(newRecordTextPos, {255, 255, 255}, MENU_ITEM_FONT, textNewRecord);
+    glPopMatrix();
+}
+
+int dialogProcessAllGameOverInput(GameFieldStruct *thisGame, int key, int x, int y, bool special){
+    if (!special && key == PREF_IO_KEY_ENTER){
+        return 1;
+    } else {
+        return -1;
+    }
+}
+// ====================

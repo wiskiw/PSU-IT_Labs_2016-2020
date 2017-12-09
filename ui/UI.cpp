@@ -130,6 +130,12 @@ void uiUpdate(GameFieldStruct *thisGame) {
         case GAME_STATE_ADD_NEW_RECORD:
             dialogDrawRecordListAddNew(thisGame);
             break;
+        case GAME_STATE_GAME_OVER_SCREEN:
+            dialogDrawGameOver(thisGame);
+            break;
+        case GAME_STATE_GAME_OVER_NEW_RECORD_SCREEN:
+            dialogDrawGameOverNewRecord(thisGame);
+            break;
     }
 }
 
@@ -169,6 +175,10 @@ void uiProcessInput(GameFieldStruct *thisGame, int key, int x, int y, bool speci
             } else {
                 select = dialogProcessRecordListAddNewInput(thisGame, key, x, y, special);
             }
+            break;
+        case GAME_STATE_GAME_OVER_NEW_RECORD_SCREEN:
+        case GAME_STATE_GAME_OVER_SCREEN:
+            select = dialogProcessAllGameOverInput(thisGame, key, x, y, special);
             break;
     }
 

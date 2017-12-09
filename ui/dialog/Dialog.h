@@ -34,4 +34,12 @@ void dialogDrawRecordListAddNew(GameFieldStruct *thisGame);
 
 int dialogProcessRecordListAddNewInput(GameFieldStruct *thisGame, int key, int x, int y, bool special);
 
+
+// ==== Game over ====
+void dialogDrawGameOver(GameFieldStruct *thisGame);
+
+void dialogDrawGameOverNewRecord(GameFieldStruct *thisGame);
+
+int dialogProcessAllGameOverInput(GameFieldStruct *thisGame, int key, int x, int y, bool special);
+
 #endif //COURSE_PAPER_MENU_H
