@@ -10,7 +10,7 @@
 // default player gun
 SW_Gun gunsGetBengalGun(){
     SW_Gun bengal;
-    bengal.gunSpeed = 3;
+    bengal.gunSpeed = 10;
     bengal.ammorSize = 50; // размер обоймы
     bengal.ammorLeft = 50; // изначально кол-во патронов в обойме
     bengal.reloadTicks = 0; // длительность перезарядки
