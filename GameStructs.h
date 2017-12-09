@@ -150,12 +150,12 @@ struct SW_Drop_Map {
 };
 
 enum RecordType {
-    RECORD_TYPE_OK, RECORD_TYPE_UNDEFINED
+    RECORD_TYPE_OK = 'k', RECORD_TYPE_UNDEFINED = 'u'
 };
 
 struct SW_Record {
     RecordType type = RECORD_TYPE_UNDEFINED;
-    char name[PREF_RECORD_LIST_MAX_NAME_LENGTH + 1] = "none";
+    char name[PREF_RECORD_LIST_MAX_NAME_LENGTH + 1] = "";
     int score = 0;
 };
 

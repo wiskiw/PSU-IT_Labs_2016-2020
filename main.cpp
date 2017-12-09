@@ -8,6 +8,7 @@
 #include <GL/glut.h>
 #include <iostream>
 #include <cstring>
+#include <fstream>
 #include "GameStructs.h"
 #include "utils/Utils.h"
 #include "modules/player/ModulePlayer.h"
@@ -32,18 +33,74 @@ void updateGameTickTimer() {
     }
 }
 
+void saveRecordTableToFile() {
+    std::ofstream recordFile(PREF_RECORDS_FILE_NAME);
+    if (recordFile.is_open()) {
+        for (int i = 0; i < PREF_RECORD_LIST_SIZE; ++i) {
+            SW_Record record = thisGame.recordList[i];
+            recordFile << (char) record.type << PREF_RECORDS_FILE_SUPER_CHAR;
+            if (record.type != RECORD_TYPE_UNDEFINED) {
+                recordFile << record.name << PREF_RECORDS_FILE_SUPER_CHAR;
+            } else {
+                recordFile << PREF_DEFAULT_RECORD_NAME << PREF_RECORDS_FILE_SUPER_CHAR;
+            }
+            recordFile << record.score << std::endl;
+        }
+        recordFile.close();
+        std::cout << "[INFO] Records file successfully saved" << std::endl;
+    } else {
+        std::cout << "[ERR] Unable to create records file" << std::endl;
+    }
+}
+
+void readRecordsTableFromFile() {
+    std::ifstream recordFile(PREF_RECORDS_FILE_NAME);
+    if (recordFile.is_open()) {
+        std::string lineBuffer;
+
+        for (int i = 0; getline(recordFile, lineBuffer); ++i) {
+            SW_Record record;
+            const size_t superCharPos = lineBuffer.find(PREF_RECORDS_FILE_SUPER_CHAR, 2);
+
+            switch (lineBuffer.at(0)) {
+                case 'k': {
+                    record.type = RECORD_TYPE_OK;
+
+                    std::string nameStr = lineBuffer.substr(2, superCharPos - 2);
+                    std::string scoreStr = lineBuffer.substr(superCharPos + 1);
+
+                    strcpy(record.name, nameStr.c_str());
+                    record.score = std::stoi(scoreStr);
+
+                    //std::cout << nameStr << ":" << scoreStr << std::endl;
+                    break;
+                }
+                case 'u': {
+                    record.type = RECORD_TYPE_UNDEFINED;
+                    break;
+                }
+            }
+            thisGame.recordList[i] = record;
+        }
+
+        recordFile.close();
+    } else {
+        std::cout << "[WARN] Record table not found" << std::endl;
+    }
+
+}
+
 int getPlayerPositionInRecordTable() {
-    // TODO: загрузка рекордов из файла
-    // возвращает позицию в таблице рекордов для записи
+    // возвращает номер строки в таблице рекордов для записи
+    int newScore = thisGame.score;
+    for (int i = 0; i < PREF_RECORD_LIST_SIZE; ++i) {
+        SW_Record record = thisGame.recordList[i];
 
-    SW_Record record;
-    record.type = RECORD_TYPE_OK;
-    record.score = 123;
-    strncpy(record.name, "USer 1", 7);
-
-    thisGame.recordList[0] = record;
-
-    return random(1, PREF_RECORD_LIST_SIZE);
+        if (record.type == RECORD_TYPE_UNDEFINED || record.score < newScore) {
+            return i + 1;
+        }
+    }
+    return PREF_RECORD_LIST_SIZE + 1;
 }
 
 void onRedraw() {
@@ -103,10 +160,15 @@ void updateRecordTable(int pos, int score) {
     // обновление массива рекордов
     SW_Record *list = thisGame.recordList;
     const int posIndex = pos - 1;
-    for (int i = PREF_RECORD_LIST_SIZE - 1; i < posIndex; ++i) {
+
+    // сдвиг записей
+    for (int i = PREF_RECORD_LIST_SIZE - 1; i > posIndex; i--) {
         list[i] = list[i - 1];
     }
+
     list[posIndex].score = score;
+    list[posIndex].type = RECORD_TYPE_OK;
+    strncpy(list[posIndex].name, PREF_DEFAULT_RECORD_NAME, strlen(PREF_DEFAULT_RECORD_NAME) + 1);
 }
 
 void onPlayerHealthChanged(SW_Player player) {
@@ -114,11 +176,13 @@ void onPlayerHealthChanged(SW_Player player) {
         thisGame.positionInRecordTable = getPlayerPositionInRecordTable();
         if (thisGame.positionInRecordTable <= PREF_RECORD_LIST_SIZE) {
             // игра окончена: новый рекорд
+            std::cout << "[INFO] GAME OVER - New record: " << thisGame.score << std::endl;
 
             updateRecordTable(thisGame.positionInRecordTable, thisGame.score);
             thisGame.gameState = GAME_STATE_ADD_NEW_RECORD;
         } else {
             // игра окончена
+            std::cout << "[INFO] GAME OVER: " << thisGame.score << std::endl;
 
             // TODO: debug only
             thisGame.gameState = GAME_STATE_PAUSE_MENU;
@@ -145,11 +209,12 @@ void initGame() {
     thisGame.interfaceBorders.rightTopX = thisGame.gameBorders.leftBottomX;
     thisGame.interfaceBorders.rightTopY = thisGame.gameBorders.rightTopY;
 
-    std::cout << "leftBottomX: " << thisGame.gameBorders.leftBottomX
+    std::cout << "[DEBUG] leftBottomX: " << thisGame.gameBorders.leftBottomX
               << " rightTopX: " << thisGame.gameBorders.rightTopX << std::endl;
-    std::cout << "leftBottomY: " << thisGame.gameBorders.leftBottomY << " rightTopY: " << thisGame.gameBorders.rightTopY
+    std::cout << "[DEBUG] leftBottomY: " << thisGame.gameBorders.leftBottomY << " rightTopY: " << thisGame.gameBorders.rightTopY
               << std::endl;
 
+    readRecordsTableFromFile();
 }
 
 GameFieldStruct createNewGame() {
@@ -176,7 +241,7 @@ GameFieldStruct createNewGame() {
 }
 
 void onKeyPress(int key, int x, int y, bool special) {
-    std::cout << "KEY PRESSED[" << (special == true ? 's' : 'n') << "]: " << key << std::endl;
+    std::cout << "[DEBUG] KEY PRESSED[" << (special == true ? 's' : 'n') << "]: " << key << std::endl;
 
     uiProcessInput(&thisGame, key, x, y, special);
     switch (thisGame.gameState) {
@@ -270,6 +335,7 @@ void onUIItemSelect(GameState state, int select) {
             switch (select) {
                 case 0:
                     // save
+                    saveRecordTableToFile();
                     thisGame.gameState = GAME_STATE_MAIN_MENU;
                     break;
             }

@@ -5,6 +5,9 @@
 #ifndef COURSE_PAPER_PREFERENCES_H
 #define COURSE_PAPER_PREFERENCES_H
 
+const char PREF_RECORDS_FILE_NAME[] = "example.txt";
+const char PREF_DEFAULT_RECORD_NAME[] = "none";
+const char PREF_RECORDS_FILE_SUPER_CHAR = '~';
 
 const float PREF_SCREEN_CROP_FACTOR = 1.7f;
 

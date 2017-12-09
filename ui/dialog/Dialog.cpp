@@ -366,10 +366,18 @@ void drawRecordList(GameFieldStruct *thisGame, SW_Pos backgroundPos) {
                     sprintf(strBuffer, "%d", (recordRowIndex + 1));
                     break;
                 case 1:
-                    strncpy(strBuffer, record.name, strlen(record.name));
+                    if (record.type == RECORD_TYPE_UNDEFINED) {
+                        strncpy(strBuffer, PREF_DEFAULT_RECORD_NAME, strlen(PREF_DEFAULT_RECORD_NAME));
+                    } else {
+                        strncpy(strBuffer, record.name, strlen(record.name) + 1);
+                    }
                     break;
                 case 2:
-                    sprintf(strBuffer, "%d", record.score);
+                    if (record.type == RECORD_TYPE_UNDEFINED) {
+                        sprintf(strBuffer, "%d", 0);
+                    } else {
+                        sprintf(strBuffer, "%d", record.score);
+                    }
                     break;
             }
 
