@@ -7,6 +7,7 @@
 #include "UI.h"
 #include "../utils/Utils.h"
 #include "dialog/Dialog.h"
+#include "../resources/MusicManager.h"
 
 float elementSize = 15;
 const float MIN_ELEMENT_DIVINER = 4;
@@ -215,6 +216,8 @@ void uiProcessInput(GameFieldStruct *thisGame, int key, int x, int y, bool speci
         case GAME_STATE_PLAY:
             if (key == PREF_IO_KEY_BACK) {
                 thisGame->gameState = GAME_STATE_PAUSE_MENU;
+                mscPauseCurrentMusic();
+                mscPlayMenuMusic(true, RM_MUSIC_VOLUME_LOW);
             }
             break;
         case GAME_STATE_MAIN_MENU:

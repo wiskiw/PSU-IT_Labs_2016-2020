@@ -9,6 +9,9 @@
 #include <iostream>
 #include <cstring>
 #include <fstream>
+#include <SFML/Audio/SoundBuffer.hpp>
+#include <SFML/Audio/Sound.hpp>
+#include <SFML/Audio.hpp>
 #include "GameStructs.h"
 #include "utils/Utils.h"
 #include "modules/player/ModulePlayer.h"
@@ -18,6 +21,8 @@
 #include "modules/enemy/ModulEnemy.h"
 #include "ui/UI.h"
 #include "modules/drop/ModuleDrop.h"
+#include "resources/MusicManager.h"
+#include "resources/SoundManager.h"
 
 
 const int WINDOW_X = 1100;
@@ -123,7 +128,7 @@ void updateRecordTable(int pos, int score) {
     strncpy(list[posIndex].name, PREF_DEFAULT_RECORD_NAME, strlen(PREF_DEFAULT_RECORD_NAME) + 1);
 }
 
-void gameOver(){
+void gameOver() {
     thisGame.positionInRecordTable = getPlayerPositionInRecordTable();
     if (thisGame.positionInRecordTable <= PREF_RECORD_LIST_SIZE) {
         // игра окончена: новый рекорд
@@ -140,6 +145,7 @@ void gameOver(){
 void onRedraw() {
     checkKeysBuffer(); // проверка буфера клавиш
     updateGameTickTimer();
+    mscCheckIfMusicEnd();
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     // вызываем методы обновления игровых структур только в состоянии PLAY или PAUSE_MENU
@@ -163,12 +169,13 @@ void onChangeSize(int width, int height) {
 
 void onEnemyShoot(SW_Bullet bullet) {
     mdlBulletAddNew(&thisGame, bullet);
+    sndEnemyShot();
 }
 
 void onEnemyDamage(SW_Enemy enemy, SW_Bullet bullet) {
     if (enemy.health <= 0) {
         // убит
-
+        sndEnemyDead();
         // TODO: PREF_DROP_SPAWN_ENEMY_DROP_CHANCE - просчитывать динамически
         if (PREF_DROP_SPAWN_ENEMY_DROP_CHANCE != 0 &&
             random(PREF_DROP_SPAWN_ENEMY_DROP_CHANCE, 10) == 10) {
@@ -179,6 +186,8 @@ void onEnemyDamage(SW_Enemy enemy, SW_Bullet bullet) {
         }
 
         thisGame.score += enemy.originHealth;
+    } else {
+        sndEnemyDamage();
     }
 }
 
@@ -186,17 +195,22 @@ void onEnemyCrossBorder(SW_Enemy enemy) {
     gameOver();
 }
 
+
 void onPlayerShoot(SW_Bullet bullet) {
     mdlBulletAddNew(&thisGame, bullet);
+    sndPlayerShot();
 }
 
 void onPlayerTakeDrop(SW_Drop drop) {
     mdlDropAction(&thisGame, drop);
+    sndTakeDrop();
 }
 
 void onPlayerHealthChanged(SW_Player player) {
     if (player.health <= 0) {
         gameOver();
+    } else {
+        sndPlayerDamage();
     }
 }
 
@@ -225,6 +239,10 @@ void initGame() {
               << thisGame.gameBorders.rightTopY
               << std::endl;
 
+    mscInit(&thisGame);
+    sndInit(&thisGame);
+
+    mscPlayMenuMusic(false, RM_MUSIC_VOLUME_MIDLE);
     readRecordsTableFromFile();
 }
 
@@ -306,11 +324,14 @@ void onMouseMove(int x, int y) {
 }
 
 void onUIItemSelect(GameState state, int select) {
+    sndButtonClick();
     switch (state) {
         case GAME_STATE_MAIN_MENU:
             switch (select) {
                 case 2:
                     // play
+                    mscPauseCurrentMusic();
+                    mscPlayGameplayMusic(true, RM_MUSIC_VOLUME_MIDLE);
                     createNewGame();
                     thisGame.gameState = GAME_STATE_PLAY;
                     break;
@@ -327,10 +348,13 @@ void onUIItemSelect(GameState state, int select) {
             switch (select) {
                 case 0:
                     // main menu
+                    mscPlayMenuMusic(false, RM_MUSIC_VOLUME_MIDLE);
                     thisGame.gameState = GAME_STATE_MAIN_MENU;
                     break;
                 case 1:
                     // continue
+                    mscPauseCurrentMusic();
+                    mscPlayGameplayMusic(false, RM_MUSIC_VOLUME_MIDLE);
                     thisGame.gameState = GAME_STATE_PLAY;
                     break;
             }
@@ -356,6 +380,8 @@ void onUIItemSelect(GameState state, int select) {
             switch (select) {
                 case 1:
                     // enter to continue
+                    mscPauseCurrentMusic();
+                    mscPlayMenuMusic(true, RM_MUSIC_VOLUME_MIDLE);
                     thisGame.gameState = GAME_STATE_MAIN_MENU;
                     break;
             }
@@ -364,6 +390,8 @@ void onUIItemSelect(GameState state, int select) {
             switch (select) {
                 case 1:
                     // enter to continue
+                    mscPauseCurrentMusic();
+                    mscPlayMenuMusic(true, RM_MUSIC_VOLUME_MIDLE);
                     thisGame.gameState = GAME_STATE_ADD_NEW_RECORD;
                     break;
             }

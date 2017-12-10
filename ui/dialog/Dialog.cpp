@@ -7,6 +7,7 @@
 #include "Dialog.h"
 #include "../../utils/Utils.h"
 #include "../../io/IOProcessor.h"
+#include "../../resources/SoundManager.h"
 
 const SW_Color DIALOG_BACKGROUND_COLOR = {50, 50, 50};
 const SW_Color DIALOG_UNDERDIALOG_BACKGROUND_COLOR = {1, 1, 1, 100};
@@ -192,6 +193,9 @@ int getMenuRowUnderMouse(GameFieldStruct *thisGame, GAME_Menu menu, int x, int y
 void menuUpdateMenuItemState(GameFieldStruct *thisGame, GAME_Menu *menu, DialogButtonState state, int x, int y) {
     const int menuItem = getMenuRowUnderMouse(thisGame, *menu, x, y);
     if (menuItem != -1) {
+        if (menu->items[menuItem].state == DIALOG_BUTTON_STATE_NORMAL) {
+            sndButtonSelect();
+        }
         menu->items[menuItem].state = state;
     } else {
         for (int i = 0; i < menu->itemsNumber; ++i) {
@@ -426,6 +430,9 @@ bool isMouseOnBottomButton(GameFieldStruct *thisGame, int x, int y) {
 
 void dialogProcessRecordListBottomButtonFocus(GameFieldStruct *thisGame, int x, int y) {
     if (isMouseOnBottomButton(thisGame, x, y)) {
+        if (underRecordsButton.state == DIALOG_BUTTON_STATE_NORMAL) {
+            sndButtonSelect();
+        }
         underRecordsButton.state = DIALOG_BUTTON_STATE_FOCUS;
     } else {
         underRecordsButton.state = DIALOG_BUTTON_STATE_NORMAL;
@@ -523,8 +530,8 @@ int dialogProcessRecordListAddNewInput(GameFieldStruct *thisGame, int key, int x
 
 
 // ==== Game over ====
-void drawEnterToContinue(GameFieldStruct *thisGame){
-    void * font = GLUT_BITMAP_HELVETICA_12;
+void drawEnterToContinue(GameFieldStruct *thisGame) {
+    void *font = GLUT_BITMAP_HELVETICA_12;
     const char text[] = "Press Enter to continue...";
 
     glPushMatrix();
@@ -566,18 +573,18 @@ void dialogDrawGameOverNewRecord(GameFieldStruct *thisGame) {
     char textNewRecord[] = "NEW RECORD!";
     SW_Color textColor = {255, 0, 0};
     SW_Pos gameOverTextPos = {thisGame->windowX / PREF_SCREEN_CROP_FACTOR / 2 - getStringWidthPX(textGameOver) / 2,
-                      thisGame->windowY / PREF_SCREEN_CROP_FACTOR / 2 + MENU_ITEM_FONT_CHAR_HEIGHT / 2};
+                              thisGame->windowY / PREF_SCREEN_CROP_FACTOR / 2 + MENU_ITEM_FONT_CHAR_HEIGHT / 2};
     utilsDrawText(gameOverTextPos, textColor, MENU_ITEM_FONT, textGameOver);
 
 
     SW_Pos newRecordTextPos = {thisGame->windowX / PREF_SCREEN_CROP_FACTOR / 2 - getStringWidthPX(textNewRecord) / 2,
-                              thisGame->windowY / PREF_SCREEN_CROP_FACTOR / 2 - MENU_ITEM_FONT_CHAR_HEIGHT / 2};
+                               thisGame->windowY / PREF_SCREEN_CROP_FACTOR / 2 - MENU_ITEM_FONT_CHAR_HEIGHT / 2};
     utilsDrawText(newRecordTextPos, {255, 255, 255}, MENU_ITEM_FONT, textNewRecord);
     glPopMatrix();
 }
 
-int dialogProcessAllGameOverInput(GameFieldStruct *thisGame, int key, int x, int y, bool special){
-    if (!special && key == PREF_IO_KEY_ENTER){
+int dialogProcessAllGameOverInput(GameFieldStruct *thisGame, int key, int x, int y, bool special) {
+    if (!special && key == PREF_IO_KEY_ENTER) {
         return 1;
     } else {
         return -1;

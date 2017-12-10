@@ -40,7 +40,11 @@ set(SOURCE_FILES
         modules/drop/utils/DropConfigurator.cpp
         modules/drop/utils/DropConfigurator.h
         ui/dialog/Dialog.cpp
-        ui/dialog/Dialog.h )
+        ui/dialog/Dialog.h
+        resources/MusicManager.cpp
+        resources/MusicManager.h
+        resources/SoundManager.cpp
+        resources/SoundManager.h)
 
 add_executable(Course_Paper ${SOURCE_FILES})
 
@@ -51,3 +55,11 @@ find_package(GLUT REQUIRED)
 include_directories(${OPENGL_INCLUDE_DIRS} ${GLUT_INCLUDE_DIRS})
 
 target_link_libraries(${PROJECT_NAME} ${OPENGL_LIBRARIES} ${GLUT_LIBRARY})
+
+
+set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake_modules")
+find_package(SFML REQUIRED system window graphics network audio)
+if (SFML_FOUND)
+    include_directories(${SFML_INCLUDE_DIR})
+    target_link_libraries(Course_Paper ${SFML_LIBRARIES})
+endif ()

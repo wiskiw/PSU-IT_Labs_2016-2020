@@ -6,7 +6,7 @@
 
 
 void action1(GameFieldStruct *thisGame, SW_Drop *thisDrop) {
-    thisGame->player.health -= 50;
+    thisGame->player.health = PREF_PLAYER_DEFAULT_HEALTH;
 }
 
 

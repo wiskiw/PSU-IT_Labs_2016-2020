@@ -62,6 +62,11 @@ const float PREF_DROP_WIDTH = 10.0f;
 // ================
 
 
+// ==== RESOURCES ======
+// Кол-во миллисекунд до конца трека, при котором включается другой трек
+const int PREF_MINIMAL_MILLISECONDS_MUSIC_OFFSET_TO_REPLAY = 700;
+// ================
+
 
 const int PREF_KEYBOARD_INPUT_BUFFER_SIZE = 4;
 
