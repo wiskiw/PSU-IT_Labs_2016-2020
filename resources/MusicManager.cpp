@@ -27,13 +27,13 @@ bool isCurrentLooped = false;
 
 
 const MusicType MT_GAMEPLAY = 1;
-const int GAMEPLAY_MUSIC_LIST_SIZE = 4;
+const int GAMEPLAY_MUSIC_LIST_SIZE = 5;
 int lastGameplayMusicIndex = -1;
 sf::Music gameplayMusicList[GAMEPLAY_MUSIC_LIST_SIZE];
 
 
 const MusicType MT_MENU = 2;
-const int MENU_MUSIC_LIST_SIZE = 2;
+const int MENU_MUSIC_LIST_SIZE = 3;
 int lastMenuMusicIndex = -1;
 sf::Music menuMusicList[GAMEPLAY_MUSIC_LIST_SIZE];
 
@@ -83,7 +83,7 @@ void mscPlayMenuMusic(bool stopPlay, int volume) {
     } else {
         currentMusicType = MT_MENU;
         currentMusic = getMusicByType(stopPlay, MT_MENU);
-        currentPitch = 0.80f;
+        currentPitch = 1.0f;
         isCurrentLooped = false;
 
         playCurrent();
