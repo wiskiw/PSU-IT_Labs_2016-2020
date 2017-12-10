@@ -150,6 +150,7 @@ void mdlPlayerInit(GameFieldStruct *thisGame) {
     SW_Player *player = &thisGame->player;
 
     player->health = PREF_PLAYER_DEFAULT_HEALTH;
+    player->state = PLAYER_STATE_STAY_FORWARD;
     player->speed.x = 5;
     player->pos.z = 2;
     player->pos.x = (thisGame->gameBorders.rightTopX - thisGame->gameBorders.leftBottomX) / 2 +

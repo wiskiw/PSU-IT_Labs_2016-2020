@@ -103,6 +103,40 @@ int getPlayerPositionInRecordTable() {
     return PREF_RECORD_LIST_SIZE + 1;
 }
 
+void updateRecordTable(int pos, int score) {
+    // обновление массива рекордов
+    SW_Record *list = thisGame.recordList;
+    const int posIndex = pos - 1;
+
+    // сдвиг записей
+    for (int i = PREF_RECORD_LIST_SIZE - 1; i > posIndex; i--) {
+        list[i] = list[i - 1];
+    }
+
+    list[posIndex].score = score;
+    list[posIndex].type = RECORD_TYPE_OK;
+
+    // очистка предыдущей записи
+    for (int j = 0; j < PREF_RECORD_LIST_MAX_NAME_LENGTH + 1; ++j) {
+        list[posIndex].name[j] = '\0';
+    }
+    strncpy(list[posIndex].name, PREF_DEFAULT_RECORD_NAME, strlen(PREF_DEFAULT_RECORD_NAME) + 1);
+}
+
+void gameOver(){
+    thisGame.positionInRecordTable = getPlayerPositionInRecordTable();
+    if (thisGame.positionInRecordTable <= PREF_RECORD_LIST_SIZE) {
+        // игра окончена: новый рекорд
+        std::cout << "[INFO] GAME OVER - New record: " << thisGame.score << std::endl;
+        updateRecordTable(thisGame.positionInRecordTable, thisGame.score);
+        thisGame.gameState = GAME_STATE_GAME_OVER_NEW_RECORD_SCREEN;
+    } else {
+        // игра окончена
+        std::cout << "[INFO] GAME OVER: " << thisGame.score << std::endl;
+        thisGame.gameState = GAME_STATE_GAME_OVER_SCREEN;
+    }
+}
+
 void onRedraw() {
     checkKeysBuffer(); // проверка буфера клавиш
     updateGameTickTimer();
@@ -148,6 +182,10 @@ void onEnemyDamage(SW_Enemy enemy, SW_Bullet bullet) {
     }
 }
 
+void onEnemyCrossBorder(SW_Enemy enemy) {
+    gameOver();
+}
+
 void onPlayerShoot(SW_Bullet bullet) {
     mdlBulletAddNew(&thisGame, bullet);
 }
@@ -156,39 +194,9 @@ void onPlayerTakeDrop(SW_Drop drop) {
     mdlDropAction(&thisGame, drop);
 }
 
-void updateRecordTable(int pos, int score) {
-    // обновление массива рекордов
-    SW_Record *list = thisGame.recordList;
-    const int posIndex = pos - 1;
-
-    // сдвиг записей
-    for (int i = PREF_RECORD_LIST_SIZE - 1; i > posIndex; i--) {
-        list[i] = list[i - 1];
-    }
-
-    list[posIndex].score = score;
-    list[posIndex].type = RECORD_TYPE_OK;
-
-    // очистка предыдущей записи
-    for (int j = 0; j < PREF_RECORD_LIST_MAX_NAME_LENGTH + 1; ++j) {
-        list[posIndex].name[j] = '\0';
-    }
-    strncpy(list[posIndex].name, PREF_DEFAULT_RECORD_NAME, strlen(PREF_DEFAULT_RECORD_NAME) + 1);
-}
-
 void onPlayerHealthChanged(SW_Player player) {
     if (player.health <= 0) {
-        thisGame.positionInRecordTable = getPlayerPositionInRecordTable();
-        if (thisGame.positionInRecordTable <= PREF_RECORD_LIST_SIZE) {
-            // игра окончена: новый рекорд
-            std::cout << "[INFO] GAME OVER - New record: " << thisGame.score << std::endl;
-            updateRecordTable(thisGame.positionInRecordTable, thisGame.score);
-            thisGame.gameState = GAME_STATE_GAME_OVER_NEW_RECORD_SCREEN;
-        } else {
-            // игра окончена
-            std::cout << "[INFO] GAME OVER: " << thisGame.score << std::endl;
-            thisGame.gameState = GAME_STATE_GAME_OVER_SCREEN;
-        }
+        gameOver();
     }
 }
 
@@ -236,6 +244,7 @@ GameFieldStruct createNewGame() {
     mdlDropInit(&thisGame);
 
     mdlEnemySetShootListener(onEnemyShoot);
+    mdlEnemySetCrossBorderListener(onEnemyCrossBorder);
     mdlEnemySetEnemyDamageListener(onEnemyDamage);
     mdlEnemyInitAll(&thisGame);
     mdlBackgroundInit(&thisGame);

@@ -19,8 +19,14 @@ void (*enemyShootListener)(SW_Bullet) = nullptr;
 
 void (*enemyDamageListener)(SW_Enemy, SW_Bullet) = nullptr;
 
+void (*enemyCrossBorderListener)(SW_Enemy) = nullptr;
+
 void mdlEnemySetShootListener(void (*callback)(SW_Bullet)) {
     enemyShootListener = callback;
+}
+
+void mdlEnemySetCrossBorderListener(void (*callback)(SW_Enemy)) {
+    enemyCrossBorderListener = callback;
 }
 
 void mdlEnemySetEnemyDamageListener(void (*callback)(SW_Enemy, SW_Bullet)) {
@@ -96,20 +102,27 @@ void mdlEnemyUpdateAll(GameFieldStruct *thisGame) {
             utilsMovePos(&enemy->pos, movPosValue);
             utilsMoveBorers(&enemy->hitBox, movPosValue);
 
-
             SW_Pos gunPos = enemy->pos;
             utilsMovePos(&gunPos, enemy->gunPosValue);
 
-
-            gpeGunUpdateShootingDelay(&enemy->gun);
-            if (enemyShootListener != nullptr && isTargetLocked(thisGame, enemy)) {
-                SW_Bullet bullet = gpeGunShoot(&enemy->gun, gunPos);
-                if (bullet.state != BULLET_STATE_UNDEFINED) {
-                    enemyShootListener(bullet);
+            if (!utilsIsPosInBorders(enemy->pos, thisGame->gameBorders)){
+                enemy->state = ENEMY_STATE_UNDEFINED;
+                enCounter--;
+                thisGame->enemyMap.number--;
+                if (enemyCrossBorderListener != nullptr){
+                    enemyCrossBorderListener(*enemy);
                 }
-            }
+            } else {
+                gpeGunUpdateShootingDelay(&enemy->gun);
+                if (enemyShootListener != nullptr && isTargetLocked(thisGame, enemy)) {
+                    SW_Bullet bullet = gpeGunShoot(&enemy->gun, gunPos);
+                    if (bullet.state != BULLET_STATE_UNDEFINED) {
+                        enemyShootListener(bullet);
+                    }
+                }
 
-            checkEnemyForHit(thisGame, enemy);
+                checkEnemyForHit(thisGame, enemy);
+            }
         }
 
         redrawEnemy(thisGame, enemy);

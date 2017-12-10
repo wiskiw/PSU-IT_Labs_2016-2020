@@ -9,6 +9,8 @@
 
 void mdlEnemySetShootListener(void (*callback)(SW_Bullet));
 
+void mdlEnemySetCrossBorderListener(void (*callback)(SW_Enemy));
+
 void mdlEnemySetEnemyDamageListener(void (*callback)(SW_Enemy, SW_Bullet));
 
 void mdlEnemyUpdateAll(GameFieldStruct *thisGame);
