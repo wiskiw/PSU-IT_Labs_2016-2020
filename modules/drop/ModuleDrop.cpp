@@ -16,10 +16,11 @@ void mdlDropInit(GameFieldStruct *thisGame) {
 }
 
 void moveDrop(GameFieldStruct *thisGame, SW_Drop *drop) {
-    if (drop->hitBox.leftBottomY + PREF_DROP_SPEED_Y <= thisGame->gameBorders.leftBottomY) {
+    const float MAX_SCALE_K = (drop->hitBox.rightTopY - drop->hitBox.leftBottomY) * PREF_DROP_MAX_SCALE_STATE / 2;
+    if ((drop->hitBox.leftBottomY + PREF_DROP_SPEED_Y) - MAX_SCALE_K <= thisGame->gameBorders.leftBottomY) {
         // упал
         drop->pos.y = thisGame->gameBorders.leftBottomY +
-                      (drop->hitBox.rightTopY - drop->hitBox.leftBottomY) / 2 - PREF_DROP_SPEED_Y;
+                      (drop->hitBox.rightTopY - drop->hitBox.leftBottomY) / 2 + MAX_SCALE_K;
         drop->hitBox.rightTopY = drop->pos.y + PREF_DROP_HEIGHT / 2;
         drop->hitBox.leftBottomY = drop->pos.y - PREF_DROP_HEIGHT / 2;
         drop->livingTime++;

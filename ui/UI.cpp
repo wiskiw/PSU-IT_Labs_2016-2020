@@ -2,23 +2,21 @@
 // Created by wiskiw on 03.12.17.
 //
 
+#include <iostream>
+#include <cstring>
 #include "UI.h"
 #include "../utils/Utils.h"
 #include "dialog/Dialog.h"
 
-const float ELEMENT_HEIGHT = 15;
-const float DIVINER_X = 10;
-const float DIVINER_Y = 10;
+float elementSize = 15;
+const float MIN_ELEMENT_DIVINER = 4;
+float divinerX = 10;
+float divinerY = 10;
+int maxElementPos = 0;
 
-float const UI_Z = 10;
-const float UI_BACKGROUND_Z = 0;
+float const UI_Z = 15;
 
-
-const int HEALTH_BAR_POS = 2;
 const SW_Color HEALTH_BAR_COLOR = {255, 0, 0};
-
-
-const int RELOAD_BAR_POS = 3;
 const SW_Color RELOAD_BAR_COLOR = {255, 0, 255};
 
 
@@ -30,78 +28,148 @@ SW_Borders interfaceBorders;
 
 void (*uiItemSelectListener)(GameState, int) = nullptr;
 
-float getHeight(int pos) {
-    return (DIVINER_Y + ELEMENT_HEIGHT) * pos;
+void setUpElementSizeAndDiviners() {
+    // первоначальный просчёт пэдингов и размеров одного элемента
+    float elementsWidthSum = MIN_ELEMENT_DIVINER;
+    elementSize = (interfaceBorders.rightTopY - interfaceBorders.leftBottomY) - MIN_ELEMENT_DIVINER * 2;
+    const float interfaceBordersWidth = interfaceBorders.rightTopX - interfaceBorders.leftBottomX;
+    maxElementPos = 0;
+    for (; elementsWidthSum < interfaceBordersWidth; ++maxElementPos) {
+        elementsWidthSum += MIN_ELEMENT_DIVINER + elementSize;
+    }
+    elementsWidthSum -= MIN_ELEMENT_DIVINER + elementSize;
+
+    divinerX = MIN_ELEMENT_DIVINER + (interfaceBordersWidth - (elementsWidthSum)) / (maxElementPos);
+    divinerY = MIN_ELEMENT_DIVINER;
 }
 
-float getWidth() {
-    return (interfaceBorders.rightTopX - interfaceBorders.leftBottomX) - DIVINER_Y * 2;
+SW_Borders getDrawBorders(int cellPos, int cellSize) {
+    SW_Borders drawBorders;
+    drawBorders.leftBottomY = divinerY + interfaceBorders.leftBottomY;
+    drawBorders.leftBottomX = divinerX + (divinerX + elementSize) * (cellPos - 1) + interfaceBorders.leftBottomX;
+    drawBorders.rightTopY = drawBorders.leftBottomY + elementSize;
+    drawBorders.rightTopX = drawBorders.leftBottomX + elementSize + (cellSize - 1) * (elementSize + divinerX);
+    return drawBorders;
 }
 
-void drawBar(float maxValue, float currentValue, SW_Color color, int pos) {
+void drawBorders(SW_Color color, SW_Borders drawBorders) {
+    glLineWidth(2);
+    glBegin(GL_LINE_LOOP);
+    utilsSelectColor(color);
+    glVertex3f(drawBorders.leftBottomX, drawBorders.leftBottomY, UI_Z + 0.01f);
+    glVertex3f(drawBorders.leftBottomX, drawBorders.rightTopY, UI_Z + 0.01f);
+    glVertex3f(drawBorders.rightTopX, drawBorders.rightTopY, UI_Z + 0.01f);
+    glVertex3f(drawBorders.rightTopX, drawBorders.leftBottomY, UI_Z + 0.01f);
+    glEnd();
+    glLineWidth(1);
+}
+
+void drawBar(float maxValue, float currentValue, SW_Color color, SW_Borders borders) {
     float percent = currentValue * 100 / maxValue;
     percent = percent < 0 ? 0 : percent;
     percent = percent > 100 ? 100 : percent;
-    float xPX = getWidth() * percent / 100;
-
-
-    const float startY = interfaceBorders.leftBottomY + getHeight(pos);
-    const float startX = interfaceBorders.leftBottomX + DIVINER_X;
+    float xPX = (borders.rightTopX - borders.leftBottomX) * percent / 100;
 
     glPushMatrix();
+
     glBegin(GL_POLYGON);
+    color.A = 200;
     utilsSelectColor(color);
-    glVertex3f(startX, startY, UI_Z);
-    glVertex3f(startX, startY - ELEMENT_HEIGHT, UI_Z);
-    glVertex3f(startX + xPX, startY - ELEMENT_HEIGHT, UI_Z);
-    glVertex3f(startX + xPX, startY, UI_Z);
+    glVertex3f(borders.leftBottomX, borders.leftBottomY, UI_Z);
+
+    color.A = 255;
+    utilsSelectColor(color);
+    glVertex3f(borders.leftBottomX, borders.rightTopY, UI_Z);
+    glVertex3f(borders.leftBottomX + xPX, borders.rightTopY, UI_Z);
+
+    color.A = 200;
+    utilsSelectColor(color);
+    glVertex3f(borders.leftBottomX + xPX, borders.leftBottomY, UI_Z);
     glEnd();
 
-    glLineWidth(2);
-    glBegin(GL_LINE_LOOP);
+
+    glBegin(GL_POLYGON);
+    color.A = 120;
+    utilsSelectColor(color);
+    glVertex3f(borders.leftBottomX + xPX, borders.leftBottomY, UI_Z);
+
+    color.A = 160;
+    utilsSelectColor(color);
+    glVertex3f(borders.leftBottomX + xPX, borders.rightTopY, UI_Z);
+
+    color.A = 120;
+    utilsSelectColor(color);
+    glVertex3f(borders.rightTopX, borders.rightTopY, UI_Z);
+    glVertex3f(borders.rightTopX, borders.leftBottomY, UI_Z);
+    glEnd();
 
     color.A = 150;
-    utilsSelectColor(color);
-    glVertex3f(startX, startY, UI_Z + 0.01f);
-    glVertex3f(startX, startY - ELEMENT_HEIGHT, UI_Z + 0.01f);
-    glVertex3f(startX + getWidth(), startY - ELEMENT_HEIGHT, UI_Z + 0.01f);
-    glVertex3f(startX + getWidth(), startY, UI_Z + 0.01f);
-    glEnd();
-    glLineWidth(1);
+    drawBorders(color, borders);
 
     glPopMatrix();
 
 }
 
 void drawHealth(GameFieldStruct *thisGame) {
-    drawBar(PREF_PLAYER_DEFAULT_HEALTH, thisGame->player.health, HEALTH_BAR_COLOR, HEALTH_BAR_POS);
+    SW_Borders drawBorders = getDrawBorders(1, 5);
+    drawBar(PREF_PLAYER_DEFAULT_HEALTH, thisGame->player.health, HEALTH_BAR_COLOR, drawBorders);
 }
 
 void drawGunReload(GameFieldStruct *thisGame) {
+    SW_Borders drawBorders = getDrawBorders(6, 5);
     float maxValue = thisGame->player.gun.gunSpeed;
-    drawBar(maxValue, maxValue - thisGame->player.gun.waitBeforeShoot, RELOAD_BAR_COLOR, RELOAD_BAR_POS);
+    drawBar(maxValue, maxValue - thisGame->player.gun.waitBeforeShoot, RELOAD_BAR_COLOR, drawBorders);
 }
 
-void drawGameBorder(GameFieldStruct *thisGame) {
-    utilsDrawBorders(thisGame->gameBorders, GAME_BORDER_LINE_COLOR, 4);
+void drawScore(GameFieldStruct *thisGame) {
+    const int CELL_SIZE = 2;
+    void *FONT = GLUT_BITMAP_HELVETICA_18;
+    const int FONT_HEIGHT = 18;
+    SW_Color COLOR = {255, 255, 255};
+
+    SW_Borders borders = getDrawBorders(maxElementPos - CELL_SIZE, CELL_SIZE);
+
+    char scoreStr[16] = "";
+    sprintf(scoreStr, "%d", thisGame->score);
+
+    SW_Pos scoreTextPos;
+
+    float textWidth = 0;
+    const size_t len = strlen(scoreStr);
+    for (unsigned int i = 0; i < len; i++)
+        textWidth += glutBitmapWidth(FONT, scoreStr[i]);
+    textWidth = textWidth / PREF_SCREEN_CROP_FACTOR;
+
+    const float elementWidth = elementSize * CELL_SIZE + divinerX * (CELL_SIZE - 1);
+    scoreTextPos.x = borders.leftBottomX + (elementWidth - textWidth) / 2;
+    scoreTextPos.y = borders.leftBottomY +
+                     ((borders.rightTopY - borders.leftBottomY) - FONT_HEIGHT / PREF_SCREEN_CROP_FACTOR / 2) / 2;
+    scoreTextPos.z = UI_Z + 0.01f;
+    utilsDrawText(scoreTextPos, COLOR, FONT, scoreStr);
+    COLOR.A = 150;
+    drawBorders(COLOR, borders);
+}
+
+void drawInterfaceBorder(GameFieldStruct *thisGame) {
+    utilsDrawBorders(thisGame->interfaceBorders, GAME_BORDER_LINE_COLOR, 4);
 }
 
 void drawInterfaceBackground(GameFieldStruct *thisGame) {
     glPushMatrix();
     glBegin(GL_POLYGON);
     utilsSelectColor(UI_BACKGROUND_COLOR);
-    glVertex3f(interfaceBorders.leftBottomX, interfaceBorders.leftBottomY, UI_BACKGROUND_Z);
-    glVertex3f(interfaceBorders.leftBottomX, interfaceBorders.rightTopY, UI_BACKGROUND_Z);
-    glVertex3f(interfaceBorders.rightTopX, interfaceBorders.rightTopY, UI_BACKGROUND_Z);
-    glVertex3f(interfaceBorders.rightTopX, interfaceBorders.leftBottomY, UI_BACKGROUND_Z);
+    glVertex3f(interfaceBorders.leftBottomX, interfaceBorders.leftBottomY, UI_Z - 0.01f);
+    glVertex3f(interfaceBorders.leftBottomX, interfaceBorders.rightTopY, UI_Z - 0.01f);
+    glVertex3f(interfaceBorders.rightTopX, interfaceBorders.rightTopY, UI_Z - 0.01f);
+    glVertex3f(interfaceBorders.rightTopX, interfaceBorders.leftBottomY, UI_Z - 0.01f);
     glEnd();
     glPopMatrix();
 }
 
-
 void uiInit(GameFieldStruct *thisGame, void(*callback)(GameState, int)) {
     interfaceBorders = thisGame->interfaceBorders;
     uiItemSelectListener = callback;
+    setUpElementSizeAndDiviners();
 }
 
 void uiUpdate(GameFieldStruct *thisGame) {
@@ -110,7 +178,8 @@ void uiUpdate(GameFieldStruct *thisGame) {
     if (state == GAME_STATE_PLAY || state == GAME_STATE_PAUSE_MENU) {
         drawHealth(thisGame);
         drawGunReload(thisGame);
-        drawGameBorder(thisGame);
+        drawScore(thisGame);
+        drawInterfaceBorder(thisGame);
         drawInterfaceBackground(thisGame);
     }
 

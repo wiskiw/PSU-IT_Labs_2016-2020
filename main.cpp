@@ -199,17 +199,17 @@ void initGame() {
     thisGame.windowY = WINDOW_Y;
 
     // TODO: Left padding
-    const int STAT_X = 150;
+    const int STAT_X = 40;
 
-    thisGame.gameBorders.leftBottomX = STAT_X;
+    thisGame.gameBorders.leftBottomX = 0;
     thisGame.gameBorders.rightTopX = static_cast<int>(WINDOW_X / PREF_SCREEN_CROP_FACTOR);
-    thisGame.gameBorders.leftBottomY = 0;
+    thisGame.gameBorders.leftBottomY = STAT_X;
     thisGame.gameBorders.rightTopY = static_cast<int>(WINDOW_Y / PREF_SCREEN_CROP_FACTOR);
 
     thisGame.interfaceBorders.leftBottomX = 0;
     thisGame.interfaceBorders.leftBottomY = 0;
-    thisGame.interfaceBorders.rightTopX = thisGame.gameBorders.leftBottomX;
-    thisGame.interfaceBorders.rightTopY = thisGame.gameBorders.rightTopY;
+    thisGame.interfaceBorders.rightTopX = thisGame.gameBorders.rightTopX;
+    thisGame.interfaceBorders.rightTopY = thisGame.gameBorders.leftBottomY;
 
     std::cout << "[DEBUG] leftBottomX: " << thisGame.gameBorders.leftBottomX
               << " rightTopX: " << thisGame.gameBorders.rightTopX << std::endl;
@@ -344,6 +344,13 @@ void onUIItemSelect(GameState state, int select) {
             }
             break;
         case GAME_STATE_GAME_OVER_SCREEN:
+            switch (select) {
+                case 1:
+                    // enter to continue
+                    thisGame.gameState = GAME_STATE_MAIN_MENU;
+                    break;
+            }
+            break;
         case GAME_STATE_GAME_OVER_NEW_RECORD_SCREEN:
             switch (select) {
                 case 1:
