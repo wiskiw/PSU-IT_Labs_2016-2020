@@ -72,6 +72,7 @@ void checkPlayerForHit(GameFieldStruct *thisGame) {
             // hit
             enemy->state = ENEMY_STATE_UNDEFINED;
             thisGame->enemyMap.number--;
+            thisGame->enemyMap.enemiesHealth -= enemy->health;
             player->health -= enemy->health;
             if (playerHealthListener != nullptr) {
                 playerHealthListener(*player);
@@ -93,7 +94,7 @@ void checkPlayerForHit(GameFieldStruct *thisGame) {
             if (playerTakeDrop != nullptr) {
                 playerTakeDrop(*drop);
             }
-            if (player->health != previewPlayerHealth){
+            if (player->health != previewPlayerHealth) {
                 playerHealthListener(*player);
             }
         }
@@ -152,10 +153,10 @@ void mdlPlayerInit(GameFieldStruct *thisGame) {
     player->health = PREF_PLAYER_DEFAULT_HEALTH;
     player->state = PLAYER_STATE_STAY_FORWARD;
     player->speed.x = 5;
-    player->pos.z = 2;
+    player->pos.z = PREF_PLAYER_Z_POS;
     player->pos.x = (thisGame->gameBorders.rightTopX - thisGame->gameBorders.leftBottomX) / 2 +
                     thisGame->gameBorders.leftBottomX;
-    player->pos.y = thisGame->gameBorders.leftBottomY + 25;
+    player->pos.y = thisGame->gameBorders.leftBottomY + 50 / PREF_SCREEN_CROP_FACTOR;
 
     player->gun = gunsGetBengalGun();
     player->gun.bullet = bulletsGetSideneckBullet();

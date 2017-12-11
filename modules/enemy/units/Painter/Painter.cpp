@@ -8,13 +8,30 @@
 const SW_Color ENEMY_HIT_BOX_COLOR = {255, 0, 255};
 
 void redraw1(GameFieldStruct *thisGame, SW_Enemy *thisEnemy) {
-    float healthK = thisEnemy->health / 15.0f;
+    float healthK = thisEnemy->health / thisEnemy->originHealth;
+    if (healthK <= 0.25f){
+        healthK = 0.25f;
+    }
     glBegin(GL_POLYGON);
     glColor3ub(255, 0, 0);
     glVertex3f(-10 * healthK, -10 * healthK, 0);
     glVertex3f(-10 * healthK, 10 * healthK, 0);
     glVertex3f(10 * healthK, 10 * healthK, 0);
     glVertex3f(10 * healthK, -10 * healthK, 0);
+    glEnd();
+}
+
+void redraw2(GameFieldStruct *thisGame, SW_Enemy *thisEnemy) {
+    float healthK = thisEnemy->health / thisEnemy->originHealth;
+    if (healthK <= 0.5f){
+        healthK = 0.5f;
+    }
+    glBegin(GL_POLYGON);
+    glColor3ub(255, 50, 200);
+    glVertex3f(-7 * healthK, -7* healthK, 0);
+    glVertex3f(-7 * healthK, 7* healthK, 0);
+    glVertex3f(7 * healthK, 7 * healthK, 0);
+    glVertex3f(7 * healthK, -7* healthK, 0);
     glEnd();
 }
 
@@ -27,6 +44,9 @@ void redrawEnemy(GameFieldStruct *thisGame, SW_Enemy *thisEnemy) {
     switch (thisEnemy->type) {
         case 1:
             redraw1(thisGame, thisEnemy);
+            break;
+       case 2:
+            redraw2(thisGame, thisEnemy);
             break;
     }
     glPopMatrix();

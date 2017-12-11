@@ -25,6 +25,20 @@ void redraw1(GameFieldStruct *thisGame, SW_Drop *drop) {
 
 }
 
+void redraw2(GameFieldStruct *thisGame, SW_Drop *drop) {
+
+    glEnable(GL_SMOOTH);
+    glBegin(GL_POLYGON);
+    glColor3ub(255, 255, 255);
+    glVertex2f(-PREF_DROP_WIDTH / 2, -PREF_DROP_HEIGHT / 2);
+    glVertex2f(-PREF_DROP_WIDTH / 2, PREF_DROP_HEIGHT / 2);
+    glVertex2f(PREF_DROP_WIDTH / 2, PREF_DROP_HEIGHT / 2);
+    glVertex2f(PREF_DROP_WIDTH / 2, -PREF_DROP_HEIGHT / 2);
+
+    glEnd();
+
+}
+
 
 float getScaleFactor(SW_Drop *thisDrop) {
     // начальное и конечное значение livingTime периода увеличения скорости мерцания
@@ -85,6 +99,9 @@ void redrawDrop(GameFieldStruct *thisGame, SW_Drop *thisDrop) {
     switch (thisDrop->type) {
         case 1:
             redraw1(thisGame, thisDrop);
+            break;
+        case 2:
+            redraw2(thisGame, thisDrop);
             break;
     }
 

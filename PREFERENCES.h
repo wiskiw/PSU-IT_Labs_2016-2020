@@ -14,13 +14,18 @@ const float PREF_SCREEN_CROP_FACTOR = 1.7f;
 const int PREF_BULLET_Z_POS = 2;
 const int PREF_ENEMY_Z_POS = 3;
 const float PREF_DROP_Z_POS = 1.9f;
+const float PREF_PLAYER_Z_POS = 2.0f;
 
-const float PREF_PLAYER_DEFAULT_HEALTH = 2;
+const float PREF_PLAYER_DEFAULT_HEALTH = 100;
 const int PREF_GAME_DEFAULT_DIFFICULT = 3;
 
 const int PREF_STARS_NUMBER = 16;
 const int PREF_BULLET_BUFFER_SIZE = 30;
 const int PREF_ENEMY_BUFFER_SIZE = 12;
+
+// ==== ENEMY ======
+const float PREF_SUM_ENEMY_HEALTH_ON_SCREEN = 25;
+// ================
 
 
 // ==== DIALOG / MENU ======
@@ -40,7 +45,6 @@ const int PREF_IO_KEY_BACKSPACE = 8;
 
 
 // ==== DROP ======
-const int PREF_DROP_SPAWN_ENEMY_DROP_CHANCE = 4; // 0 - 10
 const int PREF_DROP_BUFFER_SIZE = 10;
 const float PREF_DROP_SPEED_Y = -0.5f;
 

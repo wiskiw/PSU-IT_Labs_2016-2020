@@ -10,7 +10,6 @@
 #include <cstring>
 #include <fstream>
 #include <SFML/Audio/SoundBuffer.hpp>
-#include <SFML/Audio/Sound.hpp>
 #include <SFML/Audio.hpp>
 #include "GameStructs.h"
 #include "utils/Utils.h"
@@ -176,16 +175,14 @@ void onEnemyDamage(SW_Enemy enemy, SW_Bullet bullet) {
     if (enemy.health <= 0) {
         // убит
         sndEnemyDead();
-        // TODO: PREF_DROP_SPAWN_ENEMY_DROP_CHANCE - просчитывать динамически
-        if (PREF_DROP_SPAWN_ENEMY_DROP_CHANCE != 0 &&
-            random(PREF_DROP_SPAWN_ENEMY_DROP_CHANCE, 10) == 10) {
+        if (enemy.dropChance != 0 && random(enemy.dropChance, 10) == 10) {
 
             SW_Drop enemyDrop = mdlDropGetNew(&thisGame, DROP_SPAWN_TYPE_ENEMY);
             enemyDrop.pos = enemy.pos;
             mdlDropAddNew(&thisGame, enemyDrop);
         }
 
-        thisGame.score += enemy.originHealth;
+        thisGame.score += enemy.score;
     } else {
         sndEnemyDamage();
     }
@@ -194,7 +191,6 @@ void onEnemyDamage(SW_Enemy enemy, SW_Bullet bullet) {
 void onEnemyCrossBorder(SW_Enemy enemy) {
     gameOver();
 }
-
 
 void onPlayerShoot(SW_Bullet bullet) {
     mdlBulletAddNew(&thisGame, bullet);
@@ -271,7 +267,7 @@ GameFieldStruct createNewGame() {
 }
 
 void onKeyPress(int key, int x, int y, bool special) {
-    std::cout << "[DEBUG] KEY PRESSED[" << (special == true ? 's' : 'n') << "]: " << key << std::endl;
+    //std::cout << "[DEBUG] KEY PRESSED[" << (special == true ? 's' : 'n') << "]: " << key << std::endl;
 
     uiProcessInput(&thisGame, key, x, y, special);
     switch (thisGame.gameState) {
@@ -348,8 +344,14 @@ void onUIItemSelect(GameState state, int select) {
             switch (select) {
                 case 0:
                     // main menu
+                    thisGame.positionInRecordTable = getPlayerPositionInRecordTable();
+                    if (thisGame.positionInRecordTable <= PREF_RECORD_LIST_SIZE) {
+                        // игра окончена: новый рекорд
+                        std::cout << "[INFO] GAME OVER - New record: " << thisGame.score << std::endl;
+                        updateRecordTable(thisGame.positionInRecordTable, thisGame.score);
+                    }
                     mscPlayMenuMusic(false, RM_MUSIC_VOLUME_MIDLE);
-                    thisGame.gameState = GAME_STATE_MAIN_MENU;
+                    thisGame.gameState = GAME_STATE_ADD_NEW_RECORD;
                     break;
                 case 1:
                     // continue

@@ -11,5 +11,7 @@ SW_Bullet bulletsGetSideneckBullet();
 
 SW_Bullet bulletsGetDiamondbackBullet();
 
+SW_Bullet bulletsGetSnappingBullet();
+
 
 #endif //COURSE_PAPER_BULLET_LIST_H

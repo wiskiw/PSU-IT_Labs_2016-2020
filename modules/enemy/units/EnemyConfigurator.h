@@ -11,7 +11,7 @@
 
 SW_Enemy getEnemy(GameFieldStruct *thisGame, SW_Type enemyType);
 
-SW_Type getRandomEnemyType();
+SW_Enemy getRandomAvailableEnemy(GameFieldStruct *thisGame, const float maxAvailableEnemyHealth);
 
 
 #endif //COURSE_PAPER_ENEMYGENERATOR_H

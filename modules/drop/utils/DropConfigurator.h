@@ -9,12 +9,11 @@
 #include "../../../GameStructs.h"
 
 
-SW_Type getRandomWorldDropType();
+SW_Drop getRandomEnemyDrop(GameFieldStruct *thisGame);
 
-SW_Type getRandomEnemyDropType();
+SW_Drop getRandomWorldDrop(GameFieldStruct *thisGame);
 
 SW_Drop getDrop(GameFieldStruct *thisGame, SW_Type dropType);
-
 
 
 #endif //COURSE_PAPER_DROPCONFIGURATOR_H

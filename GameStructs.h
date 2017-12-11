@@ -91,7 +91,10 @@ struct SW_Enemy {
     float health;
     float originHealth;
     SW_Gun gun;
+    int score = 0;
     EnemyState state = ENEMY_STATE_UNDEFINED;
+    unsigned int dropChance = 0; // 1 min - 10 max
+    unsigned int spawnChance = 0; // 1 rarely - 10 often
 };
 
 struct SW_Enemy_Map {
@@ -135,6 +138,7 @@ enum DropState {
 };
 
 struct SW_Drop {
+    unsigned int chance = 0; // 1 min - 10 max
     int timeToLive = -1; // -1 пока есть место в буфере
     int livingTime = 0; // сколько прожил после падения
     SW_Type type;

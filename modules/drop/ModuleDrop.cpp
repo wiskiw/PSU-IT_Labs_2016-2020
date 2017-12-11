@@ -84,8 +84,6 @@ void mdlDropAction(GameFieldStruct *thisGame, SW_Drop drop) {
 }
 
 SW_Drop mdlDropGetNew(GameFieldStruct *thisGame, DropSpawnType dropSpawnType) {
-
-    SW_Type type = dropSpawnType == DROP_SPAWN_TYPE_ENEMY ? getRandomEnemyDropType() : getRandomWorldDropType();
-
-    return getDrop(thisGame, type);
+    return dropSpawnType == DROP_SPAWN_TYPE_ENEMY ?
+           getRandomEnemyDrop(thisGame) : getRandomWorldDrop(thisGame);
 }
