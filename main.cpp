@@ -22,6 +22,7 @@
 #include "modules/drop/ModuleDrop.h"
 #include "resources/MusicManager.h"
 #include "resources/SoundManager.h"
+#include "resources/TextureManager.h"
 
 
 const int WINDOW_X = 1100;
@@ -149,11 +150,11 @@ void onRedraw() {
 
     // вызываем методы обновления игровых структур только в состоянии PLAY или PAUSE_MENU
     if (thisGame.gameState == GAME_STATE_PLAY || thisGame.gameState == GAME_STATE_PAUSE_MENU) {
-        mdlPlayerUpdate(&thisGame);
-        mdlBulletUpdateAll(&thisGame);
-        mdlEnemyUpdateAll(&thisGame);
         mdlBackgroundUpdate(&thisGame);
         mdlDropUpdate(&thisGame);
+        mdlEnemyUpdateAll(&thisGame);
+        mdlPlayerUpdate(&thisGame);
+        mdlBulletUpdateAll(&thisGame);
     }
 
 
@@ -172,6 +173,9 @@ void onEnemyShoot(SW_Bullet bullet) {
 }
 
 void onEnemyDamage(SW_Enemy enemy, SW_Bullet bullet) {
+    if (bullet.state != BULLET_STATE_UNDEFINED) {
+        mdlBulletDrawBulletHit(bullet);
+    }
     if (enemy.health <= 0) {
         // убит
         sndEnemyDead();
@@ -202,8 +206,12 @@ void onPlayerTakeDrop(SW_Drop drop) {
     sndTakeDrop();
 }
 
-void onPlayerHealthChanged(SW_Player player) {
-    if (player.health <= 0) {
+void onPlayerHealthChanged(SW_Bullet bullet) {
+    if (bullet.state != BULLET_STATE_UNDEFINED) {
+        mdlBulletDrawBulletHit(bullet);
+    }
+
+    if (thisGame.player.health <= 0) {
         gameOver();
     } else {
         sndPlayerDamage();
@@ -236,6 +244,7 @@ void initGame() {
               << std::endl;
 
     mscInit(&thisGame);
+    txtInit(&thisGame);
     sndInit(&thisGame);
 
     mscPlayMenuMusic(false, RM_MUSIC_VOLUME_MIDLE);
@@ -349,9 +358,11 @@ void onUIItemSelect(GameState state, int select) {
                         // игра окончена: новый рекорд
                         std::cout << "[INFO] GAME OVER - New record: " << thisGame.score << std::endl;
                         updateRecordTable(thisGame.positionInRecordTable, thisGame.score);
+                        thisGame.gameState = GAME_STATE_ADD_NEW_RECORD;
+                    } else {
+                        thisGame.gameState = GAME_STATE_MAIN_MENU;
                     }
                     mscPlayMenuMusic(false, RM_MUSIC_VOLUME_MIDLE);
-                    thisGame.gameState = GAME_STATE_ADD_NEW_RECORD;
                     break;
                 case 1:
                     // continue
@@ -415,11 +426,14 @@ int main(int args, char **argv) {
 
     glutInitWindowPosition(posX, posY);
     glutInitWindowSize(WINDOW_X, WINDOW_Y);
-    glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
+    glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
     glutCreateWindow("Star Wars");
     glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glDepthFunc(GL_LEQUAL);    // Set the type of depth-test
+    glEnable(GL_ALPHA_TEST);
     glEnable(GL_DEPTH_TEST);
+    //glDepthFunc(GL_LESS);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     glClearColor(0, 0, 0, 0);
 

@@ -15,7 +15,6 @@ float divinerX = 10;
 float divinerY = 10;
 int maxElementPos = 0;
 
-float const UI_Z = 15;
 
 const SW_Color HEALTH_BAR_COLOR = {255, 0, 0};
 const SW_Color RELOAD_BAR_COLOR = {255, 0, 255};
@@ -53,16 +52,8 @@ SW_Borders getDrawBorders(int cellPos, int cellSize) {
     return drawBorders;
 }
 
-void drawBorders(SW_Color color, SW_Borders drawBorders) {
-    glLineWidth(2);
-    glBegin(GL_LINE_LOOP);
-    utilsSelectColor(color);
-    glVertex3f(drawBorders.leftBottomX, drawBorders.leftBottomY, UI_Z + 0.01f);
-    glVertex3f(drawBorders.leftBottomX, drawBorders.rightTopY, UI_Z + 0.01f);
-    glVertex3f(drawBorders.rightTopX, drawBorders.rightTopY, UI_Z + 0.01f);
-    glVertex3f(drawBorders.rightTopX, drawBorders.leftBottomY, UI_Z + 0.01f);
-    glEnd();
-    glLineWidth(1);
+void drawElementBorders(SW_Color color, SW_Borders drawBorders) {
+    utilsDrawBorders(drawBorders, color, 2, PREF_UI_Z_POS + 0.2f);
 }
 
 void drawBar(float maxValue, float currentValue, SW_Color color, SW_Borders borders) {
@@ -71,41 +62,57 @@ void drawBar(float maxValue, float currentValue, SW_Color color, SW_Borders bord
     percent = percent > 100 ? 100 : percent;
     float xPX = (borders.rightTopX - borders.leftBottomX) * percent / 100;
 
+
+    SW_Color colorBright = color;
+    colorBright.A = 255;
+
+    SW_Color colorDark = color;
+    colorDark.A = 200;
+
+    SW_Color colorEmptyBright = color;
+    colorEmptyBright.A = 160;
+
+    SW_Color colorEmptyDark = color;
+    colorEmptyDark.A = 120;
+
+    SW_Color colorBorders = color;
+    colorBorders.A = 150;
+
+    //utilsConcatColors(&colorDark, -55, -55, -55, 0);
+    //utilsConcatColors(&colorEmptyBright, -90, -90, -90, 0);
+    //utilsConcatColors(&colorEmptyDark, -120, -120, -120, 0);
+    //utilsConcatColors(&colorEmptyDark, 20, 20, 20, 0);
+    //utilsConcatColors(&colorBorders, -140, -140, -140, 0);
+
+
     glPushMatrix();
 
     glBegin(GL_POLYGON);
-    color.A = 200;
-    utilsSelectColor(color);
-    glVertex3f(borders.leftBottomX, borders.leftBottomY, UI_Z);
+    utilsSelectColor(colorDark);
+    glVertex3f(borders.leftBottomX, borders.leftBottomY, PREF_UI_Z_POS);
 
-    color.A = 255;
-    utilsSelectColor(color);
-    glVertex3f(borders.leftBottomX, borders.rightTopY, UI_Z);
-    glVertex3f(borders.leftBottomX + xPX, borders.rightTopY, UI_Z);
+    utilsSelectColor(colorBright);
+    glVertex3f(borders.leftBottomX, borders.rightTopY, PREF_UI_Z_POS);
+    glVertex3f(borders.leftBottomX + xPX, borders.rightTopY, PREF_UI_Z_POS);
 
-    color.A = 200;
-    utilsSelectColor(color);
-    glVertex3f(borders.leftBottomX + xPX, borders.leftBottomY, UI_Z);
+    utilsSelectColor(colorDark);
+    glVertex3f(borders.leftBottomX + xPX, borders.leftBottomY, PREF_UI_Z_POS);
     glEnd();
 
 
     glBegin(GL_POLYGON);
-    color.A = 120;
-    utilsSelectColor(color);
-    glVertex3f(borders.leftBottomX + xPX, borders.leftBottomY, UI_Z);
+    utilsSelectColor(colorEmptyDark);
+    glVertex3f(borders.leftBottomX + xPX, borders.leftBottomY, PREF_UI_Z_POS);
 
-    color.A = 160;
-    utilsSelectColor(color);
-    glVertex3f(borders.leftBottomX + xPX, borders.rightTopY, UI_Z);
+    utilsSelectColor(colorEmptyBright);
+    glVertex3f(borders.leftBottomX + xPX, borders.rightTopY, PREF_UI_Z_POS);
+    glVertex3f(borders.rightTopX, borders.rightTopY, PREF_UI_Z_POS);
 
-    color.A = 120;
-    utilsSelectColor(color);
-    glVertex3f(borders.rightTopX, borders.rightTopY, UI_Z);
-    glVertex3f(borders.rightTopX, borders.leftBottomY, UI_Z);
+    utilsSelectColor(colorEmptyDark);
+    glVertex3f(borders.rightTopX, borders.leftBottomY, PREF_UI_Z_POS);
     glEnd();
 
-    color.A = 150;
-    drawBorders(color, borders);
+    drawElementBorders(colorBorders, borders);
 
     glPopMatrix();
 
@@ -145,24 +152,24 @@ void drawScore(GameFieldStruct *thisGame) {
     scoreTextPos.x = borders.leftBottomX + (elementWidth - textWidth) / 2;
     scoreTextPos.y = borders.leftBottomY +
                      ((borders.rightTopY - borders.leftBottomY) - FONT_HEIGHT / PREF_SCREEN_CROP_FACTOR / 2) / 2;
-    scoreTextPos.z = UI_Z + 0.01f;
+    scoreTextPos.z = PREF_UI_Z_POS + 0.01f;
     utilsDrawText(scoreTextPos, COLOR, FONT, scoreStr);
     COLOR.A = 150;
-    drawBorders(COLOR, borders);
+    drawElementBorders(COLOR, borders);
 }
 
 void drawInterfaceBorder(GameFieldStruct *thisGame) {
-    utilsDrawBorders(thisGame->interfaceBorders, GAME_BORDER_LINE_COLOR, 4);
+    utilsDrawBorders(thisGame->interfaceBorders, GAME_BORDER_LINE_COLOR, 2, PREF_UI_Z_POS + 0.5f);
 }
 
 void drawInterfaceBackground(GameFieldStruct *thisGame) {
     glPushMatrix();
     glBegin(GL_POLYGON);
     utilsSelectColor(UI_BACKGROUND_COLOR);
-    glVertex3f(interfaceBorders.leftBottomX, interfaceBorders.leftBottomY, UI_Z - 0.01f);
-    glVertex3f(interfaceBorders.leftBottomX, interfaceBorders.rightTopY, UI_Z - 0.01f);
-    glVertex3f(interfaceBorders.rightTopX, interfaceBorders.rightTopY, UI_Z - 0.01f);
-    glVertex3f(interfaceBorders.rightTopX, interfaceBorders.leftBottomY, UI_Z - 0.01f);
+    glVertex3f(interfaceBorders.leftBottomX, interfaceBorders.leftBottomY, PREF_UI_Z_POS - 0.01f);
+    glVertex3f(interfaceBorders.leftBottomX, interfaceBorders.rightTopY, PREF_UI_Z_POS - 0.01f);
+    glVertex3f(interfaceBorders.rightTopX, interfaceBorders.rightTopY, PREF_UI_Z_POS - 0.01f);
+    glVertex3f(interfaceBorders.rightTopX, interfaceBorders.leftBottomY, PREF_UI_Z_POS - 0.01f);
     glEnd();
     glPopMatrix();
 }

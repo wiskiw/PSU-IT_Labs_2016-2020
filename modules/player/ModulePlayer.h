@@ -10,7 +10,7 @@
 
 void mdlPlayerSetShootListener(void (*callback)(SW_Bullet));
 
-void mdlPlayerSetHealthListener(void (*callback)(SW_Player));
+void mdlPlayerSetHealthListener(void (*callback)(SW_Bullet));
 
 void mdlPlayerSetTakeDropListener(void (*callback)(SW_Drop));
 

@@ -75,16 +75,16 @@ void checkEnemyForHit(GameFieldStruct *thisGame, SW_Enemy *enemy) {
         if (utilsIsPosInBorders(bullet->pos, enemy->hitBox)) {
             // hit
 
-            bullet->state = BULLET_STATE_UNDEFINED;
             enemy->health -= bullet->damage;
             thisGame->enemyMap.enemiesHealth -= bullet->damage;
+            if (enemyDamageListener != nullptr) {
+                enemyDamageListener(*enemy, *bullet);
+            }
+            bullet->state = BULLET_STATE_UNDEFINED;
             if (enemy->health <= 0) {
                 // killed
                 enemyKillEnemy(thisGame, enemy);
                 enemySpawnTicksCounter += getSpawnTickValue(thisGame) / 8;
-            }
-            if (enemyDamageListener != nullptr) {
-                enemyDamageListener(*enemy, *bullet);
             }
         }
     }
@@ -124,6 +124,7 @@ void mdlEnemyUpdateAll(GameFieldStruct *thisGame) {
             SW_Pos gunPos = enemy->pos;
             utilsMovePos(&gunPos, enemy->gunPosValue);
 
+            redrawEnemy(thisGame, enemy);
             if (enemy->pos.y <= thisGame->gameBorders.leftBottomY) {
                 enemy->state = ENEMY_STATE_UNDEFINED;
                 enCounter--;
@@ -142,8 +143,9 @@ void mdlEnemyUpdateAll(GameFieldStruct *thisGame) {
 
                 checkEnemyForHit(thisGame, enemy);
             }
+        } else {
+            redrawEnemy(thisGame, enemy);
         }
-        redrawEnemy(thisGame, enemy);
     }
 
 

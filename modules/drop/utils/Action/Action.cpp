@@ -12,7 +12,7 @@ void action1(GameFieldStruct *thisGame, SW_Drop *thisDrop) {
 void action2(GameFieldStruct *thisGame, SW_Drop *thisDrop) {
     for (int k = 0; k < thisGame->enemyMap.maxNumber; k++) {
         SW_Enemy *enm = &thisGame->enemyMap.list[k];
-        if (enm->state != ENEMY_STATE_UNDEFINED){
+        if (enm->state != ENEMY_STATE_UNDEFINED) {
             thisGame->score += enm->score;
             enm->state = ENEMY_STATE_UNDEFINED;
         }

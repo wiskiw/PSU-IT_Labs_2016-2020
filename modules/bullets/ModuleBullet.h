@@ -11,6 +11,8 @@ void mdlBulletUpdateAll(GameFieldStruct *thisGame);
 
 void mdlBulletInitAll(GameFieldStruct *thisGame);
 
+void mdlBulletDrawBulletHit(SW_Bullet bullet);
+
 void mdlBulletAddNew(GameFieldStruct *thisGame, SW_Bullet bullet);
 
 

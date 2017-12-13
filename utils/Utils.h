@@ -12,9 +12,13 @@ int random(int start, int end);
 
 float random(float start, float end);
 
-void utilsDrawBorders(SW_Borders borders, SW_Color color, int width);
+void utilsDrawBorders(SW_Borders borders, SW_Color color, int width, float z);
+
+void utilsDrawHitBox(SW_Borders borders, SW_Color color);
 
 void utilsSelectColor(SW_Color color);
+
+void utilsConcatColors(SW_Color *colorResult, int r, int g, int b, int a);
 
 void utilsMoveBorers(SW_Borders *borders, SW_Pos movPosValue);
 

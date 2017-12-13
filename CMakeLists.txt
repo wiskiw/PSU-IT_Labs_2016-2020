@@ -44,22 +44,24 @@ set(SOURCE_FILES
         resources/MusicManager.cpp
         resources/MusicManager.h
         resources/SoundManager.cpp
-        resources/SoundManager.h)
+        resources/SoundManager.h
+        resources/TextureManager.cpp
+        resources/TextureManager.h)
 
-add_executable(Course_Paper ${SOURCE_FILES})
+add_executable(${PROJECT_NAME} ${SOURCE_FILES})
 
-
+# OpenGl (GLUT)
 find_package(OpenGL REQUIRED)
 find_package(GLUT REQUIRED)
 
 include_directories(${OPENGL_INCLUDE_DIRS} ${GLUT_INCLUDE_DIRS})
-
 target_link_libraries(${PROJECT_NAME} ${OPENGL_LIBRARIES} ${GLUT_LIBRARY})
 
 
+# SFML
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake_modules")
 find_package(SFML REQUIRED system window graphics network audio)
 if (SFML_FOUND)
     include_directories(${SFML_INCLUDE_DIR})
-    target_link_libraries(Course_Paper ${SFML_LIBRARIES})
+    target_link_libraries(${PROJECT_NAME} ${SFML_LIBRARIES})
 endif ()

@@ -8,6 +8,7 @@
 #include "../../utils/Utils.h"
 #include "../../io/IOProcessor.h"
 #include "../../resources/SoundManager.h"
+#include "../../resources/TextureManager.h"
 
 const SW_Color DIALOG_BACKGROUND_COLOR = {50, 50, 50};
 const SW_Color DIALOG_UNDERDIALOG_BACKGROUND_COLOR = {1, 1, 1, 100};
@@ -33,7 +34,6 @@ const float DIVINER_X = 5;
 const float DIVINER_Y = 5;
 const float MENU_ITEM_WIDTH = 150;
 const float MENU_ITEM_HEIGHT = 25;
-const float DIALOG_Z_POS = 15;
 
 void *MENU_ITEM_FONT = GLUT_BITMAP_HELVETICA_18;
 const float MENU_ITEM_FONT_CHAR_HEIGHT = 18 / PREF_SCREEN_CROP_FACTOR;
@@ -73,7 +73,7 @@ void colorUnderdialogBackground(GameFieldStruct *thisGame) {
     float x = thisGame->windowX / PREF_SCREEN_CROP_FACTOR;
     float y = thisGame->windowY / PREF_SCREEN_CROP_FACTOR;
     glPushMatrix();
-    glTranslatef(0, 0, DIALOG_Z_POS - 0.05f);
+    glTranslatef(0, 0, PREF_DIALOG_Z_POS - 0.05f);
     glBegin(GL_POLYGON);
     utilsSelectColor(DIALOG_UNDERDIALOG_BACKGROUND_COLOR);
     glVertex2f(0, 0);
@@ -86,7 +86,7 @@ void colorUnderdialogBackground(GameFieldStruct *thisGame) {
 
 void drawDialogBackground(SW_Pos backgroundPos, float dialogWidth, float dialogHeight) {
     glPushMatrix();
-    glTranslatef(backgroundPos.x, backgroundPos.y, DIALOG_Z_POS);
+    glTranslatef(backgroundPos.x, backgroundPos.y, PREF_DIALOG_Z_POS);
     glBegin(GL_POLYGON);
     utilsSelectColor(DIALOG_BACKGROUND_COLOR);
     glVertex2f(0, 0);
@@ -101,7 +101,7 @@ SW_Pos getStartDrawingPosition(GameFieldStruct *thisGame, float dialogWidth, flo
     SW_Pos dialogPos;
     dialogPos.x = thisGame->windowX / 2 / PREF_SCREEN_CROP_FACTOR - (dialogWidth / 2);
     dialogPos.y = thisGame->windowY / 2 / PREF_SCREEN_CROP_FACTOR - (dialogHeight / 2);
-    dialogPos.z = DIALOG_Z_POS;
+    dialogPos.z = PREF_DIALOG_Z_POS;
     return dialogPos;
 }
 
@@ -145,7 +145,7 @@ void drawButton(SW_Borders buttonBorders, DialogButton button) {
     SW_Color textColor = getMenuItemTextColor(button.state);
 
     glPushMatrix();
-    glTranslatef(0, 0, DIALOG_Z_POS + 0.01f);
+    glTranslatef(0, 0, PREF_DIALOG_Z_POS + 0.01f);
     glBegin(GL_POLYGON);
     utilsSelectColor(bgColor);
     glVertex2f(buttonBorders.leftBottomX, buttonBorders.leftBottomY);
@@ -205,15 +205,13 @@ void menuUpdateMenuItemState(GameFieldStruct *thisGame, GAME_Menu *menu, DialogB
 }
 
 void drawMenu(GameFieldStruct *thisGame, GAME_Menu menu) {
-    colorUnderdialogBackground(thisGame);
-
     const float menuBackgroundWidth = MENU_ITEM_WIDTH + 2 * DIVINER_X;
     const float menuBackgroundHeight = (MENU_ITEM_HEIGHT + DIVINER_Y) * menu.itemsNumber + DIVINER_Y;
 
     SW_Pos menuBackgroundPos = getStartDrawingPosition(thisGame, menuBackgroundWidth, menuBackgroundHeight);
 
     glPushMatrix();
-    glTranslatef(menuBackgroundPos.x, menuBackgroundPos.y, DIALOG_Z_POS);
+    glTranslatef(menuBackgroundPos.x, menuBackgroundPos.y, PREF_DIALOG_Z_POS);
     glBegin(GL_POLYGON);
     utilsSelectColor(DIALOG_BACKGROUND_COLOR);
     glVertex2f(0, 0);
@@ -224,7 +222,7 @@ void drawMenu(GameFieldStruct *thisGame, GAME_Menu menu) {
     glPopMatrix();
 
     glPushMatrix();
-    glTranslatef(0, 0, DIALOG_Z_POS + 0.01f);
+    glTranslatef(0, 0, PREF_DIALOG_Z_POS + 0.01f);
     for (int i = 0; i < menu.itemsNumber; ++i) {
         SW_Borders menuItemBorders = getMenuItemBorders(i, menuBackgroundPos, MENU_ITEM_WIDTH, MENU_ITEM_HEIGHT);
 
@@ -236,7 +234,7 @@ void drawMenu(GameFieldStruct *thisGame, GAME_Menu menu) {
         char *menuItemLabel = menu.items[i].label;
         SW_Pos pos = {menuItemBorders.leftBottomX + (MENU_ITEM_WIDTH - getStringWidthPX(menuItemLabel)) / 2,
                       menuItemBorders.leftBottomY + (MENU_ITEM_HEIGHT - MENU_ITEM_FONT_CHAR_HEIGHT) / 2,
-                      DIALOG_Z_POS + 0.02f};
+                      PREF_DIALOG_Z_POS + 0.02f};
         utilsDrawText(pos, textColor, MENU_ITEM_FONT, menuItemLabel);
 
         utilsSelectColor(bgColor);
@@ -259,6 +257,7 @@ void dialogDrawPauseMenu(GameFieldStruct *thisGame) {
     strncpy(pauseMenu.items[1].label, "Continue", 9);
     strncpy(pauseMenu.items[0].label, "Main Menu", 10);
     drawMenu(thisGame, pauseMenu);
+    colorUnderdialogBackground(thisGame);
 }
 
 int dialogProcessPauseMenuRowClick(GameFieldStruct *thisGame, int key, int x, int y) {
@@ -286,6 +285,31 @@ void dialogDrawMainMenu(GameFieldStruct *thisGame) {
     strncpy(mainMenu.items[1].label, "Records", 8);
     strncpy(mainMenu.items[0].label, "Exit", 5);
     drawMenu(thisGame, mainMenu);
+
+    float x = thisGame->windowX / PREF_SCREEN_CROP_FACTOR;
+    float y = thisGame->windowY / PREF_SCREEN_CROP_FACTOR;
+
+    glPushMatrix();
+
+    glTranslatef(0, 0, PREF_DIALOG_Z_POS - 0.05f);
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, txtGetMainMenuBackgroundTexture());
+
+    glBegin(GL_POLYGON);
+    utilsSelectColor({0, 0, 0, 110});
+    glTexCoord2f(0, 0);
+    glVertex2f(0, 0);
+    glTexCoord2f(0, 1);
+    glVertex2f(0, y);
+    glTexCoord2f(1, 1);
+    glVertex2f(x, y);
+    glTexCoord2f(1, 0);
+    glVertex2f(x, 0);
+    glEnd();
+
+    glDisable(GL_TEXTURE_2D);
+
+    glPopMatrix();
 }
 
 int dialogProcessMainMenuRowClick(GameFieldStruct *thisGame, int key, int x, int y) {
@@ -348,7 +372,7 @@ SW_Borders getRecordListRowItemBorders(SW_Borders recordListRowBorders, int rowI
 void drawRecordList(GameFieldStruct *thisGame, SW_Pos backgroundPos) {
     // Отрисовка таблицы
     glPushMatrix();
-    glTranslatef(0, 0, DIALOG_Z_POS + 0.01f);
+    glTranslatef(0, 0, PREF_DIALOG_Z_POS + 0.01f);
     for (int recordRowIndex = 0; recordRowIndex < PREF_RECORD_LIST_SIZE; ++recordRowIndex) {
         SW_Record record = thisGame->recordList[recordRowIndex];
 
@@ -485,7 +509,7 @@ void dialogDrawRecordListAddNew(GameFieldStruct *thisGame) {
         SW_Borders itemBorders = getRecordListRowItemBorders(recordListRowBorders, RECORD_LIST_ROW_ITEMS_NAME_INDEX);
 
         glPushMatrix();
-        glTranslatef(0, 0, DIALOG_Z_POS + 0.02f);
+        glTranslatef(0, 0, PREF_DIALOG_Z_POS + 0.02f);
         SW_Pos pos = {itemBorders.leftBottomX + (itemBorders.rightTopX - itemBorders.leftBottomX) / 2 +
                       getStringWidthPX(nameString) / 2,
                       recordListRowBorders.leftBottomY + (RECORD_LIST_ROW_HEIGHT - MENU_ITEM_FONT_CHAR_HEIGHT) / 2,
@@ -535,7 +559,7 @@ void drawEnterToContinue(GameFieldStruct *thisGame) {
     const char text[] = "Press Enter to continue...";
 
     glPushMatrix();
-    glTranslatef(0, 0, DIALOG_Z_POS - 0.05f);
+    glTranslatef(0, 0, PREF_DIALOG_Z_POS - 0.05f);
 
     float textWidth = 0;
     const size_t len = strlen(text);
@@ -555,7 +579,7 @@ void dialogDrawGameOver(GameFieldStruct *thisGame) {
     drawEnterToContinue(thisGame);
 
     glPushMatrix();
-    glTranslatef(0, 0, DIALOG_Z_POS - 0.05f);
+    glTranslatef(0, 0, PREF_DIALOG_Z_POS - 0.05f);
     char textGameOver[] = "GAME OVER!";
     SW_Color textColor = {255, 0, 0};
     SW_Pos textPos = {thisGame->windowX / PREF_SCREEN_CROP_FACTOR / 2 - getStringWidthPX(textGameOver) / 2,
@@ -568,7 +592,7 @@ void dialogDrawGameOverNewRecord(GameFieldStruct *thisGame) {
     drawEnterToContinue(thisGame);
 
     glPushMatrix();
-    glTranslatef(0, 0, DIALOG_Z_POS - 0.05f);
+    glTranslatef(0, 0, PREF_DIALOG_Z_POS - 0.05f);
     char textGameOver[] = "GAME OVER!";
     char textNewRecord[] = "NEW RECORD!";
     SW_Color textColor = {255, 0, 0};

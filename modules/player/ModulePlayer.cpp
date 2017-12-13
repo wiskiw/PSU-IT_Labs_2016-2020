@@ -7,8 +7,9 @@
 #include "../../gp-elements/gun/gpeGun.h"
 #include "../../gp-elements/gun/list/gun-list.h"
 #include "../../gp-elements/bullet/list/bullet-list.h"
+#include "../../resources/TextureManager.h"
 
-const float SCALE = 4;
+const float SCALE = 4.86f;
 const SW_Color PLAYER_HIT_BOX_COLOR = {255, 0, 255};
 
 
@@ -16,7 +17,7 @@ int previewSideShoot = 1;
 
 void (*playerShootListener)(SW_Bullet) = nullptr;
 
-void (*playerHealthListener)(SW_Player) = nullptr;
+void (*playerHealthListener)(SW_Bullet) = nullptr;
 
 void (*playerTakeDrop)(SW_Drop) = nullptr;
 
@@ -25,7 +26,7 @@ void mdlPlayerSetShootListener(void (*callback)(SW_Bullet)) {
     playerShootListener = callback;
 }
 
-void mdlPlayerSetHealthListener(void (*callback)(SW_Player)) {
+void mdlPlayerSetHealthListener(void (*callback)(SW_Bullet)) {
     playerHealthListener = callback;
 }
 
@@ -33,9 +34,10 @@ void mdlPlayerSetTakeDropListener(void (*callback)(SW_Drop)) {
     playerTakeDrop = callback;
 }
 
-
 void checkPlayerForHit(GameFieldStruct *thisGame) {
     SW_Player *player = &thisGame->player;
+    SW_Bullet nullBullet;
+    nullBullet.state = BULLET_STATE_UNDEFINED;
 
     // в игрока попала пуля
     for (int i = 0; i < thisGame->bulletMap.maxNumber; ++i) {
@@ -47,11 +49,12 @@ void checkPlayerForHit(GameFieldStruct *thisGame) {
         if (utilsIsPosInBorders(bullet->pos, player->hitBox)) {
             // hit
 
-            bullet->state = BULLET_STATE_UNDEFINED;
             player->health -= bullet->damage;
             if (playerHealthListener != nullptr) {
-                playerHealthListener(*player);
+                playerHealthListener(*bullet);
             }
+            bullet->state = BULLET_STATE_UNDEFINED;
+
         }
     }
 
@@ -75,7 +78,7 @@ void checkPlayerForHit(GameFieldStruct *thisGame) {
             thisGame->enemyMap.enemiesHealth -= enemy->health;
             player->health -= enemy->health;
             if (playerHealthListener != nullptr) {
-                playerHealthListener(*player);
+                playerHealthListener(nullBullet);
             }
         }
     }
@@ -95,7 +98,7 @@ void checkPlayerForHit(GameFieldStruct *thisGame) {
                 playerTakeDrop(*drop);
             }
             if (player->health != previewPlayerHealth) {
-                playerHealthListener(*player);
+                playerHealthListener(nullBullet);
             }
         }
     }
@@ -109,12 +112,13 @@ void mdlPlayerUpdate(GameFieldStruct *thisGame) {
     gpeGunUpdateShootingDelay(&player->gun);
     glPushMatrix();
     glTranslatef(player->pos.x, player->pos.y, player->pos.z);
+    glScalef(SCALE, SCALE, 0);
 
     switch (player->state) {
         case PLAYER_STATE_GOING_LEFT:
             // going left
-            glRotated(15, false, true, false);
-            glRotated(5, false, false, true);
+            glRotated(25, false, true, false);
+            glRotated(2, false, false, true);
             break;
         case PLAYER_STATE_STAY_FORWARD:
             // stay forward
@@ -122,27 +126,40 @@ void mdlPlayerUpdate(GameFieldStruct *thisGame) {
             break;
         case PLAYER_STATE_GOING_RIGHT:
             // going right
-            glRotated(-15, false, true, false);
-            glRotated(-5, false, false, true);
+            glRotated(-25, false, true, false);
+            glRotated(-2, false, false, true);
 
             break;
     }
 
+
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, txtGetPlayerTexture());
     glBegin(GL_POLYGON);
-    glColor3ub(183, 183, 183);
-    glVertex3f(0 * SCALE, 5 * SCALE, 0);
-    glVertex3f(5 * SCALE, -5 * SCALE, 0);
-    glVertex3f(-5 * SCALE, -5 * SCALE, 0);
+    glColor4ub(1, 1, 1, 255);
+    glTexCoord2f(0, 0);
+    glVertex2f(-5, -5);
+    glTexCoord2f(0, 1);
+    glVertex2f(-5, 5);
+    glTexCoord2f(1, 1);
+    glVertex2f(5, 5);
+    glTexCoord2f(1, 0);
+    glVertex2f(5, -5);
+
     glEnd();
+    glDisable(GL_TEXTURE_2D);
+
     glPopMatrix();
 
-    player->hitBox.leftBottomX = static_cast<int>(player->pos.x - 5 * SCALE);
+    player->hitBox.leftBottomX = static_cast<int>(player->pos.x - 3.5f * SCALE);
     player->hitBox.leftBottomY = static_cast<int>(player->pos.y - 5 * SCALE);
-    player->hitBox.rightTopX = static_cast<int>(player->pos.x + 5 * SCALE);
+    player->hitBox.rightTopX = static_cast<int>(player->pos.x + 3.5f * SCALE);
     player->hitBox.rightTopY = static_cast<int>(player->pos.y + 5 * SCALE);
 
-    if (PREF_DRAW_HIT_BOX)
-        utilsDrawBorders(player->hitBox, PLAYER_HIT_BOX_COLOR, 1);
+    if (PREF_DRAW_HIT_BOX) {
+        utilsDrawHitBox(player->hitBox, PLAYER_HIT_BOX_COLOR);
+    }
+
 
     checkPlayerForHit(thisGame);
 }

@@ -4,6 +4,7 @@
 
 #include "ModuleBullet.h"
 #include "../../utils/Utils.h"
+#include "../../resources/TextureManager.h"
 
 void mdlBulletUpdateAll(GameFieldStruct *thisGame) {
     for (int i = 0; i < thisGame->bulletMap.maxNumber; ++i) {
@@ -36,6 +37,33 @@ void mdlBulletUpdateAll(GameFieldStruct *thisGame) {
             }
         }
     }
+}
+
+
+void mdlBulletDrawBulletHit(SW_Bullet bullet) {
+    const float scale = bullet.damage / 3 * random(1.2f, 1.6f);
+    glPushMatrix();
+    glTranslatef(bullet.pos.x, bullet.pos.y, PREF_HIT_Z_POS);
+    glRotatef(random(0, 360), false, false, true);
+    glScalef(scale, scale, 0);
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, txtGetRandomHitTexture());
+    glBegin(GL_POLYGON);
+    glColor4ub(1, 1, 1, 255);
+    glTexCoord2f(0, 0);
+    glVertex2f(-5, -5);
+    glTexCoord2f(0, 1);
+    glVertex2f(-5, 5);
+    glTexCoord2f(1, 1);
+    glVertex2f(5, 5);
+    glTexCoord2f(1, 0);
+    glVertex2f(5, -5);
+
+    glEnd();
+    glDisable(GL_TEXTURE_2D);
+
+    glPopMatrix();
+
 }
 
 // добавление пули в кэш

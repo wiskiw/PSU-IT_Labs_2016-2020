@@ -87,6 +87,7 @@ struct SW_Enemy {
     SW_Pos gunPosValue; // относительно центра родителя;
     SW_Speed speed;
     SW_Type type;
+    unsigned int textureIndex = 0;
     SW_Borders hitBox;
     float health;
     float originHealth;
@@ -120,11 +121,19 @@ struct SW_Player {
     SW_Speed speed;
 };
 
+struct SW_Planet {
+    SW_Pos pos;
+    SW_Speed speed;
+    int textureIndex = -1;
+    float size = 1;
+};
+
 struct SW_Background {
     SW_Type type;
     const static int starNumber = PREF_STARS_NUMBER;
 
     SW_Star stars[starNumber];
+    SW_Planet planet;
 };
 
 

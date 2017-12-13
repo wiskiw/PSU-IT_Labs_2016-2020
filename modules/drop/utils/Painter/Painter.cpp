@@ -4,39 +4,50 @@
 
 #include "Painter.h"
 #include "../../../../utils/Utils.h"
+#include "../../../../resources/TextureManager.h"
 
 
 const SW_Color DROP_HIT_BOX_COLOR = {255, 0, 255};
 
 
 void redraw1(GameFieldStruct *thisGame, SW_Drop *drop) {
-
     glEnable(GL_SMOOTH);
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, txtGetDropTexture(6));
     glBegin(GL_POLYGON);
-    glColor3ub(0, 0, 255);
-    glVertex2f(-PREF_DROP_WIDTH / 2, -PREF_DROP_HEIGHT / 2);
-    glColor3ub(0, 255, 0);
-    glVertex2f(-PREF_DROP_WIDTH / 2, PREF_DROP_HEIGHT / 2);
-    glColor3ub(255, 0, 0);
-    glVertex2f(PREF_DROP_WIDTH / 2, PREF_DROP_HEIGHT / 2);
-    glColor3ub(255, 181, 33);
-    glVertex2f(PREF_DROP_WIDTH / 2, -PREF_DROP_HEIGHT / 2);
-    glEnd();
 
+    glColor4ub(0, 0, 0, 255);
+    glTexCoord2f(0, 0);
+    glVertex2f(-PREF_DROP_WIDTH / 2, -PREF_DROP_HEIGHT / 2);
+    glTexCoord2f(0, 1);
+    glVertex2f(-PREF_DROP_WIDTH / 2, PREF_DROP_HEIGHT / 2);
+    glTexCoord2f(1, 1);
+    glVertex2f(PREF_DROP_WIDTH / 2, PREF_DROP_HEIGHT / 2);
+    glTexCoord2f(1, 0);
+    glVertex2f(PREF_DROP_WIDTH / 2, -PREF_DROP_HEIGHT / 2);
+
+    glEnd();
+    glDisable(GL_TEXTURE_2D);
 }
 
 void redraw2(GameFieldStruct *thisGame, SW_Drop *drop) {
-
     glEnable(GL_SMOOTH);
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, txtGetDropTexture(7));
+
     glBegin(GL_POLYGON);
-    glColor3ub(255, 255, 255);
+    glColor4ub(0, 0, 0, 255);
+    glTexCoord2f(0, 0);
     glVertex2f(-PREF_DROP_WIDTH / 2, -PREF_DROP_HEIGHT / 2);
+    glTexCoord2f(0, 1);
     glVertex2f(-PREF_DROP_WIDTH / 2, PREF_DROP_HEIGHT / 2);
+    glTexCoord2f(1, 1);
     glVertex2f(PREF_DROP_WIDTH / 2, PREF_DROP_HEIGHT / 2);
+    glTexCoord2f(1, 0);
     glVertex2f(PREF_DROP_WIDTH / 2, -PREF_DROP_HEIGHT / 2);
 
     glEnd();
-
+    glDisable(GL_TEXTURE_2D);
 }
 
 
@@ -108,6 +119,6 @@ void redrawDrop(GameFieldStruct *thisGame, SW_Drop *thisDrop) {
 
     glPopMatrix();
     if (PREF_DRAW_HIT_BOX) {
-        utilsDrawBorders(thisDrop->hitBox, DROP_HIT_BOX_COLOR, 1);
+        utilsDrawHitBox(thisDrop->hitBox, DROP_HIT_BOX_COLOR);
     }
 }

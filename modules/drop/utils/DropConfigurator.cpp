@@ -2,8 +2,6 @@
 // Created by wiskiw on 06.12.17.
 //
 
-#include <iostream>
-#include <assert.h>
 #include "../../../utils/Utils.h"
 
 // регистрация типов дрока генерируемые миром

@@ -123,6 +123,10 @@ bool loadMusicList(int size, sf::Music *list, const std::string &namePrefix) {
 }
 
 void mscInit(GameFieldStruct *thisGame) {
+    if (!PREF_ENABLE_MUSIC) {
+        return;
+    }
+
     bool success = true;
 
     success = loadMusicList(MENU_MUSIC_LIST_SIZE, menuMusicList, "music_pause_menu_") ? success : false;

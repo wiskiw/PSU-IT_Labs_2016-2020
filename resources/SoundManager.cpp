@@ -33,6 +33,10 @@ bool loadSound(sf::SoundBuffer &buffer, sf::Sound &sound, const std::string &fil
 }
 
 void sndInit(GameFieldStruct *thisGame) {
+    if (!PREF_ENABLE_SOUNDS) {
+        return;
+    }
+
     bool success = true;
 
     success = loadSound(gun1.buffer, gun1.sound, "gun_0.wav") ? success : false;
