@@ -15,9 +15,19 @@ float divinerX = 10;
 float divinerY = 10;
 int maxElementPos = 0;
 
+void *CELLS_NAME_FONT = GLUT_BITMAP_HELVETICA_12;
+const float CELLS_NAME_FONT_HEIGHT = 12 / PREF_SCREEN_CROP_FACTOR;
+SW_Color CELLS_NAME_TEXT_COLOR = {255, 255, 255};
+
 
 const SW_Color HEALTH_BAR_COLOR = {255, 0, 0};
-const SW_Color RELOAD_BAR_COLOR = {255, 0, 255};
+char HEALTH_BAR_NAME[] = "Health";
+
+
+const SW_Color PRE_RECORD_BAR_COLOR = {255, 0, 255};
+char PRE_RECORD_BAR_NAME[] = "Until new record";
+
+char SCORE_CELL_NAME[] = "Score";
 
 
 const SW_Color GAME_BORDER_LINE_COLOR = {100, 100, 100};
@@ -56,12 +66,24 @@ void drawElementBorders(SW_Color color, SW_Borders drawBorders) {
     utilsDrawBorders(drawBorders, color, 2, PREF_UI_Z_POS + 0.2f);
 }
 
+float getCellNameHeight() {
+    return CELLS_NAME_FONT_HEIGHT + (divinerY + MIN_ELEMENT_DIVINER) / 2;
+}
+
+void drawCellText(SW_Borders borders, char *string) {
+    SW_Pos textPos;
+    textPos.x = borders.leftBottomX;
+    textPos.y = borders.rightTopY - CELLS_NAME_FONT_HEIGHT;
+    textPos.z = PREF_UI_Z_POS;
+    utilsDrawText(textPos, CELLS_NAME_TEXT_COLOR, CELLS_NAME_FONT, string);
+}
+
 void drawBar(float maxValue, float currentValue, SW_Color color, SW_Borders borders) {
     float percent = currentValue * 100 / maxValue;
     percent = percent < 0 ? 0 : percent;
     percent = percent > 100 ? 100 : percent;
     float xPX = (borders.rightTopX - borders.leftBottomX) * percent / 100;
-
+    borders.rightTopY -= getCellNameHeight(); // для названия
 
     SW_Color colorBright = color;
     colorBright.A = 255;
@@ -121,21 +143,60 @@ void drawBar(float maxValue, float currentValue, SW_Color color, SW_Borders bord
 void drawHealth(GameFieldStruct *thisGame) {
     SW_Borders drawBorders = getDrawBorders(1, 5);
     drawBar(PREF_PLAYER_DEFAULT_HEALTH, thisGame->player.health, HEALTH_BAR_COLOR, drawBorders);
+    drawCellText(drawBorders, HEALTH_BAR_NAME);
 }
 
-void drawGunReload(GameFieldStruct *thisGame) {
+void drawPreRecordBar(GameFieldStruct *thisGame) {
+    int lastLowScore = 0;
+    for (int i = PREF_RECORD_LIST_SIZE - 1; i >= 0; i--) {
+        SW_Record record = thisGame->recordList[i];
+        if (record.type != RECORD_TYPE_UNDEFINED) {
+            lastLowScore = record.score;
+            break;
+        }
+    }
+
+    const int thisGameScore = thisGame->score;
+
     SW_Borders drawBorders = getDrawBorders(6, 5);
-    float maxValue = thisGame->player.gun.gunSpeed;
-    drawBar(maxValue, maxValue - thisGame->player.gun.waitBeforeShoot, RELOAD_BAR_COLOR, drawBorders);
+    drawCellText(drawBorders, PRE_RECORD_BAR_NAME);
+    if (thisGameScore <= lastLowScore) {
+        drawBar(lastLowScore, thisGameScore, PRE_RECORD_BAR_COLOR, drawBorders);
+    } else {
+        //new record
+        void *FONT = GLUT_BITMAP_HELVETICA_18;
+        const float FONT_HEIGHT = 18 / PREF_SCREEN_CROP_FACTOR;
+        SW_Color TEXT_COLOR = {255, 255, 255};
+        char newRecordText[] = "NEW RECORD!";
+
+        drawBar(1, 1, PRE_RECORD_BAR_COLOR, drawBorders);
+
+        SW_Pos scoreTextPos;
+        float textWidth = 0;
+        for (unsigned int i = 0; i < strlen(newRecordText); i++)
+            textWidth += glutBitmapWidth(FONT, newRecordText[i]);
+        textWidth = textWidth / PREF_SCREEN_CROP_FACTOR;
+
+
+        drawBorders.rightTopY -= getCellNameHeight();
+        const float elementWidth = drawBorders.rightTopX - drawBorders.leftBottomX;
+        scoreTextPos.x = drawBorders.leftBottomX + (elementWidth - textWidth) / 2;
+        scoreTextPos.y = drawBorders.leftBottomY +
+                         ((drawBorders.rightTopY - drawBorders.leftBottomY) -
+                          FONT_HEIGHT / 2) / 2;
+        scoreTextPos.z = PREF_UI_Z_POS + 0.01f;
+        utilsDrawText(scoreTextPos, TEXT_COLOR, FONT, newRecordText);
+    }
 }
 
 void drawScore(GameFieldStruct *thisGame) {
     const int CELL_SIZE = 2;
     void *FONT = GLUT_BITMAP_HELVETICA_18;
-    const int FONT_HEIGHT = 18;
+    const float FONT_HEIGHT = 18 / PREF_SCREEN_CROP_FACTOR;
     SW_Color COLOR = {255, 255, 255};
 
     SW_Borders borders = getDrawBorders(maxElementPos - CELL_SIZE, CELL_SIZE);
+    drawCellText(borders, SCORE_CELL_NAME);
 
     char scoreStr[16] = "";
     sprintf(scoreStr, "%d", thisGame->score);
@@ -149,9 +210,10 @@ void drawScore(GameFieldStruct *thisGame) {
     textWidth = textWidth / PREF_SCREEN_CROP_FACTOR;
 
     const float elementWidth = elementSize * CELL_SIZE + divinerX * (CELL_SIZE - 1);
+    borders.rightTopY -= getCellNameHeight();
     scoreTextPos.x = borders.leftBottomX + (elementWidth - textWidth) / 2;
     scoreTextPos.y = borders.leftBottomY +
-                     ((borders.rightTopY - borders.leftBottomY) - FONT_HEIGHT / PREF_SCREEN_CROP_FACTOR / 2) / 2;
+                     ((borders.rightTopY - borders.leftBottomY) - FONT_HEIGHT / 2) / 2;
     scoreTextPos.z = PREF_UI_Z_POS + 0.01f;
     utilsDrawText(scoreTextPos, COLOR, FONT, scoreStr);
     COLOR.A = 150;
@@ -184,11 +246,11 @@ void uiUpdate(GameFieldStruct *thisGame) {
     GameState state = thisGame->gameState;
 
     if (state == GAME_STATE_PLAY || state == GAME_STATE_PAUSE_MENU) {
-        drawHealth(thisGame);
-        drawGunReload(thisGame);
-        drawScore(thisGame);
         drawInterfaceBorder(thisGame);
         drawInterfaceBackground(thisGame);
+        drawHealth(thisGame);
+        drawPreRecordBar(thisGame);
+        drawScore(thisGame);
     }
 
     switch (thisGame->gameState) {
