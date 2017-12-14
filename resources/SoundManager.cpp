@@ -7,7 +7,7 @@
 #include "SoundManager.h"
 #include "../utils/Utils.h"
 
-const std::string SOUND_PATH = "../resources/sound/";
+const std::string SOUND_PATH = "resources/sound/";
 
 struct SW_Sound {
     sf::SoundBuffer buffer;

@@ -15,7 +15,7 @@
  */
 
 
-const std::string MUSIC_PATH = "../resources/music/";
+const std::string MUSIC_PATH = "resources/music/";
 typedef int MusicType;
 
 

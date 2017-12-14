@@ -6,7 +6,7 @@
 #include "TextureManager.h"
 #include "../utils/Utils.h"
 
-const std::string TEXTURE_PATH = "../resources/texture/";
+const std::string TEXTURE_PATH = "resources/texture/";
 const std::string TEXTURE_EXTENSION = ".png";
 
 

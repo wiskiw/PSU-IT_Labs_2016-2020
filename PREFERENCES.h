@@ -18,7 +18,7 @@ const int PREF_BULLET_BUFFER_SIZE = 30;
 
 
 // ==== RECORDS =====
-const char PREF_RECORDS_FILE_NAME[] = "example.txt";
+const char PREF_RECORDS_FILE_NAME[] = "record-table.txt";
 const char PREF_DEFAULT_RECORD_NAME[] = "none";
 const char PREF_RECORDS_FILE_SUPER_CHAR = '~';
 // ================
