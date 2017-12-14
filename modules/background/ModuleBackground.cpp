@@ -106,8 +106,8 @@ void mdlBackgroundUpdate(GameFieldStruct *thisGame) {
         SW_Star *star = &thisGame->background.stars[k];
 
         glPushMatrix();
-
         glTranslatef(star->pos.x, star->pos.y, 0);
+        glRotatef(random(0, 360), false, false, true);
 
         glBegin(GL_POLYGON);
         chooseColor(star->color);
