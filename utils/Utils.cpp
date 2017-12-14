@@ -80,7 +80,7 @@ void utilsConcatColors(SW_Color *colorResult, int r, int g, int b, int a) {
 }
 
 
-void utilsDrawText(SW_Pos pos, SW_Color color, void *font, char *string) {
+void utilsDrawText(SW_Pos pos, SW_Color color, void *font, const char *string) {
     // fonts https://www.opengl.org/resources/libraries/glut/spec3/node76.html
 
     /*

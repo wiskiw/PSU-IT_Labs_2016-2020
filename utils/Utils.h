@@ -24,7 +24,7 @@ void utilsMoveBorers(SW_Borders *borders, SW_Pos movPosValue);
 
 void utilsMovePos(SW_Pos *pos, SW_Pos movPosValue);
 
-void utilsDrawText(SW_Pos pos, SW_Color color, void *font, char *string);
+void utilsDrawText(SW_Pos pos, SW_Color color, void *font, const char *string);
 
 bool utilsIsPosInBorders(SW_Pos pos, SW_Borders borders);
 

@@ -107,7 +107,7 @@ void mdlBackgroundUpdate(GameFieldStruct *thisGame) {
 
         glPushMatrix();
         glTranslatef(star->pos.x, star->pos.y, 0);
-        glRotatef(random(0, 360), false, false, true);
+        if (thisGame->gameState == GAME_STATE_PLAY) glRotatef(random(0, 360), false, false, true);
 
         glBegin(GL_POLYGON);
         chooseColor(star->color);

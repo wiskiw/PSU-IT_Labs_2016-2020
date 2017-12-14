@@ -25,7 +25,6 @@ char HEALTH_BAR_NAME[] = "Health";
 
 
 const SW_Color PRE_RECORD_BAR_COLOR = {255, 0, 255};
-char PRE_RECORD_BAR_NAME[] = "Until new record";
 
 char SCORE_CELL_NAME[] = "Score";
 
@@ -70,7 +69,7 @@ float getCellNameHeight() {
     return CELLS_NAME_FONT_HEIGHT + (divinerY + MIN_ELEMENT_DIVINER) / 2;
 }
 
-void drawCellText(SW_Borders borders, char *string) {
+void drawCellText(SW_Borders borders, const char *string) {
     SW_Pos textPos;
     textPos.x = borders.leftBottomX;
     textPos.y = borders.rightTopY - CELLS_NAME_FONT_HEIGHT;
@@ -146,35 +145,92 @@ void drawHealth(GameFieldStruct *thisGame) {
     drawCellText(drawBorders, HEALTH_BAR_NAME);
 }
 
-void drawPreRecordBar(GameFieldStruct *thisGame) {
-    int lastLowScore = 0;
-    for (int i = PREF_RECORD_LIST_SIZE - 1; i >= 0; i--) {
-        SW_Record record = thisGame->recordList[i];
-        if (record.type != RECORD_TYPE_UNDEFINED) {
-            lastLowScore = record.score;
+std::string getPrettyStringInt(int val) {
+    std::string str = std::to_string(val);
+    switch (val) {
+        case 1:
+            str += "st";
+            break;
+        case 2:
+            str += "nd";
+            break;
+        case 3:
+            str += "rd";
+            break;
+        default:
+            str += "th";
+            break;
+    }
+    return str;
+}
+
+void drawNextRecordBar(GameFieldStruct *thisGame) {
+    int nextPlaceInTableIndex;
+    const int thisGameScore = thisGame->score;
+    int nextScore = 0;
+    for (nextPlaceInTableIndex = PREF_RECORD_LIST_SIZE - 1;
+         nextPlaceInTableIndex >= 0; nextPlaceInTableIndex--) {
+        SW_Record record = thisGame->recordList[nextPlaceInTableIndex];
+        if (record.type != RECORD_TYPE_UNDEFINED && thisGameScore <= record.score) {
+            nextScore = record.score;
+            break;
+        } else if (nextPlaceInTableIndex == 0 && thisGameScore > record.score) {
+            // absolute record
+            nextPlaceInTableIndex = -1;
             break;
         }
     }
 
-    const int thisGameScore = thisGame->score;
 
     SW_Borders drawBorders = getDrawBorders(6, 5);
-    drawCellText(drawBorders, PRE_RECORD_BAR_NAME);
-    if (thisGameScore <= lastLowScore) {
-        drawBar(lastLowScore, thisGameScore, PRE_RECORD_BAR_COLOR, drawBorders);
+    std::string recordBarNameBuffer;
+    if (nextPlaceInTableIndex == -1) {
+        recordBarNameBuffer = "INCREDIBLE PLAYER!!1";
     } else {
-        //new record
+        recordBarNameBuffer = "Until " + getPrettyStringInt(nextPlaceInTableIndex + 1) + " place";
+    }
+    drawCellText(drawBorders, recordBarNameBuffer.c_str());
+
+    if (nextPlaceInTableIndex != -1 && thisGameScore <= nextScore) {
+        int scoreVal = 0;
+        int maxScoreVal = 0;
+
+        // nextPlaceInTableIndex + 1 - текущий позиция в рекордах(индекс в массиве)
+        if (nextPlaceInTableIndex + 1 >= PREF_RECORD_LIST_SIZE ||
+            thisGame->recordList[nextPlaceInTableIndex + 1].type == RECORD_TYPE_UNDEFINED) {
+            // до последнего места
+            maxScoreVal = nextScore;
+            scoreVal = thisGameScore;
+        } else {
+            int currentTablePosScore = thisGame->recordList[nextPlaceInTableIndex + 1].score;
+            maxScoreVal = nextScore - currentTablePosScore;
+            scoreVal = thisGameScore - currentTablePosScore;
+        }
+
+        drawBar(maxScoreVal, scoreVal, PRE_RECORD_BAR_COLOR, drawBorders);
+    } else {
+        drawBar(1, 1, PRE_RECORD_BAR_COLOR, drawBorders);
+    }
+
+    if (nextPlaceInTableIndex < PREF_RECORD_LIST_SIZE - 1) {
+        // record in table
         void *FONT = GLUT_BITMAP_HELVETICA_18;
         const float FONT_HEIGHT = 18 / PREF_SCREEN_CROP_FACTOR;
-        SW_Color TEXT_COLOR = {255, 255, 255};
-        char newRecordText[] = "NEW RECORD!";
+        std::string barTextBuffer;
 
-        drawBar(1, 1, PRE_RECORD_BAR_COLOR, drawBorders);
+        SW_Color TEXT_COLOR;
+        if (nextPlaceInTableIndex == -1) {
+            barTextBuffer = "ABSOLUTE WINNER!";
+            TEXT_COLOR = {255, 255, 255};
+        } else {
+            barTextBuffer = getPrettyStringInt(nextPlaceInTableIndex + 2) + " place";
+            TEXT_COLOR = {255, 255, 255, 125};
+        }
 
         SW_Pos scoreTextPos;
         float textWidth = 0;
-        for (unsigned int i = 0; i < strlen(newRecordText); i++)
-            textWidth += glutBitmapWidth(FONT, newRecordText[i]);
+        for (unsigned int i = 0; i < barTextBuffer.length(); i++)
+            textWidth += glutBitmapWidth(FONT, barTextBuffer[i]);
         textWidth = textWidth / PREF_SCREEN_CROP_FACTOR;
 
 
@@ -185,7 +241,7 @@ void drawPreRecordBar(GameFieldStruct *thisGame) {
                          ((drawBorders.rightTopY - drawBorders.leftBottomY) -
                           FONT_HEIGHT / 2) / 2;
         scoreTextPos.z = PREF_UI_Z_POS + 0.01f;
-        utilsDrawText(scoreTextPos, TEXT_COLOR, FONT, newRecordText);
+        utilsDrawText(scoreTextPos, TEXT_COLOR, FONT, barTextBuffer.c_str());
     }
 }
 
@@ -249,7 +305,7 @@ void uiUpdate(GameFieldStruct *thisGame) {
         drawInterfaceBorder(thisGame);
         drawInterfaceBackground(thisGame);
         drawHealth(thisGame);
-        drawPreRecordBar(thisGame);
+        drawNextRecordBar(thisGame);
         drawScore(thisGame);
     }
 

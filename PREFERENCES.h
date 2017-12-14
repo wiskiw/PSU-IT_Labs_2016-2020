@@ -7,7 +7,7 @@
 
 const float PREF_SCREEN_CROP_FACTOR = 1.7f;
 
-const float PREF_UI_Z_POS = 15;
+const float PREF_UI_Z_POS = 10;
 const float PREF_BULLET_Z_POS = 3.5f;
 const float PREF_PLAYER_Z_POS = 3;
 
