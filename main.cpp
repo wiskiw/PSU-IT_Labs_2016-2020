@@ -11,6 +11,7 @@
 #include <fstream>
 #include <SFML/Audio/SoundBuffer.hpp>
 #include <SFML/Audio.hpp>
+#include <cmath>
 #include "GameStructs.h"
 #include "utils/Utils.h"
 #include "modules/player/ModulePlayer.h"
@@ -289,10 +290,6 @@ void onKeyPress(int key, int x, int y, bool special) {
                 ioProcessSpecialKeyUp(PREF_IO_KEY_GO_LEFT, 0, 0);
             }
 
-            if (key == PREF_IO_KEY_SHOOT) {
-                mdlPlayerShot(&thisGame);
-            }
-
             break;
     }
 }
@@ -307,6 +304,9 @@ void onKeyHold(int key, int x, int y, bool special) {
             case PREF_IO_KEY_GO_RIGHT:
                 //right arrow
                 if (special) mdlPlayerGoRight(&thisGame);
+                break;
+            case PREF_IO_KEY_SHOOT:
+                mdlPlayerShot(&thisGame);
                 break;
         }
     }
