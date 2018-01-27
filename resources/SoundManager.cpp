@@ -54,7 +54,7 @@ void sndInit(GameFieldStruct *thisGame) {
 
 void sndPlayerShot() {
     gun1.sound.setVolume(30);
-    gun2.sound.setPitch(random(0.35f, 0.38f));
+    gun1.sound.setPitch(random(0.35f, 0.38f));
     gun1.sound.play();
 }
 

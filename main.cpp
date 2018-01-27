@@ -225,12 +225,12 @@ void initGame() {
     thisGame.windowX = WINDOW_X;
     thisGame.windowY = WINDOW_Y;
 
-    // TODO: Left padding
-    const int STAT_X = 40;
+    // UI bar height in game
+    const int GAME_UI_HEIGHT = 40;
 
     thisGame.gameBorders.leftBottomX = 0;
     thisGame.gameBorders.rightTopX = static_cast<int>(WINDOW_X / PREF_SCREEN_CROP_FACTOR);
-    thisGame.gameBorders.leftBottomY = STAT_X;
+    thisGame.gameBorders.leftBottomY = GAME_UI_HEIGHT;
     thisGame.gameBorders.rightTopY = static_cast<int>(WINDOW_Y / PREF_SCREEN_CROP_FACTOR);
 
     thisGame.interfaceBorders.leftBottomX = 0;
