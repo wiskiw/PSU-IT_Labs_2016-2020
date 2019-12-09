@@ -1,0 +1,2 @@
+include ':app'
+rootProject.name='PMS_laba_3'
