@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">PMS_lab4</string>
+    <string name="empty_activity_label">EmptyActivity</string>
+    <string name="stations_activity_label">StationsActivity</string>
+
+    <string name="get_stations_button_intent_filer">Select station (intent filter)</string>
+    <string name="get_stations_button_directly">Select station (directly)</string>
+    <string name="default_station">none</string>
+</resources>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".MainActivity">
+
+    <TextView
+            android:id="@+id/station"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="16dp"
+            android:text="@string/default_station" />
+
+    <Button
+            android:id="@+id/get_stations"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="6dp"
+            android:backgroundTint="@android:color/holo_green_dark"
+            android:text="@string/get_stations_button_intent_filer"
+            android:textColor="@android:color/white" />
+
+    <Button
+            android:id="@+id/get_stations_two"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="6dp"
+            android:backgroundTint="@android:color/holo_blue_dark"
+            android:text="@string/get_stations_button_directly"
+            android:textColor="@android:color/white" />
+
+</LinearLayout>
