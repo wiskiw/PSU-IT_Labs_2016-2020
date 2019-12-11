@@ -1,9 +1,0 @@
-<resources>
-    <string name="app_name">PMS_lab2</string>
-    <string name="label_text">Введите номер купона</string>
-
-    <string name="menu">Меню</string>
-    <string name="search">Поиск</string>
-    <string name="create_order">Заказать</string>
-    <string name="samples">Примеры купонов</string>
-</resources>
