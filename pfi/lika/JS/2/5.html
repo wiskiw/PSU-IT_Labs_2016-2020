@@ -1,0 +1,23 @@
+﻿<html>
+<head>
+    <title>Обмен переменных</title>
+    <meta charset="utf-8">
+
+    <script>
+        function swap() {
+            var a = document.getElementById('a').value,
+                b = document.getElementById('b').value;
+            if (a == '' || b == '') {
+                return
+            }
+
+            document.getElementById('b').value = a;
+            document.getElementById('a').value = b;
+        }
+    </script>
+</head>
+<body>
+    <input type="text" id="a" onblur="swap()">
+    <input type="text" id="b" onblur="swap()">
+</body>
+</html>

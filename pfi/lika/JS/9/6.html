@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+        textarea {
+            width: 200px;
+            height: 200px;
+        }
+    </style>
+</head>
+<body>
+    <p>Введите натуральное число:</p>
+    <form name="f">
+        <input type="text" size=10 name="x"> <input type="button" name="btn" value="Найти"><br /><br />
+        <textarea name="out"></textarea>
+
+    </form>
+    <script>
+        let f = document.forms.f;
+
+        f.btn.onclick = handler;
+
+        function handler() {
+            f.out.value = dividers(+f.x.value).join("\n");
+        };
+
+        // делители заданного натурального числа
+        function dividers(n) {
+            let array = [1];
+            for (let i = 2, limit = n >> 1; i <= limit; ++i) {
+                if (!(n % i)) array.push(i);
+            }
+            if (n !== 1)
+                array.push(n);
+            return array;
+        }
+    </script>
+</body>
+</html>

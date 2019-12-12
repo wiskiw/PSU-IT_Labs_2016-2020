@@ -1,0 +1,21 @@
+﻿<HTML>
+<HEAD>
+    <title>Второй сценарий в документе</title>
+
+    <script>
+        function radius() {
+            var radius = +document.getElementById('value').value;
+            var result = document.getElementById("result");
+            var html = `<p>Площадь круга: ${3.14 * radius * radius}</p> `;
+            result.innerHTML = html;
+        }
+    </script>
+</HEAD>
+<BODY>
+    <h1>Площадь круга</h1>
+    <input type="number" min="1" id="value"><br><br>
+    <button onclick="radius();">Вычислить</button>
+    <br><br>
+    <div id="result"></div>
+</BODY>
+</HTML>

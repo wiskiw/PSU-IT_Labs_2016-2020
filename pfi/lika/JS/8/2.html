@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Frames</title>
+
+    <script>
+    function change() {
+        var d =document.getElementById('page');
+        var c = document.getElementById('content');
+        c.setAttribute('src',d+'html');
+    }
+</script>
+</head>
+<body style="background: #71f0e0 ">
+<p>
+    frames
+</p>
+<iframeset  cols="100,* ">
+    <iframe src="menu.html " style="height: 400px; " name="menu "> </iframe>
+    <iframe id="content " style="height: 400px; width: 76%; " src="content.html " name="content "> </iframe>
+</iframeset>
+</body>
+</html>

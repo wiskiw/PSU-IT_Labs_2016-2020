@@ -1,0 +1,22 @@
+﻿<HTML>
+<HEAD>
+    <title>Второй сценарий в документе</title>
+
+    <script>
+        function radius() {
+            var radius = +document.getElementById('value').value;
+            var resultHtml = `<p>Circle size: ${3.14 * radius * radius}</p>`;
+            
+            var result = document.getElementById("result");
+            result.innerHTML = resultHtml;
+        }
+    </script>
+</HEAD>
+<BODY>
+    <h1>Площадь круга</h1>
+    <input type="number" min="1" id="value"><br><br>
+    <button onclick="radius();">calculate</button>
+    <br><br>
+    <div id="result"></div>
+</BODY>
+</HTML>

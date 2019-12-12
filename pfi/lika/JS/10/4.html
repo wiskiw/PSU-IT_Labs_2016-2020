@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <script>
+        function getZodiacSign (d, m) {
+        var zodiac = [
+            {name: "Козерог",  start: {d: 23, m: 12}, end: {d: 20, m: 1}},
+            {name: "Водолей",  start: {d: 21, m: 1},  end: {d: 19, m: 2}},
+            {name: "Рыба",     start: {d: 20, m: 23}, end: {d: 20, m: 3}},
+            {name: "Овен",     start: {d: 21, m: 3},  end: {d: 20, m: 4}},
+            {name: "Телец",    start: {d: 21, m: 4},  end: {d: 21, m: 5}},
+            {name: "Близнецы", start: {d: 22, m: 5},  end: {d: 21, m: 6}},
+            {name: "Рак",      start: {d: 22, m: 6},  end: {d: 22, m: 7}},
+            {name: "Лев",      start: {d: 23, m: 7},  end: {d: 21, m: 8}},
+            {name: "Дева",     start: {d: 22, m: 8},  end: {d: 23, m: 9}},
+            {name: "Весы",     start: {d: 24, m: 9},  end: {d: 23, m: 10}},
+            {name: "Скорпион", start: {d: 24, m: 10}, end: {d: 22, m: 11}},
+            {name: "Стрелец",  start: {d: 23, m: 11}, end: {d: 22, m: 12}}
+        ];
+        for (var i = 0; i < zodiac.length; i++) {
+            var t = zodiac[i];
+            if ((t.start.m == m && t.start.d <= d) || (t.end.m == m && t.end.d >= d)) {
+                document.getElementById("1").innerText = t.name
+                break;
+            }
+        }
+    }
+    </script>
+</head>
+<body>
+    <label>День</label>
+    <input type="number" id="2">
+    <label>Месяц</label>
+    <input type="number" id="3">
+    <button type="button" onclick="getZodiacSign(document.getElementById('2').value,document.getElementById('3').value)">Click</button>
+    <p id="1"></p>
+</body>
+</html>

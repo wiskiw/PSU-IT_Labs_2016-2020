@@ -1,0 +1,48 @@
+<HTML>
+
+<HEAD>
+    <TITLE>Стрелка над картинкой</TITLE>
+    <script language="JavaScript">
+        function img(n, action) {
+            if (action) {
+                document.getElementById('l' + n).textContent = '↓';
+            } else {
+                document.getElementById('l' + n).textContent = '';
+            }
+        }
+    </script>
+    <style>
+        a {
+            text-decoration: none;
+            font-size: large;
+            color: black;
+        }
+    </style>
+</HEAD>
+<BODY>
+    <CENTER>
+        <H2>
+            <FONT соlоr="#0000ff">Содержание</FONT>
+        </H2>
+        <div style="display: inline-block;">
+            <A href="p1.htm" onmouseover="img(1,1)" onmouseout="img(1,0)">
+                <p id="l1"></p>
+                <IMG src="p1.jpg" аlt="форматирование текста" border="0" height="100" height="35" name="im1">
+            </A>
+        </div>
+        <div style="display: inline-block;">
+            <A href="p2.htm" onmouseover="img(2,1)" onmouseout="img(2,0)">
+                <p id="l2"></p>
+                <IMG src="p2.jpg" аlt="форматирование текста" border="0" height="100" height="35" name="im2">
+            </A>
+        </div>
+        <div style="display: inline-block;">
+            <A href="p3.htm" onmouseover="img(3,1)" onmouseout="img(3,0)">
+                <p id="l3"></p>
+                <IMG src="p3.jpg" аlt="форматирование текста" border="0" height="100" height="35" name="im3">
+            </A>
+        </div>
+    </CENTER>
+</BODY>
+
+</HTML>

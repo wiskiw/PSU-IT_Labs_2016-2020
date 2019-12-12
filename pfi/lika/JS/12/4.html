@@ -1,0 +1,55 @@
+<HTML>
+
+<HEAD>
+    <TITLE>Количество заданных слов в тексте</TITLE>
+    <script language="JavaScript">
+        var arr = new Array();
+
+        function addElement(el, obj) {
+            arr.push(el);
+            obj.showArr.value = arr;
+        }
+
+        function delElement(index, obj) {
+            if (index < 0) return;
+            if (index == 0) {
+                arr.splice(index, 1);
+                obj.showArr.value = arr;
+                return;
+            }
+            arr.splice(index, index);
+            obj.showArr.value = arr;
+        }
+
+        function numword(obj) {
+
+            var count = 0;
+
+            for (let key in arr) {
+                if (arr[key] > 0) count++;
+            }
+
+            obj.showCount.value = count;
+            obj.showArr.value = arr;
+        }
+    </script>
+</HEAD>
+
+<BODY bgcolor="#FFFFCC">
+    <H4>Число положительных элементов массива</H4>
+    <FORM name="form1">
+        Добавить элемент, удалить по индекс<br>
+        <input type="number" id="num">
+        <input type="button" onclick="addElement(document.getElementById('num').value,form1)" value="Добавить">
+        <input type="button" value="Удалить" onclick="delElement(document.getElementById('num').value,form1)"> <br>
+
+        <hr><label for="mass">Массив</label>
+        <textarea id="mass" type="text" name="showArr" size="100" readonly></textarea>
+        <hr>
+        <label for="idd">Количество положительных чисел</label>
+        <input id="idd" type="text" name="showCount" size=8 readonly>
+        <input type="button" value="Опpeдeлить" onClick="numword(form1)"><input type="reset" value="Отменить">
+    </FORM>
+</BODY>
+
+</HTML>

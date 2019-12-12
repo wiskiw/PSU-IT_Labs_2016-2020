@@ -1,0 +1,35 @@
+<HTML>
+
+<HEAD>
+    <TITLE>Определение времени</TITLE>
+    <script language="JavaScript">
+        function c1() {
+            var d = document
+            var t = new Date()
+            var h = t.getHours()
+            var m = t.getMinutes()
+            var s = t.getSeconds()
+            var res = ""
+            if (h < 10)
+                res += "0" + h
+            else res += h
+            if (m < 10) res += ":0" + m
+            else res += ":" + m
+            if (s < 10) res += ":0" + s
+            else res += ":" + s
+            document.getElementById("rest").value = res
+        }
+    </script>
+</HEAD>
+
+<BODY bgcolor="#FFFFCC">
+    <CENTER>
+        <IMG src=purpsm.jpg><br> При нажатии кнопки
+        <В>Время</В>, Вы узнаете, который час
+        <FORM name="form1">
+            <input type="button" value=Время onClick="c1()">
+            <input type="text" size=10 id="rest"><br>
+        </FORM>
+</BODY>
+
+</HTML>

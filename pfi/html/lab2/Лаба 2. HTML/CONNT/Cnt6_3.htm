@@ -1,0 +1,94 @@
+<html>
+
+<head>
+<title>Задания по HTML</title>
+<link REL=STYLESHEET TYPE="text/css" href="../style.css">
+</head>
+
+<body>
+
+		<h2 align=center>Обыкновенные фреймы</h2>
+		<h3 align=center>Обыкновенные фреймы создаются в отдельных страницах, 
+		которые являются каркасом для всего сайта. <br>
+		Причем - что <span class=akc>ОЧЕНЬ ВАЖНО (!)</span> - на таких страницах контейнер
+		<span class=akc>&lt;BODY&gt;...&lt;/BODY&gt;</span> не создается! Вместо 
+		него используется контейнер <span class=akc>&lt;frameset&gt; ...&lt;/frameset&gt;</span></h3>
+<p align=center>&nbsp;</p>
+<h2 align=center>Теги для оформления обыкновенных фреймов</h2>
+
+<table align="center" width="95%" border="1" cellspacing="0" id="table1">
+	<tr>
+		<th>Тег</th>
+		<th>Описание</th>
+	</tr>
+	<tr valign="top">
+		<td class="akc" width="40%">&lt;frameset&gt; ...&lt;/frameset&gt;</td>
+		<td>Главный контейнер. Размечает окно браузера на фреймы</td>
+	</tr>
+	<tr valign="top">
+		<td class="akc">&lt;frameset rows="x, y, ..."&gt; ...&lt;/frameset&gt;</td>
+		<td>Разбивка окна по горизонтали. Числа <b>x</b>, <b>y</b>, <b>...</b> - 
+		задание высоты фрейма. Количество горизонтальных фреймов может быть 
+		разным. <br>
+		Рекомендуется для одного из создаваемых фреймов высоту указывать не числом, а 
+		символом «<span class=akc>*</span>». В этом случае фрейм займет все 
+		пространство окна, оставшееся после выделения фреймов с явно заданными 
+		высотами</td>
+	</tr>
+	<tr valign=top>
+		<td class="akc">&lt;frameset cols="x, y, ..."&gt; ...&lt;/frameset&gt;</td>
+		<td>Аналогично <span class=akc>rows</span>, но только здесь разбивка окна производится по вертикали. </td>
+	</tr>
+	<tr valign=top>
+		<td class="akc">&lt;frameset frameborder="yes | no"&gt; ...&lt;/frameset&gt;</td>
+		<td>Наличие рамки между фреймами. Слова <span class=akc>yes</span> и <span class=akc>no</span> можно заменить цифрами <span class=akc>1</span> и <span class=akc>0</span> соответственно</td>
+	</tr>
+	<tr valign="top">
+		<td class="akc">&lt;frameset border=N&gt; ...&lt;/frameset&gt;</td>
+		<td>Толщина рамки между фреймами. N - число. При N=0 рамки не видно, но она есть. 
+		<br>При использовании вместе
+		с атрибутом <span class=akc>frameborder="no"</span> теряет всякий смысл</td>
+	</tr>
+	<tr valign="top">
+		<td class="akc">&lt;frameset framecolor="цвет"&gt; ...&lt;/frameset&gt;</td>
+		<td>Задание цвета рамки</td>
+	</tr>
+	<tr valign="top">
+		<td class="akc">&lt;frameset ...&gt;<br>
+		&lt;frame&gt;<br>
+				&lt;/frameset&gt;</td>
+		<td>Создание и настройка параметров каждого из фреймов. <br>
+		Количество тегов <span class=akc>&lt;frame&gt;</span> должно соответствовать 
+		их количеству в родительском контейнере <span class=akc>&lt;frameset&gt; ...&lt;/frameset&gt;</span></td>
+	</tr>
+	<tr valign="top">
+		<td class="akc">&lt;frame name="имя"&gt;</td>
+		<td>Задание имени фрейма. По этому имени можно направлять открываемые по 
+		гиперссылкам страницы в нужные фреймы с помощью атрибута гиперссылки <span class=akc>target</span> </td>
+	</tr>
+	<tr valign="top">
+		<td class="akc">&lt;frame src="имя_файла"&gt;</td>
+		<td>Изначально загружаемая в данный фрейм веб-страница</td>
+	</tr>
+	<tr valign="top">
+		<td class="akc">&lt;frame noresize&gt;</td>
+		<td>Запрет на изменение размеров фрейма</td>
+	</tr>
+	<tr valign="top">
+		<td class="akc">&lt;frame scrolling="yes | no | auto&quot;&gt;</td>
+		<td><span class=akc>yes</span> - полосы прокрутки видны всегда, <span class=akc>no</span> - полосы прокрутки 
+		отсутствуют, <span class=akc>auto</span> - полосы прокрутки появляются при необходимости</td>
+	</tr>
+	<tr valign="top">
+		<td class="akc">&lt;frame marginwidth=N&gt;</td>
+		<td>Поля по горизонтали. По умолчанию (если не указано) 10 пикселей</td>
+	</tr>
+	<tr valign="top">
+		<td class="akc">&lt;frame marginheight=N&gt;</td>
+		<td>Поля по вертикали. По умолчанию (если не указано) 10 пикселей</td>
+	</tr>
+	</table>
+</span></span>
+</body>
+
+</html>

@@ -1,0 +1,39 @@
+body {padding:0; margin:0; background:#ededed; font-size:14px;
+  font-family: Arial, Sans-serif, serif;}
+#basic {width:960px; min-height:500px; margin:0 auto; padding:20px 20px 20px 20px; background:#fff;}
+img {border:0;}
+a {color:#FF4040;
+word-spacing: 5px;
+  letter-spacing: 2px;
+}
+a:hover {text-decoration:none;}
+
+#head-site {height:130px;}
+li.none-bg {background:none!important;}
+.telefon {float:right;}
+
+#top-menu {width:960px; height:74px; }
+.bg-1 {width:950px; height:64px; background:#4c281e  repeat-x; padding:0 0 0 10px; }
+.bg-2 {width:940px; height:8px; background:#FF4040; margin:0 auto;}
+.bg-1 ul {margin:0; padding:0; list-style:none;}
+.bg-1 ul li {float:left;  padding:0 2px 0 0;}
+.bg-1 ul li a {display:block; height:40px; padding:24px 27px 0 27px; color:#FF4040; text-decoration:none; text-transform:uppercase;
+ word-spacing: 5px;
+  letter-spacing: 10px;
+
+}
+.bg-1 ul li a:hover {color:#fff; background:#FF4040;}
+
+#content {width:960px; padding:20px 0 0 0; }
+
+.right { float:right; width:690px; padding:0 0 0 20px; text-align:justify;}
+.right h1 {text-transform:uppercase; color:#4c281e; font-weight:normal; margin-top:0;}
+
+.left {width:250px; float:left;}
+.block-nad-menu {width:240px; height:10px; background:#FF4040;}
+.block-pod-menu {width:240px; margin:0 0 0 10px; height:10px; background:#4c281e;}
+.block-menu {width:240px;  solid #FF4040; background:#4c281e;}
+.left ul {margin:0; padding:10px 0 0 0; list-style:none;}
+
+.left ul li a {display:block; width:195px; height:46px; color:#FF4040; text-decoration:none; padding:10px 5px 10px 40px;}
+.left ul li a:hover {background:#FF4040;}

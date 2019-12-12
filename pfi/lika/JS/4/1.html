@@ -1,0 +1,34 @@
+<HTML>
+<HEAD>
+    <TITLE>Перестановка изображений</TITLE>
+    <script>
+        function chan(obj) {
+            var r1 = Number(obj.a1.value)
+            var r2 = Number(obj.a2.value)
+            if ((r1 < 1) || (r1 > 3) || (r2 < 1) || (r2 > 3))
+                alert("Неверно заданы номера рисунков!")
+            else {
+                var z = document.images[r1 - 1].src
+
+                document.images[r1 - 1].src = document.images[r2 - 1].src;
+                document.images[r2 - 1].src = z
+            }
+        }
+    </script>
+</HEAD>
+<BODY>
+    <CENTER>
+        <H4>Галерея рисунков</H4><br>
+        <IMG src="p1.jpg" width="200" name="pic1">
+        <IMG src="p2.jpg" width="200" name="pic2">
+        <IMG src="p3.jpg" width="200" name="pic3"> <br>
+        <FORM name=form1>
+            Рисунки с номерами<br>
+            <input type="text" name="a1" size=1> и
+            <input type="text" name="a2" size=1>
+            <P>
+                <input type="button" value="Поменять местами" onClick="chan(form1)">
+        </FORM>
+    </CENTER>
+</BODY>
+</HTML>

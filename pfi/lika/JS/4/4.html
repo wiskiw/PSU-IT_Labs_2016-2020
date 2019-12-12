@@ -1,0 +1,30 @@
+<HTML>
+<HEAD>
+    <TITLE>Изменение размера по наведению</TITLE>
+    <script language="JavaScript">
+        function img(n, action) {
+            if (action) {
+                document.images[n - 1].height = 200;
+            } else {
+                document.images[n - 1].height = 100;
+            }
+        }
+    </script>
+</HEAD>
+<BODY>
+    <CENTER>
+        <H2>
+            <FONT соlоr="#0000ff">Содержание</FONT>
+        </H2>
+        <A href="p1.htm" onmouseover="img(1,1)" onmouseout="img(1,0)">
+            <IMG src="p1.jpg" аlt="форматирование текста" border="0" height="100" height="35">
+        </A><br>
+        <A href="p2.htm" onmouseover="img(2,1)" onmouseout="img(2,0)">
+            <IMG src="p2.jpg" аlt="форматирование текста" border="0" height="100" height="35">
+        </A><br>
+        <A href="p3.htm" onmouseover="img(3,1)" onmouseout="img(3,0)">
+            <IMG src="p3.jpg" аlt="форматирование текста" border="0" height="100" height="35">
+        </A><br>
+    </CENTER>
+</BODY>
+</HTML>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script>
+        function revert() {
+            var res = '';
+            var n = document.getElementById("2").value;
+            void
+
+            function _(n) {
+                if (n < 1) return;
+                res += ~~(n % 10);
+                _(n / 10);
+            }(n);
+            document.getElementById("1").innerText = +res;
+            return +res
+        }
+    </script>
+</head>
+<body>
+    <input type="number" id="2" />
+    <button type="button" onclick="revert()">Click</button>
+    <p id="1"></p>
+</body>
+</html>
+

@@ -1,0 +1,19 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <script>
+        function len() {
+            var x = +document.getElementById('x').value;
+            var y = +document.getElementById('y').value;
+            var s = Math.sqrt(x ** 2 + y ** 2);
+            document.getElementById('result').value = s;
+        }
+    </script>
+</head>
+<body>
+    <input type="number" id="x" onselect="len()">x</input><br>
+    <input type="number" id="y" onselect="len()">y</input><br><br>
+    <label for="result">Расстояние: </label>
+    <input type="number" readonly id="result">
+</body>
+</html>

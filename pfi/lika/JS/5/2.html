@@ -1,0 +1,41 @@
+<HTML>
+<HEAD>
+    <TITLE>Изображение и текст. Обтекание</TITLE>
+    <script>
+        function chpict(obj) {
+            if ((obj.elements[0]).checked)
+                document.mypict.align = "Left"
+            else
+                document.mypict.align = "Right"
+        }
+
+        function rset(obj) {
+            document.mypict.align = "Left"
+        }
+    </script>
+</HEAD>
+<BODY>
+    <CENTER>
+        <H4>Изображение и текст. Обтекание изображения текстом</H4>
+    </CENTER>
+    <FORM name="form1">
+
+        Выберите значение параметра выравнивания нажмите кнопку
+        <В>Просмотр</В>.<br>
+        <PRE>
+            <input type="radio" name="alg" checked value=ld>(left) изображение
+            выравнивается по левому краю
+            <input type="radio" name="alg" value=rd>(right) изображение выравнивается
+            по правому краю
+        </PRE>
+        <input type="button" value="Просмотр" onclick="chpict(form1)">
+        <input type="reset" value="Отменить" onclick="rset(form1)"> </FORM>
+        <TABLE bgcolor="F8F8FF">
+            <TR>
+                <TD>Иван Иванович Шишкин является одним из основоположников русского национального пейзажа.
+                    <IMG src=p1.jpg name=mypict align=left border=3 width=310> В полотне "Рожь" Шишкин создал образ большой эпической силы и подлинно монументального звучания. Могучая, полная богатырских сил природа, богатый, привольный край. (Т. Юрова)
+                </TD>
+            </TR>
+        </TABLE>
+    </BODY>
+</HTML>

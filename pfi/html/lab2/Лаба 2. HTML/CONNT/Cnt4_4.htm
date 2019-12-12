@@ -1,0 +1,113 @@
+<html>
+
+<head>
+<title>Задания по HTML</title>
+<link REL=STYLESHEET TYPE="text/css" href="../style.css">
+</head>
+
+<body>
+
+		<h2 align=center>Тэги 
+			<span style="font-size:24px;color:#FF9933">&lt;td&gt;...&lt;/td&gt;</span> и  
+			<span style="font-size:24px;color:#FF9933">&lt;th&gt;...&lt;/th&gt;</span></h2>
+		<h3 align=center>Служат для создания объекта <span class=akc>ячейка</span></h3>
+		<b>
+		Может иметь атрибуты: 
+			<br>
+&nbsp;</b>
+<table align=center width=95% border=1 cellspacing=0>
+	<tr>
+		<th>Атрибут</th>
+		<th>Возможные значения</th>
+		<th>Описание</th>
+		<th>Значение по умолчанию</th>
+	</tr>
+	<tr valign=top>
+		<td class=akc width=120>align</td>
+		<td width=200>left, right, center, justify</td>
+		<td>Выравнивание текста внутри ячеек. <br>
+		<b><i>По левому краю, по правому краю, по центру, по обоим краям 
+		одновременно (по ширине)</i></b>
+		</td>
+		<td align=center width=180>по левому краю</td>
+	</tr>
+	<tr valign=top>
+		<td class=akc>valign</td>
+		<td>top, bottom, baseline, middle</td>
+		<td>Вертикальное выравнивание текста в ячейке.<br>
+		<b><i>По верхнему краю, по нижнему краю, по центру (по центральной линии 
+		ячейки), распределить по высоте</i></b></td>
+		<td align=center>baseline</td>
+	</tr>
+	<tr valign=top>
+		<td class=akc>width</td>
+		<td>X, Xpt, Xpx, X%, <br>
+				где X - число</td>
+		<td>Ширина ячейки в пунктах, пикселях или в процентах от ширины 
+		таблицы. Определяет ширину столбца, причем для задании ширины столбца 
+		достаточно указать ширину только одной из ячеек в этом столбце.<p>
+		<span class=akc>ВАЖНО!</span> <br>
+		<b>Указывать ширину заголовочной ячейки </b>
+		<span class="akc">&lt;th&gt;...&lt;/th&gt;</span><b> нежелательно, т.к. 
+		при этом выравнивание текста в ней может отображаться некорректно.</b>
+		</p>
+		<p>Ширина может быть указана как для одной ячейки в столбце, так и для 
+		каждой внутри этого столбца. Разумеется, при этом появляется довольно 
+		большое количество избыточной информации. <br>
+		В случае, когда внутри столбца для ячеек указываются разные значения 
+		ширины, столбец принимает наибольшую ширину из указанных, а все 
+		остальные значения ширин для других ячеек в столбце - не просто 
+		избыточная, но и бесполезная информация.</td>
+		<td align=center>нет </td>
+	</tr>
+	<tr valign=top>
+		<td class=akc>height</td>
+		<td>X, Xpt, Xpx, X%, <br>
+		где X - число</td>
+		<td>Высота ячейки в пунктах, пикселях или в процентах от высоты таблицы. Если единицы не указываются, то браузер считает, что 
+		высота указана в пикселях.</td>
+		<td align=center>нет</td>
+	</tr>
+	<tr valign=top>
+		<td class=akc>bgcolor</td>
+		<td>цвет </td>
+		<td>Цвет фона ячейки</td>
+		<td align=center>нет </td>
+	</tr>
+	<tr valign=top>
+		<td class=akc>bordercolor</td>
+		<td>цвет</td>
+		<td>Цвет границы вокруг ячейки</td>
+		<td align=center>черный</td>
+	</tr>
+	<tr valign=top>
+		<td class=akc>title</td>
+		<td>текст</td>
+		<td>Текст всплывающей подсказки</td>
+		<td align=center>нет</td>
+	</tr>
+	<tr valign=top>
+		<td class=akc>collspan=</td>
+		<td>число</td>
+		<td>Количество объединяемых ячеек по горизонтали (по столбцам)<br>
+		При указании этого параметра количество ячеек в строке (количество 
+		контейнеров
+		<span class="akc">&lt;td&gt;...&lt;/td&gt;</span> или 
+		<span class="akc">&lt;th&gt;...&lt;/th&gt;</span>) сокращается на 
+		указанное число объединяемых ячеек</td>
+		<td align=center>&nbsp;</td>
+	</tr>
+	<tr valign=top>
+		<td class=akc>rowspan=</td>
+		<td>число</td>
+		<td>Количество объединяемых ячеек по вертикали (построчно). <br>
+		При указании этого параметра количество ячеек в объединяемых строках 
+		сокращается на единицу</td>
+		<td align=center>нет</td>
+	</tr>
+	</table>
+<p>
+		</p>
+		</body>
+
+</html>

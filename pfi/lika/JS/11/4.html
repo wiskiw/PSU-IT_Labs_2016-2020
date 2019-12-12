@@ -1,0 +1,25 @@
+﻿<HTML>
+<HEAD>
+    <TITLE>Количество заданных слов в тексте</TITLE>
+    <script language="JavaScript">
+        function numword(obj) {
+            let str = obj.textin.value,
+                wordA = obj.a.value,
+                wordB = obj.b.value;
+            obj.textin.value = str.replaceAll(new RegExp(wordA, 'g'), wordB);
+        }
+    </script>
+</HEAD>
+<BODY bgcolor="#FFFFCC">
+    <H4>Количество заданных слов в тексте</H4>
+    <FORM name="form1">
+        Введите текст:<br>
+        <textarea name="textin" rows=4 cols=20></textarea>
+        <input type="button" value="Опpeдeлить" onClick="numword(form1)">
+        <hr> А
+        <input type="text" name="a"> меняем на B: <input type="text" name="b">
+        <hr>
+        <input type="reset" value="Отменить">
+    </FORM>
+</BODY>
+</HTML>

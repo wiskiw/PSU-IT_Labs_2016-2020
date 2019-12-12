@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Анкета</title>
+
+    <script language="JavaScript">
+        function recalc() {
+            var d = document;
+            var i = 12;
+            i = i * d.form1.inftime.value;
+            i = i * d.form1.inflang.value;
+            i = i * d.form1.infcont.value;
+            d.form1.infocost.value = i
+                    ////
+                    i = 12;
+                    i = i * d.form1.dbtime.value;
+                    i = i * d.form1.dblang.value;
+                    i = i * d.form1.dbcont.value;
+                    d.form1.dbcost.value = i
+                    i = 12;
+                    i = i * d.form1.nettime.value;
+                    i = i * d.form1.netlang.value;
+                    i = i * d.form1.netcont.value;
+                    d.form1.netcost.value = i
+                    i = 12;
+                    i = i * d.form1.logtime.value;
+                    i = i * d.form1.loglang.value;
+                    i = i * d.form1.logcont.value;
+                    d.form1.logcost.value = i
+                }
+                function test() {
+                    var d = document
+                    var k = 0;
+
+                    var infcheck = document.getElementById("infcheck");
+                    var dbcheck = document.getElementById("dbcheck");
+                    var netcheck = document.getElementById("netcheck");
+                    var logcheck = document.getElementById("logcheck");
+
+                    if (infcheck.checked) {
+                        var i = Number(d.form1.infocost.value);
+                        k = k + i;
+                    }
+
+                    if ((dbcheck.checked))
+                        k = k + Number(d.form1.dbcost.value)
+                    if (netcheck.checked)
+                        k = k + Number(d.form1.netcost.value)
+                    if (logcheck.checked)
+                        k = k + Number(d.form1.logcost.value)
+                    form1.ww.value = "Стоимость " + k + " р."
+
+                }
+            </script>
+        </head>
+        <body>
+            Введите Ваше ФИО:
+            <br> <input type="text" name="t">
+            <br>Введите Ваш адрес e-mail:
+            <br> <input type="text" name="t">
+            <br> Введите Ваш возраст:
+            <br> <input type="text" name="f"> <br> Введите Ваш адрес: <br>
+            <input type="text" name="p"> <br>
+            <br>
+            <form name="form1" onclick="recalc()">
+                <table border=3 align=left>
+                    <tr>
+                        <td> Название курсов<br></td>
+                        <td> Продолжительность<br></td>
+                        <td>Язык<br></td>
+                        <td> Отчётность<br></td>
+                        <td> Стоимость<br></td>
+                    </tr>
+
+                    <tr>
+                        <td><input id="infcheck" type="checkbox" name="lan" value=10> Информатика<br></td>
+                        <td><input type="radio" checked name="inftime" value=1>36
+                            <input type="radio" name="inftime" value=2>64
+                            <input type="radio" name="inftime" value=3>128
+                        </td>
+                        <td><input type="radio" checked name="inflang" value=1>Русский<br>
+                            <input type="radio" name="inflang" value=2>Английский<br>
+                        </td>
+                        <td>
+                            <input type="radio" checked name="infcont" value=1>Зачёт<br>
+                            <input type="radio" name="infcont" value=2>Экзамен<br>
+                        </td>
+                        <td><input type="number" name="infocost"></td>
+                    </tr>
+                    <tr>
+                        <td><input id="dbcheck" type="checkbox" name="lan" value=35>Базы данных<br></td>
+                        <td><input checked type="radio" name="dbtime" value=1>36
+                            <input type="radio" name="dbtime" value=2>64
+                            <input type="radio" name="dbtime" value=3>128
+                        </td>
+                        <td><input checked type="radio" name="dblang" value=1>Русский<br>
+                            <input type="radio" name="dblang" value=2>Английский<br>
+                        </td>
+                        <td>
+                            <input checked type="radio" name="dbcont" value=1>Зачёт<br>
+                            <input type="radio" name="dbcont" value=2>Экзамен<br>
+                        </td>
+                        <td><input type="number" name="dbcost"></td>
+                    </tr>
+                    <tr>
+                        <td><input id="netcheck" type="checkbox" name="lan" value=20>Сети<br></td>
+                        <td><input checked type="radio" name="nettime" value=1>36
+                            <input type="radio" name="nettime" value=2>64
+                            <input type="radio" name="nettime" value=3>128
+                        </td>
+                        <td><input checked type="radio" name="netlang" value=1>Русский<br>
+                            <input type="radio" name="netlang" value=2>Английский<br>
+                        </td>
+                        <td>
+                            <input checked type="radio" name="netcont" value=1>Зачёт<br>
+                            <input type="radio" name="netcont" value=2>Экзамен<br>
+                        </td>
+                        <td><input type="number" name="netcost"></td>
+                    </tr>
+                    <tr>
+                        <td><input id="logcheck" type="checkbox" name="lan" value=8>Логика<br></td>
+                        <td><input checked type="radio" name="logtime" value=1>36
+                            <input type="radio" name="logtime" value=2>64
+                            <input type="radio" name="logtime" value=3>128
+                        </td>
+                        <td><input checked type="radio" name="loglang" value=1>Русский<br>
+                            <input type="radio" name="loglang" value=2>Английский<br>
+                        </td>
+                        <td>
+                            <input checked type="radio" name="logcont" value=1>Зачёт<br>
+                            <input type="radio" name="logcont" value=2>Экзамен<br>
+                        </td>
+                        <td><input type="number" name="logcost"></td>
+                    </tr>
+                </table>
+                <br>
+                <br><br><br><br><br><br><br><br>
+                <br>
+                <br>
+                <br><br><br>
+                <input type="button" value=Вычислить onClick="test()">
+                <hr>
+                <input type="Text" size=50 name="ww" value=""><br>
+                <input type="reset" value="Отменить">
+            </form>
+        </body>
+        </html>

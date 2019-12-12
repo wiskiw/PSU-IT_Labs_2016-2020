@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title> Списки </title>
+    <style type="text/css">
+        table, th, td {
+            border: 1px solid black;
+        }
+        td{
+            width: 20%;
+            height: 50px;
+        }
+    </style>
+
+    <script type="text/javascript">
+        function color(elem) {
+            var colorKey = Math.floor(Math.random() * 8);
+            var colors = ["red", "orange", "yellow", "green", "lightblue", "blue", "purple"];
+            document.getElementById(elem).style.backgroundColor = colors[colorKey];
+        }
+
+        function setColor(colorNumber) {
+            switch (Number(colorNumber)) {
+                case 0:
+                document.getElementById("table").style.backgroundColor = "red";
+                break;
+                case 1:
+                document.getElementById("table").style.backgroundColor = "orange";
+                break;
+                case 2:
+                document.getElementById("table").style.backgroundColor = "yellow";
+                break;
+                case 3:
+                document.getElementById("table").style.backgroundColor = "green";
+                break;
+                case 4:
+                document.getElementById("table").style.backgroundColor = "lightblue";
+                break;
+                case 5:
+                document.getElementById("table").style.backgroundColor = "blue";
+                break;
+                case 6:
+                document.getElementById("table").style.backgroundColor = "purple";
+                break;
+            }
+        }
+    </script>
+</head>
+<body>
+    <form name="form">
+        <table id="table">
+
+            <tr>
+                <td id="1" onClick="color('1')">Во саду ли </td>
+                <td id="2" onClick="color('2')">в огороде </td>
+            </tr>
+            <tr>
+                <td id="3" onClick="color('3')">Девица гуляла </td>
+                <td id="4" onClick="color('4')"></td>
+            </tr>
+            <tr>
+                <td id="5" onClick="color('5')">Невеличка</td>
+                <td id="6" onClick="color('6')">круглоличка</td>
+            </tr>
+            <tr>
+                <td id="7" onClick="color('7')">Румяное личко</td>
+                <td id="8" onClick="color('8')"></td>
+            </tr>
+        </table>
+        </br>
+        <select name="backgroundColorSelect" onChange="setColor(form.backgroundColorSelect.value)">
+        <option value=0>Красный
+        <option value=1>Оранжевый
+        <option value=2>Желтый
+        <option value=3>Зелёный
+        <option value=4>Голубой
+        <option value=5>Синий
+        <option value=6>Фиолетовый
+    </select>
+    </form>
+</body>
+</html>

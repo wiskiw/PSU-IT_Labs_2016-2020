@@ -1,0 +1,39 @@
+<html>
+<head>
+    <title>Ticket</title>
+    <script language="JavaScript">
+        var count = 0;
+
+        function luckyTicket() {
+            var left = 0,
+                right = 0;
+            var num = document.getElementById('val').value,
+                text = document.getElementById('t');
+            if (num.length != 6) {
+                text.innerText = 'Номер билета должен быть шестизначным!';
+                return;
+            }
+            for (var i = 0, j = num.length - 1; i < j; i++, j--) {
+                left += Number(num[i]);
+                right += Number(num[j]);
+            }
+            if (isNaN(left) || isNaN(right)) {
+                text.innerText = 'Некорректный ввод данных!';
+                return;
+            }
+            if (left == right) {
+                text.innerText = 'Билет счастливый!';
+                count++;
+            } else
+                text.innerText = 'Билет несчастливый...';
+            text.innerText += '\nСчастливых билетов: ' + count;
+        }
+    </script>
+</head>
+<body>
+    <label for="val">Введите номер билета</label>
+    <input type="text" id="val">
+    <input type="button" onclick="luckyTicket()" value="Lucky?">
+    <p id="t"></p>
+</body>
+</html>

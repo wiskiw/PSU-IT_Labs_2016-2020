@@ -1,0 +1,22 @@
+<HTML>
+<HEAD>
+    <TITLE>Количество заданных слов в тексте</TITLE>
+    <script language="JavaScript">
+        function numword(obj) {
+            var s = obj.textin.value
+            obj.result.value = s.split(" ").length
+        }
+    </script>
+</HEAD>
+<BODY bgcolor="#FFFFCC">
+    <H4>Количество заданных слов в тексте</H4>
+    <FORM name="form1">
+        Введите текст:<br>
+        <textarea name="textin" rows=4 cols=20></textarea>
+        <input type="button" value="Опpeдeлить" onClick="numword(form1)">
+        <hr> Количество слов в тексте: <input type="text" name="result" size=8>
+        <hr>
+        <input type="reset" value="Отменить">
+    </FORM>
+</BODY>
+</HTML>

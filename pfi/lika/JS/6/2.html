@@ -1,0 +1,32 @@
+<HTML>
+<HEAD>
+    <TITLE>Данные, представленные флажком. Анкета переводчика</TITLE>
+    <script language="JavaScript">
+        function grant() {
+            var d = document
+            var k = 0;
+            if ((d.form1.elements[0]).checked)
+                k = k + Number(d.form1.elements[0].value)
+            if ((d.form1.elements[1]).checked)
+                k = k + Number(d.form1.elements[1].value)
+            if ((d.form1.elements[2]).checked)
+                k = k + Number(d.form1.elements[2].value)
+            form1.ww.value = "Вам полагается вознаграждение " + k + " y.e."
+        }
+    </script>
+</HEAD>
+<BODY>
+    <H3>Анкета для переводчиков</H3>
+    Укажите те языки, которыми Вы владеете в совершенстве: <br>
+    <FORM name="form1">
+        <input type="checkbox" name="lan" value=100>pyccкий<br>
+        <input type="checkbox" name="lan" value=200>английский<br>
+        <input type="checkbox" name="lan" value=300>французский<br>
+        <input type="button" value=Вознаграждениие onClick="grant()">
+        <hr>
+        <input type="Text" size=50 name="ww" value=""><br>
+        <input type="reset" value="Отменить">
+    </FORM>
+    <hr>
+</BODY>
+</HTML>

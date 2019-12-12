@@ -1,0 +1,23 @@
+﻿<HTML>
+<HEAD>
+    <title>Третий сценарий в документе</title>
+
+    <script>
+        function gipo() {
+            var a = +document.getElementById('a').value;
+            var b = +document.getElementById('b').value;
+            var result = document.getElementById("result");
+            var html = `<p>Гипотенуза: ${Math.sqrt(a ** 2 + b ** 2)}</p>`;
+            result.innerHTML = html;
+        }
+    </script>
+</HEAD>
+<BODY>
+    <h1>Вычисление гипотенузы</h1>
+    <label>Катет 1: </label><input type="number" min="1" id="a"><br>
+    <label>Катет 2: </label><input type="number" min="1" id="b"><br><br>
+    <button onclick="gipo();">Вычислить</button>
+    <br><br>
+    <div id="result"></div>
+</BODY>
+</HTML>

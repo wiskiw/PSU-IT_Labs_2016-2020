@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<HTML>
+<HEAD>
+    <meta charset="UTF-8">
+    <title>Task #2</title>
+</HEAD>
+<BODY>
+    <div id=form_frame>
+        <FORM METHOD=GET action="buy.php">
+            <script languate=javascript>
+                function calc() {
+                    var s, n, c;
+                    var thingcost = [1, 2, 10, 100];
+                    s = this.parentNode;
+                    n = s.thing.selectedIndex;
+                    c = document.getElementById("calc");
+                    c.innerHTML = "Это стоит $" + (thingcost[n] * s.itemcount.value).toString();
+                }
+            </script>
+            <select name=thing>
+            <option value="thing1">Молоко</option>
+            <option value="thing2">Кефир</option>
+            <option value="thing3">Сыр</option>
+            <option value="thing4">Масло</option>
+        </select> Количество: <input type=text size=5 name=itemcount value=1>
+            <input type=button value=calculate onclick="calc.call(this)">
+            <div id=calc></div>
+        </FORM>
+    </div>
+</BODY>
+</HTML>

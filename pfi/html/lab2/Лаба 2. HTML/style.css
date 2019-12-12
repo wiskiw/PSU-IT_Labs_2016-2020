@@ -1,0 +1,11 @@
+h1           { color: #FF9933 }
+.akc         { color: #FF5533; font-size: 16pt; font-style: italic; font-weight: bold; }
+li .akc		 { font-size: 12pt}
+td.akc		 { text-align:center }
+body         { color: #000080 }
+hr           { background-color:#800000 }
+.subm        { border:1px solid #cccccc; display:none;  width:150; text-align:center; background:#fcfcfc;	}
+.pnkt        { border:1px solid #cccccc; display:block; width:150; text-align:center; background:#E0E0E0	}
+a			 { text-decoration:none		}
+a:hover 	 { background:#FF9933 }
+.prim		 { color: #993333; font-weight: bold; background-color: #FFFFCC	}
