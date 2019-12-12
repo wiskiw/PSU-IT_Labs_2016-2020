@@ -59,7 +59,7 @@ int main(int argc, char **argv) {
         if (data == 1) {
 		   direction = 1;
 		}
-		if (data == RANGE-1) {
+		if (data == range-1) {
             count++;
             direction = -1;
         }
