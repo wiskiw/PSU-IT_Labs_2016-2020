@@ -1,2 +1,2 @@
-  Subject: **БД**
-  Teacher: **Рогулев В.С.**
+Subject: **БД**  
+Teacher: **Рогулев В.С.**
