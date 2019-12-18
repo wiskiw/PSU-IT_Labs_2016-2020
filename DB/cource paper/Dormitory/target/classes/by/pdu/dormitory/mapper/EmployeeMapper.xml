@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="by.pdu.dormitory.mapper.EmployeeMapper">
+
+    <resultMap id="employeeResultMap" type="by.pdu.dormitory.domain.Employee">
+        <id column="employee_id" property="id"/>
+        <result column="employee_fio" property="FIO"/>
+
+        <collection property="post" javaType="by.pdu.dormitory.domain.Post"
+                    resultMap="by.pdu.dormitory.mapper.PostMapper.postResultMap"/>
+
+        <collection property="otherRoom" javaType="by.pdu.dormitory.domain.OtherRoom"
+                    resultMap="by.pdu.dormitory.mapper.OtherRoomMapper.otherRoomResultMap"/>
+    </resultMap>
+
+    <select id="getEmployee" resultMap="employeeResultMap">
+        SELECT
+            e.id as "employee_id",
+            e.fio as "employee_fio",
+            o.id as "other_room_id",
+            o.name as "other_room_name",
+            p.id as "post_id",
+            p.name as "post_name"
+        FROM
+            EMPLOYEE e
+            LEFT JOIN POST p ON p.id = e.post_id
+            LEFT JOIN OTHER_ROOMS o ON o.id = e.room_id
+        ORDER BY "employee_id" ASC
+    </select>
+
+    <insert id="insertEmployee">
+        INSERT INTO EMPLOYEE(FIO,POST_ID,ROOM_ID)
+        VALUES(#{FIO},#{postId},#{otherRoomId})
+    </insert>
+
+    <update id="updateEmployee">
+        UPDATE EMPLOYEE
+        SET
+            FIO = #{FIO},
+            POST_ID = #{postId},
+            ROOM_ID = #{otherRoomId}
+        WHERE
+            id = #{id}
+    </update>
+
+    <delete id="deleteEmployee">
+        DELETE FROM EMPLOYEE
+        WHERE id = #{id}
+    </delete>
+
+</mapper>

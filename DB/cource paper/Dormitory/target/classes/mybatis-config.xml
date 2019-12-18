@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+    <properties
+            resource="application.properties"> <!--ссылка на файл со свойствами(ссылка на СУБД, логин, пароль и тп.)-->
+    </properties>
+
+    <environments default="development"><!--в данном блоке настраиваются подключения к БД-->
+        <environment id="development">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="${db.driver}"/>
+                <property name="url" value="${db.url}"/>
+                <property name="username" value="${username}"/>
+                <property name="password" value="${password}"/>
+            </dataSource>
+        </environment>
+    </environments>
+
+    <mappers><!--в данном блоке необходимо описать маперы, которые используются в проекте-->
+        <mapper class="by.pdu.dormitory.mapper.TenantMapper"/>
+        <mapper class="by.pdu.dormitory.mapper.InventoryMapper"/>
+        <mapper class="by.pdu.dormitory.mapper.FacultyMapper"/>
+        <mapper class="by.pdu.dormitory.mapper.PropertyMapper"/>
+        <mapper class="by.pdu.dormitory.mapper.PostMapper"/>
+        <mapper class="by.pdu.dormitory.mapper.OtherRoomMapper"/>
+        <mapper class="by.pdu.dormitory.mapper.UnitMapper"/>
+        <mapper class="by.pdu.dormitory.mapper.GroupMapper"/>
+        <mapper class="by.pdu.dormitory.mapper.RoomMapper"/>
+        <mapper class="by.pdu.dormitory.mapper.EmployeeMapper"/>
+
+    </mappers>
+</configuration>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="by.pdu.dormitory.mapper.OtherRoomMapper">
+
+    <resultMap id="otherRoomResultMap" type="by.pdu.dormitory.domain.OtherRoom">
+        <id column="other_room_id" property="id"/>
+        <result column="other_room_name" property="name"/>
+    </resultMap>
+
+    <select id="getOtherRoom" resultMap="otherRoomResultMap">
+        SELECT
+            id as "other_room_id",
+            name as "other_room_name"
+        FROM
+            OTHER_ROOMS
+        ORDER BY id ASC
+    </select>
+
+    <insert id="insertOtherRoom">
+        INSERT INTO OTHER_ROOMS(NAME)
+        VALUES(#{name})
+    </insert>
+
+    <update id="updateOtherRoom">
+        UPDATE OTHER_ROOMS
+        SET NAME =#{name}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteOtherRoom">
+        DELETE FROM OTHER_ROOMS
+        WHERE id = #{id}
+    </delete>
+
+</mapper>

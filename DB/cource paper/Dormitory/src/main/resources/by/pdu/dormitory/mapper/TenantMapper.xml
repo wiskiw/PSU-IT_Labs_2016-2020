@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="by.pdu.dormitory.mapper.TenantMapper">
+
+    <resultMap id="studentResultMap" type="by.pdu.dormitory.domain.Student">
+        <id column="tenant_number_contract" property="id"/>
+        <result column="tenant_fio" property="FIO"/>
+        <result column="tenant_birthday" property="birthday"/>
+        <result column="tenant_check_date" property="checkDate"/>
+        <collection property="group" javaType="by.pdu.dormitory.domain.Group"
+                    resultMap="by.pdu.dormitory.mapper.GroupMapper.groupResultMap"/>
+
+        <collection property="room" javaType="by.pdu.dormitory.domain.Room"
+                    resultMap="by.pdu.dormitory.mapper.RoomMapper.roomResultMap"/>
+
+        <collection property="unit" javaType="by.pdu.dormitory.domain.Unit"
+                    resultMap="by.pdu.dormitory.mapper.UnitMapper.unitResultMap"/>
+    </resultMap>
+
+    <resultMap id="employeeTenantResultMap" type="by.pdu.dormitory.domain.EmployeeTenant">
+        <id column="tenant_number_contract" property="id"/>
+        <result column="tenant_fio" property="FIO"/>
+        <result column="tenant_birthday" property="birthday"/>
+        <result column="tenant_check_date" property="checkDate"/>
+        <result column="employee_tenant_work" property="work"/>
+
+        <collection property="room" javaType="by.pdu.dormitory.domain.Room"
+                    resultMap="by.pdu.dormitory.mapper.RoomMapper.roomResultMap"/>
+
+        <collection property="unit" javaType="by.pdu.dormitory.domain.Unit"
+                    resultMap="by.pdu.dormitory.mapper.UnitMapper.unitResultMap"/>
+    </resultMap>
+
+    <select id="getStudent" resultMap="studentResultMap">
+        SELECT
+        t.number_contract as "tenant_number_contract",
+        t.fio as "tenant_fio",
+        t.birthday_date as "tenant_birthday",
+        t.check_date as "tenant_check_date",
+        g.id as "group_id",
+        g.name as "group_name",
+        f.id as "faculty_id",
+        f.name as "faculty_name",
+        u.id as "unit_number",
+        r.id as "room_id",
+        r.square as "room_square",
+        r.count_bets as "room_count_bets"
+        FROM TENANT t
+        INNER JOIN STUDENT s ON s.tenant_id = t.number_contract
+        LEFT JOIN GROUPS g ON g.id = s.group_id
+        LEFT JOIN FACULTY f ON f.id = g.faculty_id
+        LEFT JOIN ROOM r ON r.id = t.room_id
+        LEFT JOIN UNIT u ON u.id = r.unit_id
+    </select>
+
+    <select id="getEmployeeTenant" resultMap="employeeTenantResultMap">
+        SELECT
+        t.number_contract as "tenant_number_contract",
+        t.fio as "tenant_fio",
+        t.birthday_date as "tenant_birthday",
+        t.check_date as "tenant_check_date",
+        e.work as "employee_tenant_work",
+        u.id as "unit_number",
+        r.id as "room_id",
+        r.square as "room_square",
+        r.count_bets as "room_count_bets"
+        FROM TENANT t
+        INNER JOIN EMPLOYEE_UNIVERSITY e ON e.tenant_id = t.number_contract
+        LEFT JOIN ROOM r ON r.id = t.room_id
+        LEFT JOIN UNIT u ON u.id = r.unit_id
+    </select>
+
+    <insert id="insertStudent">
+        {call CREATE_STUDENT(
+            #{number, jdbcType =  INTEGER, mode = IN}, #{birthday, jdbcType =  VARCHAR, mode = IN},
+            #{fio, jdbcType =  VARCHAR, mode = IN}, #{roomId, jdbcType =  INTEGER, mode = IN},
+            #{groupId, jdbcType =  INTEGER, mode = IN}
+        )}
+    </insert>
+
+    <insert id="insertEmployeeTenant">
+        {call CREATE_EMPLOYEE(
+        #{number, jdbcType =  INTEGER, mode = IN}, #{birthday, jdbcType =  VARCHAR, mode = IN},
+        #{fio, jdbcType =  VARCHAR, mode = IN}, #{roomId, jdbcType =  INTEGER, mode = IN},
+        #{work, jdbcType =  VARCHAR, mode = IN}
+        )}
+    </insert>
+
+    <insert id="insertProperty">
+        INSERT INTO PROPERTY_TENANT(PROPERTY_ID,TENANT_ID)
+        VALUES(#{propId},#{number})
+    </insert>
+
+    <delete id="removeProperty">
+        DELETE FROM PROPERTY_TENANT
+        WHERE TENANT_ID = #{number}
+    </delete>
+
+    <update id="updateStudent">
+        {call UPDATE_STUDENT(
+        #{number, jdbcType =  INTEGER, mode = IN}, #{birthday, jdbcType =  VARCHAR, mode = IN},
+        #{fio, jdbcType =  VARCHAR, mode = IN}, #{roomId, jdbcType =  INTEGER, mode = IN},
+        #{groupId, jdbcType =  INTEGER, mode = IN}
+        )}
+    </update>
+
+    <insert id="updateEmployeeTenant">
+        {call UPDATE_EMPLOYEE(
+        #{number, jdbcType =  INTEGER, mode = IN}, #{birthday, jdbcType =  VARCHAR, mode = IN},
+        #{fio, jdbcType =  VARCHAR, mode = IN}, #{roomId, jdbcType =  INTEGER, mode = IN},
+        #{work, jdbcType =  VARCHAR, mode = IN}
+        )}
+    </insert>
+
+    <delete id="deleteTenant">
+        DELETE FROM TENANT
+        WHERE number_contract = #{id}
+    </delete>
+</mapper>

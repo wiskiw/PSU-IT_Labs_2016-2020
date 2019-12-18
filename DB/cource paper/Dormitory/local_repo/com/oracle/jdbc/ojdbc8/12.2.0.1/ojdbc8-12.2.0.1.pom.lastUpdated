@@ -1,0 +1,9 @@
+#NOTE: This is a Maven Resolver internal implementation file, its format can be changed without prior notice.
+#Thu Nov 22 18:44:04 MSK 2018
+https\://repo.jenkins-ci.org/public/.lastUpdated=1542901444298
+10f4cdcf69aa4f22c22dd6e8430ef505fc5979bc@default-maven.oracle.com-https\://maven.oracle.com/.lastUpdated=1535353980610
+689c3bf12b71487de6b24c9a52715b6365ba563a@default-maven.oracle.com-https\://maven.oracle.com/.lastUpdated=1535354018970
+https\://repo.maven.apache.org/maven2/.lastUpdated=1542901444345
+https\://repo.jenkins-ci.org/public/.error=
+https\://maven.oracle.com/.lastUpdated=1535354044274
+https\://repo.maven.apache.org/maven2/.error=

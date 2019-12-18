@@ -1,0 +1,21 @@
+
+create tablespace dormitory_db
+datafile 'C:\oraclexe\app\oracle\oradata\XE\dormitory_db.dat'
+size 10M autoextend on;
+
+create temporary tablespace dormitory_db_temp
+tempfile 'C:\oraclexe\app\oracle\oradata\XE\dormitory_db_temp.dat'
+size 5M autoextend on;
+
+create user dormitory
+identified by dormitory
+default tablespace dormitory_db
+temporary tablespace dormitory_db_temp;
+
+grant create session to dormitory;
+grant create table to dormitory;
+grant unlimited tablespace to dormitory;
+GRANT CREATE SEQUENCE TO dormitory;
+GRANT CREATE TRIGGER TO dormitory;
+GRANT CREATE TYPE TO dormitory;
+GRANT CREATE PROCEDURE TO dormitory;

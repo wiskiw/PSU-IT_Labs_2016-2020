@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="by.pdu.dormitory.mapper.UnitMapper">
+
+    <resultMap id="unitResultMap" type="by.pdu.dormitory.domain.Unit">
+        <id column="unit_number" property="number"/>
+    </resultMap>
+
+    <select id="getUnit" resultMap="unitResultMap">
+        SELECT
+            id as "unit_number"
+        FROM
+            UNIT
+        ORDER BY id ASC
+    </select>
+
+    <insert id="insertUnit">
+        INSERT INTO UNIT(id)
+        VALUES(#{number})
+    </insert>
+
+    <update id="updateUnit">
+        UPDATE UNIT
+        SET id =#{number}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteUnit">
+        DELETE FROM UNIT
+        WHERE id = #{id}
+    </delete>
+
+</mapper>

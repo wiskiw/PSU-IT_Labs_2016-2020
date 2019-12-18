@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="554.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="by.pdu.dormitory.ui.MainController">
+   <children>
+      <TabPane layoutX="14.0" layoutY="14.0" prefHeight="530.0" prefWidth="828.0" tabClosingPolicy="UNAVAILABLE">
+        <tabs>
+          <Tab text="Имущество">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TableView fx:id="propertyTable" layoutX="14.0" layoutY="14.0" prefHeight="473.0" prefWidth="666.0">
+                          <columns>
+                            <TableColumn prefWidth="75.0" text="ID" />
+                            <TableColumn prefWidth="590.0" text="Название" />
+                          </columns>
+                        </TableView>
+                        <Button layoutX="694.0" layoutY="14.0" mnemonicParsing="false" onAction="#addProperty" prefHeight="25.0" prefWidth="120.0" text="Добавить" />
+                        <Button layoutX="694.0" layoutY="55.0" mnemonicParsing="false" onAction="#updateProperty" prefHeight="25.0" prefWidth="120.0" text="Редактировать" />
+                        <Button layoutX="694.0" layoutY="99.0" mnemonicParsing="false" onAction="#removeProperty" prefHeight="25.0" prefWidth="120.0" text="Удалить" />
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+          <Tab text="Должности">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TableView fx:id="postTable" layoutX="14.0" layoutY="14.0" prefHeight="473.0" prefWidth="666.0">
+                          <columns>
+                            <TableColumn prefWidth="75.0" text="ID" />
+                            <TableColumn prefWidth="590.0" text="Название" />
+                          </columns>
+                        </TableView>
+                        <Button layoutX="694.0" layoutY="14.0" mnemonicParsing="false" onAction="#addPost" prefHeight="25.0" prefWidth="120.0" text="Добавить" />
+                        <Button layoutX="694.0" layoutY="55.0" mnemonicParsing="false" onAction="#updatePost" prefHeight="25.0" prefWidth="120.0" text="Редактировать" />
+                        <Button layoutX="694.0" layoutY="99.0" mnemonicParsing="false" onAction="#removePost" prefHeight="25.0" prefWidth="120.0" text="Удалить" />
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+            <Tab text="Факультеты">
+              <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TableView fx:id="facultyTable" layoutX="14.0" layoutY="14.0" prefHeight="473.0" prefWidth="666.0">
+                          <columns>
+                            <TableColumn prefWidth="75.0" text="ID" />
+                            <TableColumn prefWidth="590.0" text="Название" />
+                          </columns>
+                        </TableView>
+                        <Button layoutX="694.0" layoutY="14.0" mnemonicParsing="false" onAction="#addFaculty" prefHeight="25.0" prefWidth="120.0" text="Добавить" />
+                        <Button layoutX="694.0" layoutY="55.0" mnemonicParsing="false" onAction="#updateFaculty" prefHeight="25.0" prefWidth="120.0" text="Редактировать" />
+                        <Button layoutX="694.0" layoutY="99.0" mnemonicParsing="false" onAction="#removeFaculty" prefHeight="25.0" prefWidth="120.0" text="Удалить" />
+                     </children>
+                  </AnchorPane>
+            </content>
+            </Tab>
+            <Tab text="Нежилые комнаты">
+              <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TableView fx:id="otherTable" layoutX="14.0" layoutY="14.0" prefHeight="473.0" prefWidth="666.0">
+                          <columns>
+                            <TableColumn prefWidth="75.0" text="ID" />
+                            <TableColumn prefWidth="590.0" text="Название" />
+                          </columns>
+                        </TableView>
+                        <Button layoutX="694.0" layoutY="14.0" mnemonicParsing="false" onAction="#addOtherRoom" prefHeight="25.0" prefWidth="120.0" text="Добавить" />
+                        <Button layoutX="694.0" layoutY="55.0" mnemonicParsing="false" onAction="#updateOtherRoom" prefHeight="25.0" prefWidth="120.0" text="Редактировать" />
+                        <Button layoutX="694.0" layoutY="99.0" mnemonicParsing="false" onAction="#removeOtherRoom" prefHeight="25.0" prefWidth="120.0" text="Удалить" />
+                     </children>
+                  </AnchorPane>
+            </content>
+            </Tab>
+            <Tab text="Инвентарь">
+              <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TableView fx:id="inventoryTable" layoutX="14.0" layoutY="14.0" prefHeight="473.0" prefWidth="666.0">
+                          <columns>
+                            <TableColumn prefWidth="75.0" text="ID" />
+                            <TableColumn prefWidth="590.0" text="Название" />
+                          </columns>
+                        </TableView>
+                        <Button layoutX="694.0" layoutY="14.0" mnemonicParsing="false" onAction="#addInventory" prefHeight="25.0" prefWidth="120.0" text="Добавить" />
+                        <Button layoutX="694.0" layoutY="55.0" mnemonicParsing="false" onAction="#updateInventory" prefHeight="25.0" prefWidth="120.0" text="Редактировать" />
+                        <Button layoutX="694.0" layoutY="99.0" mnemonicParsing="false" onAction="#removeInventory" prefHeight="25.0" prefWidth="120.0" text="Удалить" />
+                     </children>
+                  </AnchorPane>
+            </content>
+            </Tab>
+            <Tab text="Блок">
+              <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TableView fx:id="unitTable" layoutX="14.0" layoutY="14.0" prefHeight="473.0" prefWidth="666.0">
+                          <columns>
+                            <TableColumn prefWidth="665.0" text="Номер" />
+                          </columns>
+                        </TableView>
+                        <Button layoutX="694.0" layoutY="14.0" mnemonicParsing="false" onAction="#addUnit" prefHeight="25.0" prefWidth="120.0" text="Добавить" />
+                        <Button layoutX="694.0" layoutY="55.0" mnemonicParsing="false" onAction="#updateUnit" prefHeight="25.0" prefWidth="120.0" text="Редактировать" />
+                        <Button layoutX="694.0" layoutY="99.0" mnemonicParsing="false" onAction="#removeUnit" prefHeight="25.0" prefWidth="120.0" text="Удалить" />
+                     </children>
+                  </AnchorPane>
+            </content>
+            </Tab>
+            <Tab text="Группы">
+              <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Button layoutX="694.0" layoutY="14.0" mnemonicParsing="false" onAction="#addGroup" prefHeight="25.0" prefWidth="120.0" text="Добавить" />
+                        <Button layoutX="694.0" layoutY="55.0" mnemonicParsing="false" onAction="#updateGroup" prefHeight="25.0" prefWidth="120.0" text="Редактировать" />
+                        <Button layoutX="694.0" layoutY="99.0" mnemonicParsing="false" onAction="#removeGroup" prefHeight="25.0" prefWidth="120.0" text="Удалить" />
+                        <TableView fx:id="groupTable" layoutX="14.0" layoutY="14.0" prefHeight="473.0" prefWidth="666.0">
+                          <columns>
+                            <TableColumn prefWidth="342.0" text="Название" />
+                            <TableColumn prefWidth="323.0" text="Факультет" />
+                          </columns>
+                        </TableView>
+                     </children>
+                  </AnchorPane>
+            </content>
+            </Tab>
+            <Tab text="Комнаты">
+              <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Button layoutX="694.0" layoutY="14.0" mnemonicParsing="false" onAction="#addRoom" prefHeight="25.0" prefWidth="120.0" text="Добавить" />
+                        <Button layoutX="694.0" layoutY="55.0" mnemonicParsing="false" onAction="#updateRoom" prefHeight="25.0" prefWidth="120.0" text="Редактировать" />
+                        <Button layoutX="694.0" layoutY="99.0" mnemonicParsing="false" onAction="#removeRoom" prefHeight="25.0" prefWidth="120.0" text="Удалить" />
+                        <TableView fx:id="roomTable" layoutX="14.0" layoutY="14.0" prefHeight="473.0" prefWidth="666.0">
+                          <columns>
+                              <TableColumn prefWidth="207.0" text="Блок" />
+                            <TableColumn prefWidth="241.0" text="Площадь" />
+                            <TableColumn prefWidth="217.0" text="Количество коек" />
+                          </columns>
+                        </TableView>
+                     </children>
+                  </AnchorPane>
+            </content>
+            </Tab>
+            <Tab text="Сотрудники">
+              <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Button layoutX="694.0" layoutY="14.0" mnemonicParsing="false" onAction="#addEmployee" prefHeight="25.0" prefWidth="120.0" text="Добавить" />
+                        <Button layoutX="694.0" layoutY="55.0" mnemonicParsing="false" onAction="#updateEmployee" prefHeight="25.0" prefWidth="120.0" text="Редактировать" />
+                        <Button layoutX="694.0" layoutY="99.0" mnemonicParsing="false" onAction="#removeEmployee" prefHeight="25.0" prefWidth="120.0" text="Удалить" />
+                        <TableView fx:id="employeeTable" layoutX="14.0" layoutY="14.0" prefHeight="473.0" prefWidth="666.0">
+                          <columns>
+                              <TableColumn prefWidth="247.0" text="ФИО" />
+                            <TableColumn prefWidth="237.0" text="Должность" />
+                            <TableColumn prefWidth="181.0" text="Комната" />
+                          </columns>
+                        </TableView>
+                     </children>
+                  </AnchorPane>
+            </content>
+            </Tab>
+            <Tab text="Жильцы">
+              <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Button layoutX="694.0" layoutY="14.0" mnemonicParsing="false" onAction="#addTenant" prefHeight="25.0" prefWidth="120.0" text="Добавить" />
+                        <Button layoutX="694.0" layoutY="55.0" mnemonicParsing="false" onAction="#updateTenant" prefHeight="25.0" prefWidth="120.0" text="Редактировать" />
+                        <Button layoutX="694.0" layoutY="99.0" mnemonicParsing="false" onAction="#removeTenant" prefHeight="25.0" prefWidth="120.0" text="Удалить" />
+                        <TableView fx:id="tenantTable" layoutX="14.0" layoutY="14.0" prefHeight="473.0" prefWidth="666.0">
+                          <columns>
+                              <TableColumn prefWidth="294.0" text="ФИО" />
+                            <TableColumn prefWidth="234.0" text="Комната" />
+                            <TableColumn prefWidth="137.0" text="Тип" />
+                          </columns>
+                        </TableView>
+                     </children>
+                  </AnchorPane>
+            </content>
+            </Tab>
+        </tabs>
+      </TabPane>
+   </children>
+</AnchorPane>

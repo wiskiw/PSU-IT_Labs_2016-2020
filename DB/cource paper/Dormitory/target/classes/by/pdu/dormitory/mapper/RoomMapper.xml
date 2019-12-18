@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="by.pdu.dormitory.mapper.RoomMapper">
+
+    <resultMap id="roomResultMap" type="by.pdu.dormitory.domain.Room">
+        <id column="room_id" property="id"/>
+        <result column="room_square" property="square"/>
+        <result column="room_count_bets" property="countBets"/>
+        <collection property="unit" javaType="by.pdu.dormitory.domain.Unit"
+                    resultMap="by.pdu.dormitory.mapper.UnitMapper.unitResultMap"/>
+    </resultMap>
+
+    <select id="getRoom" resultMap="roomResultMap">
+        SELECT
+            r.id as "room_id",
+            r.square as "room_square",
+            r.count_bets as "room_count_bets",
+            u.id as "unit_number"
+        FROM
+            ROOM r
+            LEFT JOIN UNIT u ON u.id = r.unit_id
+        ORDER BY "room_id" ASC
+    </select>
+
+    <insert id="insertRoom">
+        INSERT INTO Room(id,square,count_bets,unit_id)
+        VALUES(#{id},#{square},#{countBets},#{unitId})
+    </insert>
+
+
+
+    <update id="updateRoom">
+        UPDATE Room
+        SET
+            square = #{square},
+            count_bets = #{countBets},
+            unit_id = #{unitId}
+        WHERE
+            id = #{id}
+    </update>
+
+    <delete id="deleteRoom">
+        DELETE FROM Room
+        WHERE id = #{id}
+    </delete>
+
+
+    <select id="nextId" resultType="java.lang.Long">
+        SELECT ROOM_SEQ.NEXTVAL FROM DUAL
+    </select>
+
+    <insert id="insertInventory">
+        INSERT INTO ROOM_INVENTORY(ROOM_ID,INVENTORY_ID)
+        VALUES(#{roomId},#{inventoryId})
+    </insert>
+
+    <delete id="deleteInventory">
+        DELETE FROM ROOM_INVENTORY
+        WHERE ROOM_ID = #{roomId}
+    </delete>
+
+    <select id="getInventory" resultMap="by.pdu.dormitory.mapper.InventoryMapper.inventoryResultMap">
+        SELECT
+            id as "inventory_id",
+            name as "inventory_name"
+        FROM
+            Inventory
+        WHERE
+            id IN (SELECT inventory_id FROM ROOM_INVENTORY WHERE ROOM_ID=#{id})
+        ORDER BY id ASC
+    </select>
+</mapper>

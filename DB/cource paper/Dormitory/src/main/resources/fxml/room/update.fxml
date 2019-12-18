@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="220.0" prefWidth="696.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="by.pdu.dormitory.ui.room.UpdateController">
+    <children>
+        <Button layoutX="608.0" layoutY="182.0" mnemonicParsing="false" onAction="#update" prefHeight="25.0" prefWidth="74.0" text="Изменить" />
+        <TextField fx:id="squareField" layoutX="30.0" layoutY="29.0" prefHeight="25.0" prefWidth="209.0" promptText="Площадь" />
+        <ComboBox fx:id="unitBox" layoutX="30.0" layoutY="119.0" prefHeight="25.0" prefWidth="209.0" promptText="Блок" />
+        <TextField fx:id="countBetsField" layoutX="30.0" layoutY="75.0" prefHeight="25.0" prefWidth="209.0" promptText="Кол. коек" />
+        <TableView fx:id="inventTable" layoutX="270.0" layoutY="19.0" prefHeight="131.0" prefWidth="200.0">
+            <columns>
+                <TableColumn prefWidth="199.0" text="Инвентарь" />
+            </columns>
+        </TableView>
+        <TableView fx:id="inventRoomTable" layoutX="470.0" layoutY="19.0" prefHeight="131.0" prefWidth="200.0">
+            <columns>
+                <TableColumn prefWidth="199.0" text="Инвентарь в комната" />
+            </columns>
+        </TableView>
+        <Button layoutX="270.0" layoutY="157.0" mnemonicParsing="false" onAction="#addInv" text="Добавить" />
+        <Button layoutX="348.0" layoutY="157.0" mnemonicParsing="false" onAction="#removeInv" prefHeight="25.0" prefWidth="74.0" text="Удалить" />
+    </children>
+</AnchorPane>

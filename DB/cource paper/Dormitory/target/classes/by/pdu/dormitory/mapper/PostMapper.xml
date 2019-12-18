@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="by.pdu.dormitory.mapper.PostMapper">
+
+    <resultMap id="postResultMap" type="by.pdu.dormitory.domain.Post">
+        <id column="post_id" property="id"/>
+        <result column="post_name" property="name"/>
+    </resultMap>
+
+    <select id="getPost" resultMap="postResultMap">
+        SELECT
+            id as "post_id",
+            name as "post_name"
+        FROM
+            POST
+        ORDER BY id ASC
+    </select>
+
+    <insert id="insertPost">
+        INSERT INTO POST(NAME)
+        VALUES(#{name})
+    </insert>
+
+    <update id="updatePost">
+        UPDATE POST
+        SET NAME =#{name}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deletePost">
+        DELETE FROM POST
+        WHERE id = #{id}
+    </delete>
+
+</mapper>
