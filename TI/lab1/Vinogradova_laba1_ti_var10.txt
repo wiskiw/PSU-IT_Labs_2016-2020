@@ -1,0 +1,268 @@
+// ConsoleApplication2.cpp : Этот файл содержит функцию "main". Здесь начинается и заканчивается выполнение программы.
+//
+
+#include "pch.h"
+#include <iostream>
+#include <map>
+#include <stdio.h>
+#include <iostream>
+#include <string>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+string findCode(char c);
+string makeChange(string data);
+void writeData(string data);
+string readData(string data);
+string decrypt(string data);
+class SymbolCode {
+private:
+	char symbol;
+	double frequency;
+	string code;
+
+public:
+	SymbolCode(char in_symbol, double in_frequency) {
+		symbol = in_symbol;
+		frequency = in_frequency;
+		code = "";
+	}
+
+
+	char getSymbol() {
+		return symbol;
+	}
+
+	double getFrequency() {
+		return frequency;
+	}
+
+	string getCode()const {
+		return code;
+	}
+
+	void addCode(string in_code) {
+		code += in_code;
+	}
+};
+
+
+vector<SymbolCode> symbol;
+map<char, int> frequency;
+
+void printSymbolCode(SymbolCode in_symbol) {
+	cout << in_symbol.getSymbol() << "\t\t" << in_symbol.getFrequency() << "\t\t" << in_symbol.getCode() << "\t\t" << in_symbol.getCode().size() << endl;
+}
+
+void shannonFano(int in_begin, int in_end) {
+
+
+	// некорректный диапазон
+	if (in_begin >= in_end) {
+		return;
+	}
+
+	// имеется лишь два символа
+	if (in_begin == in_end - 1) {
+		symbol.at(in_begin).addCode("0");
+		symbol.at(in_end).addCode("1");
+		return;
+	}
+
+
+	int highPtr = in_begin;
+	int lowPtr = in_end;
+	double highSum = symbol.at(highPtr).getFrequency();
+	double lowSum = symbol.at(lowPtr).getFrequency();
+
+	// сдвигаем указатели друг к другу
+	while (highPtr != lowPtr - 1) {
+		if (highSum > lowSum) {
+			lowPtr--;
+			lowSum += symbol.at(lowPtr).getFrequency();
+		}
+		else {
+			highPtr++;
+			highSum += symbol.at(highPtr).getFrequency();
+		}
+	}
+
+	int i;
+	for (i = in_begin; i <= highPtr; i++) {
+		symbol.at(i).addCode("0");
+	}
+	for (i = lowPtr; i <= in_end; i++) {
+		symbol.at(i).addCode("1");
+	}
+
+	shannonFano(in_begin, highPtr);
+	shannonFano(lowPtr, in_end);
+}
+
+int main() {
+	setlocale(LC_ALL, "Rus");
+	FILE * pFile;
+	int c;
+	int count = 0;
+	pFile = fopen("text.txt", "r");
+	if (pFile == NULL) {
+		cout << "Невозможно открыть файл" << endl;
+	}
+	else {
+		do {
+			c = fgetc(pFile);
+			if (c != EOF) {
+				frequency[c]++;//добавление в словарь символа с с увеличением его частоты
+				count++;
+				cout << (char)c;
+			}
+		} while (c != EOF);
+		fclose(pFile);
+	}
+
+
+
+	cout << endl << endl;
+
+
+	for (auto it = frequency.begin(); it != frequency.end(); it++) {//итератор
+		SymbolCode newSymbol(it->first, (double)it->second / count);//новый объект символ
+		symbol.push_back(newSymbol);//добавляем в вектор этот элемент
+	}
+
+
+	//сортировка вектора по убыв частот
+	sort(symbol.begin(), symbol.end(), [](SymbolCode& lhs, SymbolCode& rhs)
+	{
+		return lhs.getFrequency() > rhs.getFrequency();
+	});
+
+
+	cout << endl;
+
+	if (symbol.size() != 1)  shannonFano(0, symbol.size() - 1);
+	else symbol[0].addCode("0");
+
+
+	
+
+	string data = "";
+	data = makeChange(data);//создает строку
+	cout << "Преобразованный текст:\n" << data << endl;
+	writeData(data);
+
+	data = readData(data);
+	cout << "Считанный текст:\n" << data << endl;
+	data = decrypt(data);//00 а
+	cout << "Итоговый текст:\n" << data << "\n\n";
+
+
+	for_each(symbol.begin(), symbol.end(), printSymbolCode);//вывод на экран (а е ж)
+
+	double enthropySum = 0.0, avgWordLen = 0.0;
+	for (int i = 0; i < symbol.size(); i++) {
+		enthropySum += symbol[i].getFrequency() * (log10(symbol[i].getFrequency()) / log10(2));
+		avgWordLen += symbol[i].getFrequency() * symbol[i].getCode().size();
+	}
+
+	
+
+	cout << "Средняя длина кодового слова - " << avgWordLen << endl;
+	cout << "Энтропия - " << -enthropySum << endl;
+	
+	return 0;
+}
+
+string decrypt(string data) {
+	string normalData = "";
+	vector<SymbolCode> tempCypher = symbol;
+	int pos = 0;
+	for (int i = 0; i < data.size(); i++) {
+
+		for (auto it = tempCypher.cbegin(); it != tempCypher.cend();)
+		{
+			if (it->getCode().at(pos) != data[i])
+			{
+				it = tempCypher.erase(it);//удаление элемента
+			}
+			else
+			{
+				++it;
+			}
+		}
+
+		int inc;
+
+		if (tempCypher.size() == 1) {
+			inc = tempCypher[0].getCode().size() - 1 - pos;
+			normalData += tempCypher[0].getSymbol();
+			tempCypher = symbol;//обновляем таблицу кодов
+			pos = 0;
+
+		}
+		else {
+			pos++;
+			inc = 0;
+		}
+
+		i += inc;
+	}
+	return normalData;
+}
+
+string readData(string data) {
+	data.clear();
+	FILE * pFile = fopen("data.txt", "r");
+	if (pFile == NULL) {
+		cout << "Невозможно открыть файл" << endl;
+	}
+	else {
+		int c;
+		do {
+			c = fgetc(pFile);
+			if (c != EOF) {
+				data += c;
+			}
+		} while (c != EOF);
+		fclose(pFile);
+	}
+	return data;
+}
+
+string makeChange(string data) {
+	FILE * pFile = fopen("text.txt", "r");
+	if (pFile == NULL) {
+		cout << "Невозможно открыть файл" << endl;
+	}
+	else {
+		int c;
+		do {
+			c = fgetc(pFile);
+			if (c != EOF) {
+				data += findCode(c);//добавляет то, что вернет ф findCode 
+			}
+		} while (c != EOF);
+		fclose(pFile);
+	}
+	return data;
+}
+
+void writeData(string data) {
+	FILE * pFile = fopen("data.txt", "w");
+	if (pFile == NULL) {
+		cout << "Невозможно открыть файл" << endl;
+	}
+	else {
+		for (int i = 0; i < data.size(); i++) {
+			fwrite(&data[i], sizeof(char), 1, pFile);
+		}
+		fclose(pFile);
+	}
+}
+
+string findCode(char c) {
+	for (int i = 0; i < symbol.size(); i++) {
+		if (symbol[i].getSymbol() == c) return symbol[i].getCode();
+	}
+}
