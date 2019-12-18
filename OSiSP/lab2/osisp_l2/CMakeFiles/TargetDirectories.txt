@@ -1,3 +1,0 @@
-/home/wiskiw/SSDStorage/UNI/LVL2/PART2/OSiSP/lab2/osisp_l2/CMakeFiles/rebuild_cache.dir
-/home/wiskiw/SSDStorage/UNI/LVL2/PART2/OSiSP/lab2/osisp_l2/CMakeFiles/edit_cache.dir
-/home/wiskiw/SSDStorage/UNI/LVL2/PART2/OSiSP/lab2/osisp_l2/CMakeFiles/osisp_l2.dir

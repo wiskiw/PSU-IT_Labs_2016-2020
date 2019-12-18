@@ -1,0 +1,20 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/wiskiw/Storage/uni/lvl2/PL/paid/pl_l8_9/main.cpp
+GL/gl.h
+-
+GL/freeglut.h
+-
+math.h
+-
+cstdio
+-
+iostream
+-
+

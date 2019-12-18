@@ -1,3 +1,0 @@
-E:/Programming/University/osisp/lab7/server/cmake-build-debug/CMakeFiles/server.dir
-E:/Programming/University/osisp/lab7/server/cmake-build-debug/CMakeFiles/edit_cache.dir
-E:/Programming/University/osisp/lab7/server/cmake-build-debug/CMakeFiles/rebuild_cache.dir

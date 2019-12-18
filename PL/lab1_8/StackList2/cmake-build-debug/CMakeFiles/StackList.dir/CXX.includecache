@@ -1,0 +1,28 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+D:/uni/lvl2/PL/lab1_8/StackList2/StackList.cpp
+malloc.h
+-
+memory.h
+-
+cstring
+-
+cstdio
+-
+StackList.h
+D:/uni/lvl2/PL/lab1_8/StackList2/StackList.h
+
+D:/uni/lvl2/PL/lab1_8/StackList2/StackList.h
+
+D:/uni/lvl2/PL/lab1_8/StackList2/main.cpp
+iostream
+-
+StackList.h
+D:/uni/lvl2/PL/lab1_8/StackList2/StackList.h
+

@@ -1,0 +1,59 @@
+/*#include <iostream>
+
+using namespace std;
+
+int main()
+{
+    cout << "Hello world!" << endl;
+    return 0;
+}
+*/
+
+#include <stdio.h>
+#include <math.h>
+int n=100;
+double f(double x){
+	return 10.0*pow(x,9.0);
+}
+int main(int argc, char *argv[])
+{
+	int i;
+	double s=0,s2=0,h,a=0,b=1.0,x,y,delta1,delta2;
+	h=(b-a)/n;
+    for (i=1;i<=n/2;i++){
+		x=a+(double)(2*i-1)*h;
+		y=f(x);
+        s=s+y;
+    }
+   for (i=1;i<=(n/2)-1;i++){
+		x=a+(double)(2*i)*h;
+		y=f(x);
+        s2=s2+y;
+    }
+	s=(4.0*s+2.0*s2+f(a)+f(b))*(h/3.0);
+	delta1=s-1.0;
+    printf("\t\t\t *1*\nexort=%.16lf \nnum=%.16lf \ndelta=%.16lf\n\n",1.0,s,delta1);
+	s=0;
+	s2=0;
+	n=200;
+ 	h=(b-a)/n;
+    for (i=1;i<=n/2;i++){
+		x=a+(2*i-1)*h;
+		y=f(x);
+        s=s+y;
+    }
+   for (i=1;i<n/2;i++){
+		x=a+2*i*h;
+		y=f(x);
+        s2=s2+y;
+    }
+	s=(4*s+2*s2+f(a)+f(b))*h/3;
+	delta2=s-1;
+    printf("\t\t\t *2*\nexort=%.16lf \nnum=%.16lf \ndelta=%.16lf\n",1.0,s,delta2);
+
+
+
+	printf("\nResultat: %lf\n\n",log2(fabs(delta1/delta2)));
+    return 0;
+}
+

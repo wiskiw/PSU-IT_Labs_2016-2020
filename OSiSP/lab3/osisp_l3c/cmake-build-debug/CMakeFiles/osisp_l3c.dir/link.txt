@@ -1,1 +1,0 @@
-/usr/bin/c++  -g   CMakeFiles/osisp_l3c.dir/main.cpp.o  -o osisp_l3c 

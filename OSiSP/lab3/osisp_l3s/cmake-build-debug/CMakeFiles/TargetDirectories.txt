@@ -1,3 +1,0 @@
-/home/wiskiw/SSDStorage/UNI/LVL2/PART2/OSiSP/lab3/osisp_l3s/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/home/wiskiw/SSDStorage/UNI/LVL2/PART2/OSiSP/lab3/osisp_l3s/cmake-build-debug/CMakeFiles/edit_cache.dir
-/home/wiskiw/SSDStorage/UNI/LVL2/PART2/OSiSP/lab3/osisp_l3s/cmake-build-debug/CMakeFiles/osisp_l3s.dir

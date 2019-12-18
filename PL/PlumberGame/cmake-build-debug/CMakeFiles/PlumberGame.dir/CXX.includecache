@@ -1,0 +1,36 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/wiskiw/Documents/uni/pl/PlumberGame/io/IOProcessor.cpp
+GL/glut.h
+-
+IOProcessor.h
+/home/wiskiw/Documents/uni/pl/PlumberGame/io/IOProcessor.h
+
+/home/wiskiw/Documents/uni/pl/PlumberGame/io/IOProcessor.h
+
+/home/wiskiw/Documents/uni/pl/PlumberGame/levels/LevelMaker.cpp
+LevelMaker.h
+/home/wiskiw/Documents/uni/pl/PlumberGame/levels/LevelMaker.h
+
+/home/wiskiw/Documents/uni/pl/PlumberGame/levels/LevelMaker.h
+iostream
+-
+
+/home/wiskiw/Documents/uni/pl/PlumberGame/main.cpp
+iostream
+-
+GL/glut.h
+-
+io/IOProcessor.h
+/home/wiskiw/Documents/uni/pl/PlumberGame/io/IOProcessor.h
+levels/LevelMaker.h
+/home/wiskiw/Documents/uni/pl/PlumberGame/levels/LevelMaker.h
+SFML/Graphics.hpp
+-
+

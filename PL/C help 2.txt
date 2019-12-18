@@ -1,0 +1,12 @@
+Рисование
+http://radiofront.narod.ru/htm/prog/htm/winda/api/paint.html#1
+https://msdn.microsoft.com/en-us/library/windows/desktop/dd183523(v=vs.85).aspx
+
+			hPen = CreatePen(PS_SOLID, 5, RGB(255, 0, 0));
+            SelectObject(hdc, hPen);
+            // Setting the background color doesn't matter
+            // when the style is PS_SOLID
+            SetBkColor(hdc, RGB(40, 160, 52));
+            SelectObject(hdc, CreateSolidBrush(RGB(200, 100, 50)));
+            //Rectangle(hdc, 10, 300, 200, 500);
+            Ellipse(hdc, 100,100,200,200);

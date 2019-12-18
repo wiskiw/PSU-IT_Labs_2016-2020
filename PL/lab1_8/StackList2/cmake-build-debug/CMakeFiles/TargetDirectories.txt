@@ -1,0 +1,3 @@
+D:/uni/lvl2/PL/lab1_8/StackList2/cmake-build-debug/CMakeFiles/StackList.dir
+D:/uni/lvl2/PL/lab1_8/StackList2/cmake-build-debug/CMakeFiles/edit_cache.dir
+D:/uni/lvl2/PL/lab1_8/StackList2/cmake-build-debug/CMakeFiles/rebuild_cache.dir

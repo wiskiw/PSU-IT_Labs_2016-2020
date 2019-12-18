@@ -1,0 +1,3 @@
+D:/uni/lvl2/PL/pl_l5_basic/cmake-build-debug/CMakeFiles/pl_l5_basic.dir
+D:/uni/lvl2/PL/pl_l5_basic/cmake-build-debug/CMakeFiles/edit_cache.dir
+D:/uni/lvl2/PL/pl_l5_basic/cmake-build-debug/CMakeFiles/rebuild_cache.dir

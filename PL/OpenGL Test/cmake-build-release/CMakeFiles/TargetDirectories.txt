@@ -1,0 +1,4 @@
+D:/uni/lvl2/PL/OpenGL Test/cmake-build-release/CMakeFiles/OpenGL_Test.dir
+D:/uni/lvl2/PL/OpenGL Test/cmake-build-release/CMakeFiles/texture_mapping.dir
+D:/uni/lvl2/PL/OpenGL Test/cmake-build-release/CMakeFiles/edit_cache.dir
+D:/uni/lvl2/PL/OpenGL Test/cmake-build-release/CMakeFiles/rebuild_cache.dir
