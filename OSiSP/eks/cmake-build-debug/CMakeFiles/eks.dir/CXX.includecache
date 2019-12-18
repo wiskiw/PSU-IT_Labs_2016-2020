@@ -1,0 +1,14 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/wiskiw/SSDStorage/UNI/LVL2/PART2/OSiSP/eks/main.cpp
+iostream
+-
+fstream
+-
+

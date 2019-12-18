@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PSU-Admin Page</title>
+
+    <!-- for firebase hosting -->
+    <script type="text/javascript">
+        const hosting = document.location;
+        if (hosting.host.includes("localhost") || hosting.origin.includes("file")) {
+            // localhost
+
+        } else {
+            // firebase hosting
+            document.write("<base href='https://psu-by.firebaseapp.com/admin_page/' />");
+        }
+    </script>
+
+
+    <link rel="stylesheet" type="text/css" href="./css/main.css">
+    <script type="text/javascript" src="./js/mammoth.browser.js"></script>
+
+</head>
+<body>
+
+<div class="top-container">
+
+    <div class="navigation-bar">
+        <table>
+            <tr>
+                <td><a href="../student_page/index.html">Student Page</a></td>
+            </tr>
+            <tr>
+                <td><a href="../admin_page/login.html">Sign Out</a></td>
+            </tr>
+        </table>
+    </div>
+    <div>
+        <table align="center" id="input_table">
+            <tr>
+                <td colspan="3">
+                    <input style="padding-left: 3vw" class="button pref" id="document" type="file"
+                           accept="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                           name="thumbnail"/>
+
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <select class="selector pref" id="fac_selector" title="Факультет" disabled>
+                        <option disabled selected style='display:none;'>Факультет</option>
+                    </select>
+                </td>
+
+                <td>
+                    <select class="selector pref" id="course_selector" name="users" title="Курс" disabled>
+                        <option disabled selected style='display:none;' value="course">Курс</option>
+                        <option value="1">I Курс</option>
+                        <option value="2">II Курс</option>
+                        <option value="3">III Курс</option>
+                        <option value="4">IV Курс</option>
+                        <option value="5">V Курс</option>
+                    </select>
+                </td>
+
+                <td>
+                    <input id="subgroup_numb" title="Максимально количесвтво подгрупп для группы" class="subgroups pref"
+                           type="number" disabled
+                           placeholder="Макс. кол-во подгрупп" height="48" size="18vw">
+                </td>
+
+            </tr>
+
+            <tr>
+                <td colspan="3" style="height: 3vw;">
+                    <input class="button" id="upload_btn" type="submit" value="Сканировать" onclick="sendFile();"
+                           disabled/>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<div id="result_container">
+
+    <h3 id="complete_text" align="center">Выполнено!</h3>
+
+    <div id="result_content">
+        Что такое Lorem Ipsum?
+        Lorem Ipsum - это текст-"рыба", часто используемый в печати и вэб-дизайне. Lorem Ipsum является стандартной
+        "рыбой" для текстов на латинице с начала XVI века. В то время некий безымянный печатник создал большую коллекцию
+        размеров и форм шрифтов, используя Lorem Ipsum для распечатки образцов. Lorem Ipsum не только успешно пережил
+        без заметных изменений пять веков, но и перешагнул в электронный дизайн. Его популяризации в новое время
+        послужили публикация листов Letraset с образцами Lorem Ipsum в 60-х годах и, в более недавнее время, программы
+        электронной вёрстки типа Aldus PageMaker, в шаблонах которых используется Lorem Ipsum.
+
+
+    </div>
+    <input class="button" id="save_btn" disabled type="submit" value="Кнопка" onclick="saveToDatabase();"/>
+</div>
+
+
+<script src="https://www.gstatic.com/firebasejs/4.6.2/firebase.js"></script>
+<script src="../fb_config.js"></script>
+<script>
+    firebase.auth().onAuthStateChanged(function (user) {
+        if (user) {
+            console.log(user.email);
+        } else {
+           // window.location.replace("./login.html");
+        }
+    });
+
+    function signOut() {
+        firebase.auth().signOut();
+    }
+</script>
+
+<script type="text/javascript" src="./js/uploader.js"></script>
+
+</body>
+</html>

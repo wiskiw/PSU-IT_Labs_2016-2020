@@ -1,0 +1,18 @@
+
+data StrAction = StrClear | StrDelete Char | StrReplace Char Char | StrAdd Char deriving (Eq,Show)
+
+process :: String -> StrAction -> String
+process s (StrClear) = []
+process [] (StrDelete _) = []
+process (s:ss) (StrDelete c) = if (s == c) then process ss (StrDelete c) else s : process ss (StrDelete c)
+process [] (StrReplace _ _) = []
+process (s:ss) (StrReplace w f) = if (s == w) then f : (process ss (StrReplace w f)) else s : (process ss (StrReplace w f)) 
+process s (StrAdd x) = x : s
+
+processAll :: [StrAction] -> String -> String
+processAll [] x = x
+processAll (p:ps) x = processAll ps (process x p)
+
+deleteAll :: String -> String -> String
+deleteAll s d = processAll (map StrDelete d) s
+

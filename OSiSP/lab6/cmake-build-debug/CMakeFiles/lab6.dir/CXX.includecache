@@ -1,0 +1,24 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+E:/UNI/LVL2/PART2/OSiSP/lab6/main.cpp
+windows.h
+-
+stdio.h
+-
+string
+-
+iostream
+-
+algorithm
+-
+time.h
+-
+fstream
+-
+

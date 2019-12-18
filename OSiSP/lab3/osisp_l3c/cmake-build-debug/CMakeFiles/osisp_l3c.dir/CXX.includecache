@@ -1,0 +1,30 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/wiskiw/SSDStorage/UNI/LVL2/PART2/OSiSP/lab3/osisp_l3c/main.cpp
+sys/types.h
+-
+sys/socket.h
+-
+netinet/in.h
+-
+cstdio
+-
+cstdlib
+-
+zconf.h
+-
+string
+-
+fstream
+-
+iostream
+-
+cstring
+-
+

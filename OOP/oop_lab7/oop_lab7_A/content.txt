@@ -1,0 +1,19 @@
+Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
+when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,
+and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+Есть много вариантов Lorem Ipsum, но большинство из них имеет не всегда приемлемые модификации, например,
+юмористические вставки или слова, которые даже отдалённо не напоминают латынь.
+Если вам нужен Lorem Ipsum для серьёзного проекта, вы наверняка не хотите какой-нибудь шутки,
+скрытой в середине абзаца.
+Также все другие известные генераторы Lorem Ipsum используют один и тот же текст,
+который они просто повторяют, пока не достигнут нужный объём.
+Это делает предлагаемый здесь генератор единственным настоящим Lorem Ipsum генератором.
+Он использует словарь из более чем 200 латинских слов, а также набор моделей предложений.
+В результате сгенерированный Lorem Ipsum выглядит правдоподобно, не имеет повторяющихся
+ абзацей или "невозможных" слов.
+ The Box III cements Hooli’s legacy of innovation. And my signature — that’s a promise from me to the
+ Hooli user. To buck the impossible. To keep imagining new ways to change the world.
+ To keep striving for a better tomorrow.
+ To stay restless, never settling for the status quo in data storage devices.

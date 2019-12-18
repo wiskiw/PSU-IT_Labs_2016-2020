@@ -1,0 +1,75 @@
+body {
+    margin: 0;
+    padding: 50px;
+    --main-content-width: 65vw;
+    font-size: 18px;
+    color: #fefefe;
+    font-family: sans-serif;
+    background: url(../../student_page/images/back.jpg) no-repeat fixed;
+}
+
+.top-container {
+    width: 100%;
+    display: flex;
+}
+
+#result_content{
+    padding: 20px;
+}
+
+.navigation-bar {
+    margin-right: 15px;
+    width: 20vw;
+    padding: 20px;
+    height: 200px;
+    padding-right: 50px;
+    background-color: #cacbcb;
+    border-radius: 20px;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    border: 4px solid white;
+}
+
+#input_table {
+    width: 80vm;
+    padding: 20px;
+    height: 200px;
+    background-color: #cacbcb;
+    border-radius: 20px;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    border: 4px solid white;
+}
+
+.pref {
+
+    padding: 5px 10px;
+    width: 18vw;
+}
+
+.button {
+    width: 100%;
+    padding: 5px 10px;
+    height: 100%;
+}
+
+#msg_list {
+    width: 30vw
+}
+
+#msg_container {
+    width: 100%;
+    padding: 5vw;
+}
+
+.option_warning {
+    background: rgba(209, 195, 3, 0.4);
+    color: #1F1F1F;
+}
+
+.option_error {
+    background: rgba(255, 69, 0, 0.4);
+    color: #1f1f1f;
+}
