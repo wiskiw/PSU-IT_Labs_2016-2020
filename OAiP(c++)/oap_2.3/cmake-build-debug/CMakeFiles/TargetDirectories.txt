@@ -1,0 +1,3 @@
+D:/uni/OAiP(c++)/oap_2.3/cmake-build-debug/CMakeFiles/edit_cache.dir
+D:/uni/OAiP(c++)/oap_2.3/cmake-build-debug/CMakeFiles/oap_2_3.dir
+D:/uni/OAiP(c++)/oap_2.3/cmake-build-debug/CMakeFiles/rebuild_cache.dir

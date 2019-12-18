@@ -1,0 +1,3 @@
+D:/uni/PL/pl_2.4/cmake-build-debug/CMakeFiles/pl_2_4.dir
+D:/uni/PL/pl_2.4/cmake-build-debug/CMakeFiles/edit_cache.dir
+D:/uni/PL/pl_2.4/cmake-build-debug/CMakeFiles/rebuild_cache.dir

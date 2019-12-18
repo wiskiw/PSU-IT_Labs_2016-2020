@@ -1,0 +1,4 @@
+C:/Users/WiskiW/Desktop/TODO/l_work/cmake-build-debug/CMakeFiles/l_work.dir
+C:/Users/WiskiW/Desktop/TODO/l_work/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+C:/Users/WiskiW/Desktop/TODO/l_work/cmake-build-debug/CMakeFiles/libs.dir
+C:/Users/WiskiW/Desktop/TODO/l_work/cmake-build-debug/CMakeFiles/edit_cache.dir

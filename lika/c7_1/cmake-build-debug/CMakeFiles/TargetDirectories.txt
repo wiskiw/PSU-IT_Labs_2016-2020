@@ -1,0 +1,3 @@
+C:/Users/WiskiW/Desktop/lika/c7_1/cmake-build-debug/CMakeFiles/c7_1.dir
+C:/Users/WiskiW/Desktop/lika/c7_1/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/WiskiW/Desktop/lika/c7_1/cmake-build-debug/CMakeFiles/rebuild_cache.dir

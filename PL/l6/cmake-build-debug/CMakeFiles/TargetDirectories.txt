@@ -1,3 +1,0 @@
-/home/wiskiw/Documents/uni/pl/l6/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/home/wiskiw/Documents/uni/pl/l6/cmake-build-debug/CMakeFiles/edit_cache.dir
-/home/wiskiw/Documents/uni/pl/l6/cmake-build-debug/CMakeFiles/l6.dir

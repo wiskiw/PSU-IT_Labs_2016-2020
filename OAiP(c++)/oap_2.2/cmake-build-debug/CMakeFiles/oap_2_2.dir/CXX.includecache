@@ -1,0 +1,18 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+D:/uni/OAiP(c++)/oap_2.2/main.cpp
+iostream
+-
+cstdio
+-
+cmath
+-
+cstdlib
+-
+

@@ -1,0 +1,22 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+C:/Users/WiskiW/Desktop/TODO/olef/pl2_6.3/main.cpp
+iostream
+-
+cmath
+-
+cstdio
+-
+cstdarg
+-
+complex
+-
+limits.h
+-
+

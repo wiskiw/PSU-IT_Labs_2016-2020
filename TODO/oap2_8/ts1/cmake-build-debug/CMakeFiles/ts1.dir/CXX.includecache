@@ -1,0 +1,42 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+C:/Users/WiskiW/Desktop/TODO/oap2_8/ts1/StackList.cpp
+malloc.h
+-
+StackList.h
+C:/Users/WiskiW/Desktop/TODO/oap2_8/ts1/StackList.h
+console_io_lib/console_io_lib.cpp
+C:/Users/WiskiW/Desktop/TODO/oap2_8/ts1/console_io_lib/console_io_lib.cpp
+
+C:/Users/WiskiW/Desktop/TODO/oap2_8/ts1/StackList.h
+
+C:/Users/WiskiW/Desktop/TODO/oap2_8/ts1/console_io_lib/console_io_lib.cpp
+afxres.h
+-
+cstdio
+-
+console_io_lib.h
+C:/Users/WiskiW/Desktop/TODO/oap2_8/ts1/console_io_lib/console_io_lib.h
+
+C:/Users/WiskiW/Desktop/TODO/oap2_8/ts1/console_io_lib/console_io_lib.h
+cstdlib
+-
+afxres.h
+-
+cstdio
+-
+
+C:/Users/WiskiW/Desktop/TODO/oap2_8/ts1/main.cpp
+iostream
+-
+cstdlib
+-
+StackList.h
+C:/Users/WiskiW/Desktop/TODO/oap2_8/ts1/StackList.h
+

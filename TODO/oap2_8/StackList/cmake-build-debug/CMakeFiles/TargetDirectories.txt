@@ -1,0 +1,4 @@
+C:/Users/WiskiW/Desktop/TODO/oap2_8/StackList/cmake-build-debug/CMakeFiles/StackList.dir
+C:/Users/WiskiW/Desktop/TODO/oap2_8/StackList/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+C:/Users/WiskiW/Desktop/TODO/oap2_8/StackList/cmake-build-debug/CMakeFiles/libs.dir
+C:/Users/WiskiW/Desktop/TODO/oap2_8/StackList/cmake-build-debug/CMakeFiles/edit_cache.dir

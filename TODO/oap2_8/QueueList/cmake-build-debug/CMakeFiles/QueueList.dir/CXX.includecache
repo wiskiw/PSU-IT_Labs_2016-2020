@@ -1,0 +1,44 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+C:/Users/WiskiW/Desktop/TODO/oap2_8/QueueList/QueueList.cpp
+malloc.h
+-
+QueueList.h
+C:/Users/WiskiW/Desktop/TODO/oap2_8/QueueList/QueueList.h
+console_io_lib/console_io_lib.cpp
+C:/Users/WiskiW/Desktop/TODO/oap2_8/QueueList/console_io_lib/console_io_lib.cpp
+
+C:/Users/WiskiW/Desktop/TODO/oap2_8/QueueList/QueueList.h
+
+C:/Users/WiskiW/Desktop/TODO/oap2_8/QueueList/console_io_lib/console_io_lib.cpp
+afxres.h
+-
+cstdio
+-
+console_io_lib.h
+C:/Users/WiskiW/Desktop/TODO/oap2_8/QueueList/console_io_lib/console_io_lib.h
+
+C:/Users/WiskiW/Desktop/TODO/oap2_8/QueueList/console_io_lib/console_io_lib.h
+cstdlib
+-
+afxres.h
+-
+cstdio
+-
+
+C:/Users/WiskiW/Desktop/TODO/oap2_8/QueueList/main.cpp
+iostream
+-
+cstdlib
+-
+QueueList.h
+C:/Users/WiskiW/Desktop/TODO/oap2_8/QueueList/QueueList.h
+console_io_lib/console_io_lib.h
+C:/Users/WiskiW/Desktop/TODO/oap2_8/QueueList/console_io_lib/console_io_lib.h
+

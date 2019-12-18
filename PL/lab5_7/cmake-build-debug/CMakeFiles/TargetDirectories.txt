@@ -1,3 +1,0 @@
-D:/uni/lvl2/PL/lab5_7/cmake-build-debug/CMakeFiles/lab5_7.dir
-D:/uni/lvl2/PL/lab5_7/cmake-build-debug/CMakeFiles/edit_cache.dir
-D:/uni/lvl2/PL/lab5_7/cmake-build-debug/CMakeFiles/rebuild_cache.dir

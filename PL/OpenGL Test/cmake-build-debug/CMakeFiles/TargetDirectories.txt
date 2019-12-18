@@ -1,4 +1,0 @@
-D:/uni/lvl2/PL/OpenGL Test/cmake-build-debug/CMakeFiles/main.cpp.dir
-D:/uni/lvl2/PL/OpenGL Test/cmake-build-debug/CMakeFiles/OpenGL_Test.dir
-D:/uni/lvl2/PL/OpenGL Test/cmake-build-debug/CMakeFiles/edit_cache.dir
-D:/uni/lvl2/PL/OpenGL Test/cmake-build-debug/CMakeFiles/rebuild_cache.dir

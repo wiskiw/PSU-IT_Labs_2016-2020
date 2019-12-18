@@ -1,3 +1,0 @@
-"C:\Program Files\JetBrains\CLion 2017.2.2\bin\cmake\bin\cmake.exe" -E remove -f CMakeFiles\texture_mapping.dir/objects.a
-C:\MinGW\bin\ar.exe cr CMakeFiles\texture_mapping.dir/objects.a @CMakeFiles\texture_mapping.dir\objects1.rsp
-C:\MinGW\bin\g++.exe -O3 -DNDEBUG   -Wl,--whole-archive CMakeFiles\texture_mapping.dir/objects.a -Wl,--no-whole-archive  -o texture_mapping.exe -Wl,--out-implib,libtexture_mapping.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\texture_mapping.dir\linklibs.rsp

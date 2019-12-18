@@ -1,5 +1,0 @@
-/home/wiskiw/packages/clion-2017.3/bin/cmake/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /home/wiskiw/Documents/uni/pl/PlumberGame
--- Found SFML .. in /usr/include
--- Configuring done
--- Generating done
--- Build files have been written to: /home/wiskiw/Documents/uni/pl/PlumberGame/cmake-build-debug

@@ -1,0 +1,44 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+C:/Users/WiskiW/Desktop/TODO/oap2_8/DecLisk/DecList.cpp
+malloc.h
+-
+DecList.h
+C:/Users/WiskiW/Desktop/TODO/oap2_8/DecLisk/DecList.h
+console_io_lib/console_io_lib.cpp
+C:/Users/WiskiW/Desktop/TODO/oap2_8/DecLisk/console_io_lib/console_io_lib.cpp
+
+C:/Users/WiskiW/Desktop/TODO/oap2_8/DecLisk/DecList.h
+
+C:/Users/WiskiW/Desktop/TODO/oap2_8/DecLisk/console_io_lib/console_io_lib.cpp
+afxres.h
+-
+cstdio
+-
+console_io_lib.h
+C:/Users/WiskiW/Desktop/TODO/oap2_8/DecLisk/console_io_lib/console_io_lib.h
+
+C:/Users/WiskiW/Desktop/TODO/oap2_8/DecLisk/console_io_lib/console_io_lib.h
+cstdlib
+-
+afxres.h
+-
+cstdio
+-
+
+C:/Users/WiskiW/Desktop/TODO/oap2_8/DecLisk/main.cpp
+iostream
+-
+cstdlib
+-
+DecList.h
+C:/Users/WiskiW/Desktop/TODO/oap2_8/DecLisk/DecList.h
+console_io_lib/console_io_lib.h
+C:/Users/WiskiW/Desktop/TODO/oap2_8/DecLisk/console_io_lib/console_io_lib.h
+

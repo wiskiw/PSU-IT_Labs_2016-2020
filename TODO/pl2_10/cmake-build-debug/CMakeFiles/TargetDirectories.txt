@@ -1,0 +1,3 @@
+C:/Users/WiskiW/Desktop/TODO/pl2_10/cmake-build-debug/CMakeFiles/pl2_10.dir
+C:/Users/WiskiW/Desktop/TODO/pl2_10/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/WiskiW/Desktop/TODO/pl2_10/cmake-build-debug/CMakeFiles/rebuild_cache.dir

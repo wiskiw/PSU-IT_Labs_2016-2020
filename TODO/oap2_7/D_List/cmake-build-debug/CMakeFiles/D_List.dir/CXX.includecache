@@ -1,0 +1,36 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+D:/uni/lvl1/TODO/oap2_7/D_List/console_io_lib/console_io_lib.cpp
+afxres.h
+-
+cstdio
+-
+console_io_lib.h
+D:/uni/lvl1/TODO/oap2_7/D_List/console_io_lib/console_io_lib.h
+
+D:/uni/lvl1/TODO/oap2_7/D_List/console_io_lib/console_io_lib.h
+cstdlib
+-
+afxres.h
+-
+cstdio
+-
+
+D:/uni/lvl1/TODO/oap2_7/D_List/main.cpp
+iostream
+-
+malloc.h
+-
+cstring
+-
+cstdio
+-
+console_io_lib/console_io_lib.cpp
+D:/uni/lvl1/TODO/oap2_7/D_List/console_io_lib/console_io_lib.cpp
+

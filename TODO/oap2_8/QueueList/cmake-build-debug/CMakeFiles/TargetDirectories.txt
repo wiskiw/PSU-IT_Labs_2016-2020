@@ -1,0 +1,4 @@
+C:/Users/WiskiW/Desktop/TODO/oap2_8/QueueList/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/WiskiW/Desktop/TODO/oap2_8/QueueList/cmake-build-debug/CMakeFiles/QueueList.dir
+C:/Users/WiskiW/Desktop/TODO/oap2_8/QueueList/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+C:/Users/WiskiW/Desktop/TODO/oap2_8/QueueList/cmake-build-debug/CMakeFiles/libs.dir

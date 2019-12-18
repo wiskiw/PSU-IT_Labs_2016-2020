@@ -1,3 +1,0 @@
-/home/wiskiw/Storage/uni/lvl2/PL/paid/pl_l8_27/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/home/wiskiw/Storage/uni/lvl2/PL/paid/pl_l8_27/cmake-build-debug/CMakeFiles/edit_cache.dir
-/home/wiskiw/Storage/uni/lvl2/PL/paid/pl_l8_27/cmake-build-debug/CMakeFiles/pl_l8_27.dir

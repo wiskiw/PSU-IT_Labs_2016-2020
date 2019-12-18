@@ -1,4 +1,0 @@
-D:/uni/lvl2/PL/l1/D_List2/cmake-build-debug/CMakeFiles/D_List.dir
-D:/uni/lvl2/PL/l1/D_List2/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-D:/uni/lvl2/PL/l1/D_List2/cmake-build-debug/CMakeFiles/libs.dir
-D:/uni/lvl2/PL/l1/D_List2/cmake-build-debug/CMakeFiles/edit_cache.dir

@@ -1,3 +1,0 @@
-D:/uni/lvl2/LISTs/list_l1/cmake-build-debug/CMakeFiles/list_l1.dir
-D:/uni/lvl2/LISTs/list_l1/cmake-build-debug/CMakeFiles/edit_cache.dir
-D:/uni/lvl2/LISTs/list_l1/cmake-build-debug/CMakeFiles/rebuild_cache.dir

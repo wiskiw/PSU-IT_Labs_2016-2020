@@ -1,0 +1,15 @@
+#header_text {
+    text-align: center;
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    color: #FE8A00;
+    font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
+}
+
+html, body {
+    display: block;
+    padding: 0;
+    margin: 0;
+    font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
+}

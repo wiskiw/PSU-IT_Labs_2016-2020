@@ -1,1 +1,0 @@
-/usr/bin/c++  -g   CMakeFiles/siaod_3.dir/main.cpp.o  -o siaod_3 

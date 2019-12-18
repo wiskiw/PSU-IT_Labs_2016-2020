@@ -1,3 +1,0 @@
-"C:\Program Files\JetBrains\CLion 2017.2.2\bin\cmake\bin\cmake.exe" -E remove -f CMakeFiles\StackList.dir/objects.a
-C:\MinGW\bin\ar.exe cr CMakeFiles\StackList.dir/objects.a @CMakeFiles\StackList.dir\objects1.rsp
-C:\MinGW\bin\g++.exe -g   -Wl,--whole-archive CMakeFiles\StackList.dir/objects.a -Wl,--no-whole-archive  -o StackList.exe -Wl,--out-implib,libStackList.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\StackList.dir\linklibs.rsp

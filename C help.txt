@@ -1,0 +1,77 @@
+cstdio
+
+	=== Строки ===
+	char * gets(char *buffer); - чтение строки в buffer; Функция возвращает значение параметра buffer, 
+		если строка была введена, или значение NULL (ноль), 
+		если был достигнут конец потока ввода. Данная функция осуществляет ввод строки, 
+		пока не встретится символ перевода строки. 
+		
+	int puts(const char *string); - вывод строки; Функция возвращает целочисленное значение: 
+		положительное число или ноль в случае успеха, и значение EOF (-1) в случае ошибки.
+		
+	int sscanf(const char * restrict buffer, const char * restrict string,[address] ...); 
+		- Функция форматированного ввода из строки 
+		
+		
+	int sprintf(char * restrict buffer, const char * restrict format, [argument] ...); 
+		- Функции форматированного вывода в строку
+		
+	int snprintf(char * restrict buffer, size_t maxsize,
+				 const char * restrict format, [argument] ...);			 
+				
+		=== Преобразование строк === 
+			double atof(const char *string); 
+			int atoi(const char *string);
+			long int atol(const char *string);
+			long long int atoll(const char *string);
+			
+			float strtof(const char * restrict string, char ** restrict endptr);
+			double strtod(const char * restrict string, char ** restrict endptr);
+			long double strtold(const char * restrict string, char ** restrict endptr);
+			
+			long int strtol(const char * restrict string, char ** restrict endptr, int base);
+			unsigned long strtoul(const char * restrict string, char ** restrict endptr, int base);
+			long long int strtoll(const char * restrict string, char ** restrict endptr, int base); 
+			unsigned long long strtoull( const char * restrict string, char ** restrict endptr, int base);
+		==============================
+	
+	size_t strlen(const char *string); - Функция вычисления длины строки
+
+	Функции копирования строк:
+	char * strcpy(char * restrict dst, const char * restrict src);
+	char * strncpy(char * restrict dst, const char * restrict src, size_t num);
+	
+	Функции сравнения строк:
+	int strcmp(const char *string1, const char *string2);
+	int strncmp(const char *string1, const char *string2,size_t num);
+
+	Функции объединения (конкатенации) строк:
+	char * strcat(char * restrict dst,const char * restrict src);
+	char * strncat(char * restrict dst,const char * restrict src, size_t num);
+
+	Функции поиска символа в строке:
+	char * strchr(const char *string, int c);
+	char * strrchr(const char *string, int c);
+	
+	char * strstr(const char *str, const char *substr); - Функция поиска строки в строке
+	
+	size_t strcspn(const char *str, const char *charset); - Функция поиска первого символа в строке 
+		из заданного набора символов (символ завершения строки также входит в искомые значения)
+		
+	size_t strspn(const char *str, const char *charset); - Функции поиска первого символа в строке 
+		не принадлежащему заданному набору символов
+		
+	сhar * strpbrk(const char *str, const char *charset); - Функции поиска первого символа в строке из заданного набора 
+		символов
+
+	char * strtok(char * restrict string, const char * restrict charset); - Функция поиска следующего литерала в строке
+		Функция возвращает указатель на следующий в строке литерал, или значение NULL.
+	
+
+
+
+
+	
+
+
+

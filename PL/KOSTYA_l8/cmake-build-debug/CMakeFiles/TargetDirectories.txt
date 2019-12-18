@@ -1,3 +1,0 @@
-/home/wiskiw/Storage/uni/lvl2/PL/KOSTYA_l8/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/home/wiskiw/Storage/uni/lvl2/PL/KOSTYA_l8/cmake-build-debug/CMakeFiles/edit_cache.dir
-/home/wiskiw/Storage/uni/lvl2/PL/KOSTYA_l8/cmake-build-debug/CMakeFiles/KOSTYA_l8.dir

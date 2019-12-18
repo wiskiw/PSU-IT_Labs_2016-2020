@@ -1,0 +1,3 @@
+http://learnc.info/adt/
+
+http://www.apmath.spbu.ru/ru/staff/smirnovmn/files/devcpp_4.pdf

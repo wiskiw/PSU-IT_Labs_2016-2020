@@ -1,0 +1,4 @@
+D:/uni/lvl1/TODO/oap2_7/D_List/cmake-build-debug/CMakeFiles/D_List.dir
+D:/uni/lvl1/TODO/oap2_7/D_List/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+D:/uni/lvl1/TODO/oap2_7/D_List/cmake-build-debug/CMakeFiles/libs.dir
+D:/uni/lvl1/TODO/oap2_7/D_List/cmake-build-debug/CMakeFiles/edit_cache.dir

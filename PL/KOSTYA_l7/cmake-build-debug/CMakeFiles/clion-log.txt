@@ -1,6 +1,0 @@
-/home/wiskiw/Downloads/packages/clion-2017.2.3/bin/cmake/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /home/wiskiw/Documents/uni/pl/KOSTYA_l7
--- Found OpenGL: /usr/lib/x86_64-linux-gnu/libGL.so  
--- Found GLUT: /usr/lib/x86_64-linux-gnu/libglut.so  
--- Configuring done
--- Generating done
--- Build files have been written to: /home/wiskiw/Documents/uni/pl/KOSTYA_l7/cmake-build-debug
