@@ -1,0 +1,52 @@
+         CLIPS (V6.24 06/15/06)
+CLIPS> (deftemplate Preson "Some example" (slot name) (field age) (field hair-cut))
+CLIPS> (ppdefatemplate)
+
+[EXPRNPSR3] Missing function declaration for ppdefatemplate.
+CLIPS> (ppdeftemplate Person)
+[PRNTUTIL1] Unable to find deftemplate Person.
+CLIPS> (ppdeftemplate Preson
+)
+(deftemplate MAIN::Preson "Some example"
+   (slot name)
+   (field age)
+   (field hair-cut))
+CLIPS> (ppdeftemplate Preson)
+(deftemplate MAIN::Preson "Some example"
+   (slot name)
+   (field age)
+   (field hair-cut))
+CLIPS> (deftemplate MultiPerson (multislot someMSlot))
+CLIPS> ppdeftemplate MultiPerson
+ppdeftemplate
+CLIPS> (ppdeftemplate MultyPerson)
+[PRNTUTIL1] Unable to find deftemplate MultyPerson.
+CLIPS> (ppdeftemplate MultiPerson)
+(deftemplate MAIN::MultiPerson
+   (multislot someMSlot))
+CLIPS> (number-list (ppdeftemplate MultiPerson)
+(deftemplate MAIN::MultiPerson
+   (multislot someMSlot))
+CLIPS> (assert (Preson (name "Any Name")
+                        (age 14)
+                        (hair-cut short)
+ 
+
+
+
+
+
+
+sadf
+sadf
+CLIPS> (assert (Preson (name SomeName) (age 17) (hair-cut short)))
+<Fact-0>
+CLIPS> (assert (Preson (name AAA) (age 23) (hair-cut blue)))
+<Fact-1>
+CLIPS> facts
+facts
+CLIPS> (facts) 
+f-0     (Preson (name SomeName) (age 17) (hair-cut short))
+f-1     (Preson (name AAA) (age 23) (hair-cut blue))
+For a total of 2 facts.
+CLIPS> 

@@ -1,0 +1,12 @@
+systemctl start mysql
+
+/usr/bin/mysql -u root -p
+pass: root
+
+
+CREATE DATABASE dbname;
+-------------------------------------------
+
+
+Оператор SQL DISTINCT используется для указания на то, что следует работать только с уникальными значениями столбца.
+SELECT DISTINCT column_name FROM table_name

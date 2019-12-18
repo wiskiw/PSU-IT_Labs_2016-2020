@@ -1,0 +1,129 @@
+(defrule serialsFromUsa
+	(exists (serial (country USA)))
+=>
+(printout t "Serials from the USA is existing" crlf)
+)
+
+
+
+(defrule fantasyOrDrama
+	(or
+		(serial (title ?title)(country ?country)(genre ?genre&fantasy))
+		(serial (title ?title)(country ?country)(genre ?genre&Drama))
+	)
+=>
+(printout t "serial " ?title " from " ?country ", genre - " ?genre crlf) )
+
+
+
+
+
+(defrule hasEnglish
+(serial (title ?title)(country ?country)(langueges ?langueges))
+	(test (eq ?langueges english))
+=>
+(printout t ?title " from " ?country " has " ?langueges " languege." crlf) )
+
+
+
+
+(assert (i want serial of 2015 years))
+(defrule yearRequest 
+	(and
+		(i want serial of 2015 years)
+		(serial (title ?title) (amountOfSeasons ?x&:(integerp ?x)) (country ?country&USA) (releasYears ?year&=(+ 2011 4)))
+		
+	)
+=>
+(printout t ?title " from " ?country " " ?year " years." crlf)
+)
+
+(defrule rule1
+?target <- (serial (country USA))
+=>
+(retract ?target)
+)
+
+
+(assert (q 1 2 3 4))
+(defrule q
+	(q ?x ? ? ? ?y $?)
+	=>
+	(printout t "1-st " ?x " 5-th " ?y crlf)
+)
+
+
+
+
+(defrule theBestSerialEver
+	(logical (serial (title "Game of Thrones")))
+=>
+(assert (the best serial ever)))
+
+
+
+
+
+(defrule serialWithHourDuration
+	(forall
+		(serial (duration ?z&60))
+		(serial (langueges english) (duration ?z))
+	)
+=>
+(printout t "all rights" crlf) 
+)
+
+
+
+
+
+(defrule notRule
+	(serial (title ?x) (amountOfSeasons ?y) (genre $?z))
+	(and 
+		(not (test (eq ?z fantasy)))
+		(test (eq ?y 8))
+	)
+=>
+(printout t ?x " " ?y " " ?z crlf))
+
+
+
+
+
+(defrule rule1
+	(serial (title ?x) (releasYears ?y) (createdBy $?z))
+	(or 
+		(test (eq ?y 2015))
+		(test (eq ?y 2011))
+	)
+	=>
+	(printout t ?x " " ?y " " ?z crlf)
+)
+
+
+
+(defrule rule2
+	(serial (title ?x) (releasYears ?y&2011))
+	(exists (serial (releasYears ?y)))
+	=>
+	(printout t ?x " " ?y crlf)
+)
+
+
+
+
+(defrule rule3 
+	(serial (title ?x) (genre ?y))
+	(not (test (eq ?y Drama)))
+	=>
+	(printout t ?x " " ?y crlf)
+)
+
+
+(defrule rule4
+	
+)
+
+
+
+

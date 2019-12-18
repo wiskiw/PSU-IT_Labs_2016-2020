@@ -1,0 +1,154 @@
+; создание шаблона
+(deftemplate Phone
+	(field name (type STRING) (default ?NONE))
+	(field codeName (type STRING) (default "UNKNOWN"))
+	(field developer (type STRING) (default ?NONE))
+	(field os (type SYMBOL) (allowed-symbols Android iOS Windows) (default ?NONE))
+	(field releaseYear (type INTEGER) (default ?NONE))
+	(field ramSize (type INTEGER) (allowed-integers 1 2 4 6 8 10 12 16) (default ?NONE))
+	(field sdSupport (type INTEGER) (allowed-integers 0 1) (default 0))
+)
+
+; добавлени неупорядоченных фактов
+(deffacts Phones
+	(Phone
+		(name "iPhone")
+		(os iOS)
+		(developer "Apple Inc.")
+		(releaseYear 2018)
+		(ramSize 6)
+	)
+	(Phone
+		(name "Nexus 5")
+		(codeName "Hammerhead")
+		(os Android)
+		(developer "LG")
+		(releaseYear 2013)
+		(ramSize 2)
+		(sdSupport 0)
+	)
+	(Phone
+		(name "Galaxy Nexus")
+		(os Android)
+		(developer "Samsung Electronics")
+		(releaseYear 2011)
+		(ramSize 1)
+	)
+	(Phone
+		(name "Galaxy S10")
+		(os Android)
+		(developer "Samsung Electronics")
+		(releaseYear 2019)
+		(ramSize 12)
+		(sdSupport 1)
+	)
+	(Phone
+		(name "Nokia 1")
+		(os Windows)
+		(developer "Nocia Inc.")
+		(releaseYear 2016)
+		(ramSize 2)
+		(sdSupport 1)
+	)
+)
+
+(deftemplate Products
+	(field name (type STRING))
+	(field codeName (type STRING))
+)
+
+(deffacts Products
+	(Products
+		(name "iPhone")
+		(codeName "ABC 1")
+	)
+	(Products
+		(name "iPhone 3")
+		(codeName "ABC 1333")
+	)
+)
+
+; добавлени упорядоченных фактов
+(deffacts PhoneInfo
+	(The Nexus 2 was unveiled on October 31, 2013)
+	(The Galaxy Nexus is a Android smartphone co-developed by Google and Samsung Electronics)
+	(iPhone X was announced on September 12, 2017)
+	(Samsung Galaxy S10 is a line of Android smartphones manufactured by Samsung Electronics)
+)
+
+
+
+; выборка устройст, которые поддерживают SD карты
+(defrule PhonesWithSd
+	(Phone (name ?name) (os ?os) (sdSupport ?sdSupport))
+	(test (eq ?sdSupport 1))
+	=>
+	(printout t "A " ?name " which running under " ?os " operation system support SD card." crlf)
+)
+
+
+; Выборка устройст, который работают не на Android OS и имеют малый объем ОЗУ
+(defrule NotAndroidWithSmallRam
+	(Phone (name ?name) (os ?os) (ramSize ?ramSize))
+	(test 
+		(and 
+			(not 
+				(eq ?os Android)
+			)
+			(< ?ramSize 4)
+		)
+	)
+	=>
+	(printout t "A " ?name " which does not running under " ?os " operation system has small RAM size" crlf)
+)
+
+
+; Проверяет существует ли телефон произведенный LG
+(defrule HasLGPhones
+	(exists (Phone (developer "LG")))
+	=>
+	(printout t "Exist at least one phone developed by LG." crlf)
+)
+
+
+; Проверяет, не все ли телефоны имеют больше 6 гб озу
+(defrule AllWithLargeRam
+	(not
+		(forall
+			(Phone (ramSize ?ramSize))
+			(> ?ramSize 6)
+		)
+	)
+	=>
+	(printout t "Not all phones has more than 6 GB of RAM." crlf)
+)
+
+(defrule iphone
+		(forall
+			(Phone (name ?name))
+			(PhoneInfo ?name)
+		)
+	
+	=>
+	(printout t "All iphones" crlf)
+)
+
+
+; Выбора телефонов 2019 года
+(defrule Phones2019
+	(logical (Phone (releaseYear 2019)))
+	=>
+	(printout t "the 2019th phone(s)" crlf)
+)
+
+; Выбор телефонов с ОЗУ больше 4 или с поддержкой SD карт
+(defrule LargeRamOrSdSupport
+	(Phone (name ?name) (ramSize ?ramSize) (sdSupport ?sdSupport))
+	(or
+		(test (> ?ramSize 4))
+		(test (eq ?sdSupport 1))
+	)
+	=>
+	(printout t "A " ?name " has large RAM size or SD cards support" crlf)
+)
+

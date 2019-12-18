@@ -1,0 +1,292 @@
+         CLIPS (V6.22 06/15/04)
+
+(deffunction ask-question (?question $?allowed-values)
+(printout t ?question) 
+(bind ?answer (read)) 
+(if (lexemep ?answer) 
+then (bind ?answer (lowcase ?answer))) 
+(while (not (member ?answer ?allowed-values)) do 
+(printout t ?question) 
+(bind ?answer (read)) 
+(if (lexemep ?answer) 
+then (bind ?answer (lowcase ?answer))))
+?answer)
+
+
+(deffunction yes-or-no-p (?question) 
+(bind ?response (ask-question ?question yes no y n)) 
+(if (or (eq ?response yes) (eq ?response y)) 
+then TRUE 
+else FALSE)) 
+
+
+(defrule begin "" 
+(not (repair ?)) 
+=> 
+(if (yes-or-no-p "Vi hotite priobresti parfum(yes/no)? ") 
+then (if (yes-or-no-p " Y vas est' allergia na parfum(yes/no)?") 
+then (assert (allergia-na-parfum est'))
+     (assert (repair "Predlogaem vam - Elvie.")) 
+else (assert (allergia-na-parfum net))) 
+else (assert (repair "Vam ne nyzhna pomosch' exsperta."))))
+
+
+(defrule aromat " "
+(allergia-na-parfum net)
+(not (repair ?))
+=> 
+(bind ?response (ask-question " Aromat(holodniy/sladkiy/smeshaniy/pryaniy)?" holodniy sladkiy smeshaniy pryaniy))
+(if (eq ?response holodniy)
+then (assert (parfum holodniy))
+else (if (eq ?response sladkiy)
+then (assert (parfum sladkiy))
+else (if (eq ?response smeshaniy)
+then (assert (parfum smeshaniy))
+else (assert (parfum pryaniy))
+     (assert (repair "Predlogaem vam - Soul.")))))
+
+
+(defrule stoimost " "
+(not (repair ?))
+=> 
+(bind ?response (ask-question " Stoimost'(do15/do30/bolee)?" do15 do30 bolee))
+(if (eq ?response do15)
+then (assert (summa do15))
+     (assert (repair "Predlogaem vam - Divine."))
+else (if (eq ?response do30)
+then (assert (summa do30))
+else (assert (summa bolee))
+     (assert (repair "Predlogaem vam - Musk.")))))
+
+
+(defrule vid-parfum " "
+(summa do30)
+(not (repair ?))
+=> 
+(bind ?response (ask-question "Raznovidnost'(dezodorant/tyaletnaya_voda/dyxi)?" dezodorant tyaletnaya_voda dyxi))
+(if (eq ?response dezodorant)
+then (assert (tip dezodorant))
+else (if (eq ?response tyaletnaya_voda)
+then (assert (tip tyaletnaya_voda))
+else (assert (tip dyxi))
+     (assert (repair "Predlogaem vam -Cutie ")))))
+
+
+
+(defrule ottenok-sladkoiparf " "
+(parfum holodniy)
+(tip dezodorant)
+(not (repair ?))
+=> 
+(bind ?response (ask-question "Ottenok(cvetochniy/citrysoviy/bezottenka/drygoi)?" cvetochniy citrysoviy bezottenka drygoi))
+(if (eq ?response cvetochniy)
+then (assert (repair "Predlogaem vam - Felate."))
+else (if (eq ?response citrysoviy)
+then (assert (repair "Predlogaem vam - Eclat."))
+else (if (eq ?response bezottenka)
+then (assert (repair "Predlogaem vam - Glacier."))))))
+
+
+(defrule ottenok-smeshanparf  " "
+(parfum sladkiy)
+(tip dezodorant)
+(not (repair ?))
+=> 
+(bind ?response (ask-question " Ottenok(cvetochniy/citrysoviy/bezottenka/drygoi)?" cvetochniy citrysoviy bezottenka drygoi))
+(if (eq ?response cvetochniy)
+then (assert (repair "Predlogaem vam - Miss."))
+else (if (eq ?response citrysoviy)
+then (assert (repair "Predlogaem vam - Lady."))
+else (if (eq ?response bezottenka)
+then (assert (repair "Predlogaem vam - Quarte.")))))))
+
+
+(defrule no-repairs " "
+(declare (salience -10))
+(not (repair ?))
+=>
+(assert (repair "Parfum ne naiden.")))
+
+(defrule print-repair " "
+(declare (salience 10))
+(repair ?item)
+=>
+(printout t crlf crlf)
+(printout t "Suggested Repair: ")
+(printout t crlf crlf)
+(format t "%s%n%n%n" ?item))
+
+
+(defrule system-banner " "
+(declare (salience 10))
+=>
+(printout t crlf crlf)
+(printout t "*******************************" crlf)
+(printout t "* 	  Expert system   	   *" crlf)
+(printout t "*******************************" crlf)
+(printout t crlf crlf))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+(defclass COMPONENT
+(is-a USER)
+(slot ID# (create-accessor write))
+
+(defclass NO-UOTPUT
+(is-a USER)
+(slot number-of-outputs (access read-only)
+(default 0)
+(create-accessor read)))
+(defmessage-handler NO-UOTPUT compute-output ())
+
+(defclass ONE-UOTPUT
+(is-a NO-UOTPUT)
+(slot number-of-outputs (access read-only)
+(default 1)
+(create-accessor read))
+(slot output-1-link (default UNDEFINED)
+(create-accessor write))
+(slot output-1-link (default GROUND)
+(create-accessor write))
+(slot output-1-link-pin (default 1)
+(create-accessor write))
+(defmessage-handler ONE-UOTPUT put-output-1 after (?value)
+(send ?self:output-1-link
+(sym-cat put-input- ?self:output-1-link-pin) ?value))
+
+(defclass TWO-UOTPUT
+(is-a ONE-UOTPUT)
+(slot number-of-outputs (access read-only)
+(default 2)
+(create-accessor read))
+(slot output-2 (default UNDEFINED)
+(create-accessor write))
+(slot output-2-link (default GROUND)
+(create-accessor write))
+(slot output-2-link-pin (default 1)
+(create-accessor write)))
+(defmessage-handler TWO-UOTPUT put-output-2 after (?value)
+(send ?self:output-2-link
+(sym-cat put-input- ?self:output-2-link-pin) ?value))
+
+(defclass NO-INPUT
+(is-a USER)
+(slot number-of-inputs (access read-only)
+(default 0)
+(create-accessor read)))
+
+(defclass ONE-INPUT
+(is-a NO-INPUT)
+(slot number-of-inputs (access read-only)
+(default 1)
+(create-accessor read))
+(slot input-1 (default UNDEFINED) (visibility public)
+(create-accessor write))
+(slot input-1-link (default GROUND)
+(create-accessor write))
+(slot input-1-link-pin (default 1)
+(create-accessor write))
+(defmessage-handler ONE-INPUT put-input-1 after (?value)
+(send ?self:compute-output))
+
+(defclass TWO-INPUT
+(is-a ONE-INPUT)
+(slot number-of-inputs (access read-only)
+(default 2)
+(create-accessor read))
+(slot input-2 (default UNDEFINED) (visibility public)
+(create-accessor write))
+(slot input-2-link (default GROUND)
+(create-accessor write))
+(slot input-2-link-pin (default 1)
+(create-accessor write))
+(defmessage-handler TWO-INPUT put-input-2 after (?value)
+(send ?self:compute-output))
+
+(defclass SOURCE
+(is-a NO-INPUT ONE-UOTPUT COMPONENT)
+(role concrete)
+(slot output-1 (default UNDEFINED)
+(create-accessor write))
+
+(defclass LED
+(is-a ONE-INPUT NO-UOTPUT COMPONENT)
+(role concrete))
+
+(defclass NOT-GATE
+(is-a ONE-INPUT ONE-UOTPUT COMPONENT)
+(role concrete))
+
+(deffunction not* (?x) (- 1 ?x))
+
+(defmessage-handler NOT-GATE compute-output ()
+(if (integerp ?self:input-1) then
+(send ?self put-output-1
+(not# ?self:input-1)))
+
+(defclass AND-GATE
+(is-a TWO-INPUT ONE-UOTPUT COMPONENT)
+(role concrete))
+
+(deffunction and! (?x ?y)
+(if (and (!= ?x 0) (!= ?y 0)) then 1 else 0))
+
+(defmessage-handler AND-GATE compute-output ()
+(if (and (integerp ?self:input-1) 
+(integerp ?self:input-2) then
+(send ?self put-output-1
+(and# ?self:input-1 ?self:input-2))))
+
+(defclass OR-GATE
+(is-a TWO-INPUT ONE-UOTPUT COMPONENT)
+(role concrete))
+
+(deffunction 	or! (?x ?y)
+(if (and (!= ?x 0) (!= ?y 0)) then 1 else 0))
+
+(defmessage-handler OR-GATE compute-output ()
+(if (and (integerp ?self:input-1) 
+(integerp ?self:input-2) then
+(send ?self put-output-1
+(or# ?self:input-1 ?self:input-2))))
+
+(defclass NAND-GATE
+(is-a TWO-INPUT ONE-UOTPUT COMPONENT)
+(role concrete))
+
+(deffunction nand# (?x ?y)
+(if (not (and (!= ?x 0) (!= ?y 0)) then 1 else 0))
+
+(defmessage-handler -GATE compute-output ()
+(if (and (integerp ?self:input-1) 
+(integerp ?self:input-2) then
+(send ?self put-output-1
+(or# ?self:input-1 ?self:input-2))))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

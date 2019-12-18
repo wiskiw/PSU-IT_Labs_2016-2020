@@ -1,0 +1,38 @@
+создание шаблона:
+
+deftemplate - упорядоченный шаблон
+(deftemplate Name "non required comment" (slot id) (slot key) ... )
+
+slot (или field) - однозначный слот
+multislot (или multifield) - многозначный слот
+
+
+
+
+Просмотр шаблона
+(ppdeftemplate Name)
+
+
+
+assert - добавление факта (упорядоченный или неупорядоченный)
+(assert (Name (fieldName fieldValue) (fieldName2 value2) ...)
+
+
+(facts) - просмотр фактов
+
+
+(patch file.name)
+
+
+;запуск правила
+(reset)
+(run)
+
+
+
+(fact-existp)
+(fact-relation)
+(fact-slot-names)
+(fact-slot-value)
+
+
