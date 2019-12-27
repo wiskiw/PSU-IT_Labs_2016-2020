@@ -1,0 +1,41 @@
+<HTML>
+
+<HEAD>
+    <TITLE>Определение четверти</TITLE>
+</HEAD>
+
+<BODY>
+    <H4>Определение четверти</H4>
+    <p>Точка: A x<input type="text" id="x" />, y<input type="text" id="y" /></p>
+    <button onclick="quarter();">Определить</button>
+    <hr>
+    <div id="result"></div>
+    <script>
+        function quarter() {
+            var x = +document.getElementById('x').value;
+            var y = +document.getElementById('y').value;
+
+            var res
+            if (x > 0) {
+                if (y > 0) {
+                    res = 1
+                }
+                if (y < 0) {
+                    res = 4
+                }
+            } else {
+                if (y > 0) {
+                    res = 2
+                }
+                if (y < 0) {
+                    res = 3
+                }
+            }
+            var result = document.getElementById("result");
+            var html = `<p>Точка находится в ${res} четверти.</p>`;
+            result.innerHTML = html;
+        }
+    </script>
+</BODY>
+
+</HTML>

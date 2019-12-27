@@ -1,0 +1,40 @@
+<HTML>
+<HEAD>
+</HEAD>
+<BODY>
+    <hr id="line">
+    <input type="button" value="Изменить размер лиинии и положение на странице" onclick="ln();">
+</BODY>
+
+    <style>
+        hr {
+            background: green;
+            width: 100px;
+            height: 10px;
+            margin-top: 50px;
+        }
+    </style>
+
+    <script>
+        var tmp = true;
+        var maxWidth = "400px";
+        var minWidth = "100px";
+
+        function ln() {
+            var line = document.getElementById('line');
+            if (tmp) {
+                line.style.width = maxWidth; //изменяю размер
+                line.style.marginLeft = "100px";
+            } else {
+                line.style.width = minWidth; //изменяю размер
+                line.style.marginLeft = "400px";
+            }
+			tmp = !tmp;
+			console.log(tmp);
+        }
+
+		ln();
+    </script>
+
+
+</HTML>

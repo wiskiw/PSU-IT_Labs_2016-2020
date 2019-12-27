@@ -1,0 +1,44 @@
+<HTML>
+<HEAD>
+    <TITLE>Анкета</TITLE>
+    <script>
+        function fun1() {
+            var name = document.getElementById('name').value;
+            var surname = document.getElementById('surname').value;
+            var patranomic = document.getElementById('patranomic').value;
+            var sex = getCheckedRadioValue('sex');
+            var status = getCheckedRadioValue('status');
+            alert(" ФИО: " + surname + " " + name + " " + patranomic + "\n Пол: " + sex + "\n Семейный статус: " + status);
+        }
+
+        function getCheckedRadioValue(name) {
+            var elements = document.getElementsByName(name);
+            for (var i = 0, len = elements.length; i < len; ++i)
+                if (elements[i].checked) return elements[i].value;
+
+        }
+    </script>
+</HEAD>
+<BODY bgcolor="F8F8FF">
+    <CENTER>
+        <H3 align="center">Анкета читателя</НЗ><br><br><br>
+            <label>Имя:</label><br>
+            <input id="name" type="text">
+            <br><br>
+            <label>Фамилия:</label><br>
+            <input id="surname" type="text">
+            <br><br>
+            <label>Отчество:</label><br>
+            <input id="patranomic" type="text">
+            <br><br>
+            <label>Пол:</label><br>
+            <input id="r1" type="radio" name="sex" value="Мужской"> Мужской
+            <input id="r1" type="radio" name="sex" value="Женский"> Женский
+            <br><br>
+            <label>Семейный статус:</label><br>
+            <input id="r2" type="radio" name="status" value="В браке"> В браке
+            <input id="r2" type="radio" name="status" value="Не в браке"> Не в браке
+            <br><br>
+            <button onclick="fun1()">Отправить</button>
+</BODY>
+</HTML>

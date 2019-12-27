@@ -1,0 +1,20 @@
+p {
+  text-indent: 2.5em;
+  margin-top: 0.2em;
+  margin-bottom: 0.2em;
+}
+p.letter:first-letter{
+  font-weight: bold;
+  font-size: 2em;
+  color: red;
+
+}
+
+strong{
+  color: red;
+}
+span.accent{
+  background: #bfffbf;
+  color: blue;
+  font-weight: bold;
+}

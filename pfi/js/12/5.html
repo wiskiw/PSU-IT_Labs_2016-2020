@@ -1,0 +1,33 @@
+<HTML>
+
+<HEAD>
+    <TITLE>Максимальное значение элемента массива</TITLE>
+    <script language="JavaScript">
+        function numword(obj) {
+            var max = 0
+            var str = obj.textin.value;
+
+            var ar = str.split(' ')
+            var count = 0
+            for (i = 0; i < ar.length; i++) {
+                if (Number(ar[i]) > max)
+                    max = ar[i]
+            }
+            obj.result.value = max
+        }
+    </script>
+</HEAD>
+
+<BODY bgcolor="#FFFFCC">
+    <H4>Максимальное значение элемента массива</H4>
+    <FORM name="form1">
+        Введите текст:<br>
+        <textarea name="textin" rows=4 cols=20></textarea>
+        <input type="button" value="Опpeдeлить" onClick="numword(form1)">
+        <hr> Максимальное значение: <textarea type="text" name="result" size=8></textarea>
+        <hr>
+        <input type="reset" value="Отменить">
+    </FORM>
+</BODY>
+
+</HTML>

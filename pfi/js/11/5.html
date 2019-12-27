@@ -1,0 +1,28 @@
+<HTML>
+<HEAD>
+    <TITLE>Количество заданных слов в тексте</TITLE>
+    <script language="JavaScript">
+        function numword(obj) {
+            var str = obj.textin.value;
+            let count = 0;
+            for(let i = 0; i < str.length; i++) {
+                if(".,!?:;".indexOf(str[i]) !== -1) {
+                    count++;
+                }
+            }
+            obj.result.value = count;
+        }
+    </script>
+</HEAD>
+<BODY bgcolor="#FFFFCC">
+    <H4>Количество заданных слов в тексте</H4>
+    <FORM name="form1">
+        Введите текст:<br>
+        <textarea name="textin" rows=4 cols=20></textarea>
+        <input type="button" value="Опpeдeлить" onClick="numword(form1)">
+        <hr>Количество знаков припинания в тексте: <textarea type="text" name="result" size=8></textarea>
+        <hr>
+        <input type="reset" value="Отменить">
+    </FORM>
+</BODY>
+</HTML>

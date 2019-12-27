@@ -1,0 +1,51 @@
+<HTML>
+
+<HEAD>
+    <meta charset="utf-8">
+    <TITLE>Реакция на событие Change в теге select</TITLE>
+    <script language="JavaScript">
+        var s = ""
+        var sum = 0
+
+        function gr(obj, m) {
+            var r = 100 * (Number(((obj.elements[0])[m]).value) + 1)
+            s += ((obj.elements[0])[m]).text + "\r\n"
+            obj.restext.value = s
+            sum += r
+            obj.res.value = r
+        }
+    </script>
+</HEAD>
+
+<BODY>
+    <FORM name="form1">
+        <H3>Анкета переводчика</H3>
+        <TABLE border=3 bgcolor=silver>
+            <TR>
+                <TH>Выбранный язык</TH>
+                <TH>Результат</TH>
+            </TR>
+            <TR>
+                <TD valign=top>
+                    <select name="data" size=3 onChange="gr(form1,form1.data.value)">
+                    <option value=0>русский
+                    <option value=1>английский
+                    <option value=2>французский
+                </select>
+                    <P>
+                        <input type="text" name="res" size=15>
+                </TD>
+                <TD>
+                    <TEXTAREA name="restext" cols=15 rows=6>
+</TEXTAREA>
+                    <P>
+                        <input type="button" value=Сумма onClick="form1.resgr.value=sum">
+                        <input type="text" name="resgr" size=10>
+                </TD>
+            </TR>
+        </TABLE>
+        <p>
+            <input type="reset" value="Отменить" onClick="sum=0; s=''">
+    </FORM>
+</BODY>
+</HTML>

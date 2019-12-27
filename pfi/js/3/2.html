@@ -1,0 +1,30 @@
+<HTML>
+<HEAD>
+    <TITLE>Наибольшее число</TITLE>
+    <script language="JavaScript">
+        function longest(obj) {
+            var a = obj.nums.value;
+            var number = a.split(' ');
+            var m = 0;
+            var res;
+            for (var i = 0; i < number.length; i++) {
+                if (number[i].length > m) {
+                    m = number[i].length
+                    res = number[i];
+                }
+            }
+            obj.result.value = res
+        }
+    </script>
+</HEAD>
+<BODY>
+    <H4>Наибольшее число</H4>
+    <FORM name="values">
+        Строка: <input type="text" name="nums">
+        <hr>
+        <input type="button" value=Определить onClick="longest(values)">
+        <input type="text" name="result" readonly>
+        <hr>
+    </FORM>
+</BODY>
+</HTML>

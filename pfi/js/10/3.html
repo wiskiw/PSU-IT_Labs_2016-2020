@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script>
+		function fn(a, b, c) {
+
+			c = new Date(a, b - 1, c);
+			b = (new Date(a, 0, 1)).getTime();
+			a = [7, 1, 2, 3, 4, 5, 6][c.getDay()];
+			c = c.getTime();
+			document.getElementById("1").innerText = 1 + Math.ceil(((c - b) / 36E5 / 24 - a) / 7)
+
+			return 1 + Math.ceil(((c - b) / 36E5 / 24 - a) / 7)
+		};
+	</script>
+</head>
+<body>
+	<label>Year</label>
+	<input type="number" id="year">
+	<label>Month</label>
+	<input type="number" id="mon">
+	<label>Day</label>
+	<input type="number" id="day">
+	<button type="button" onclick="fn(document.getElementById('year').value,document.getElementById('mon').value,document.getElementById('day').value)">Click</button>
+	<p id="1"></p>
+</body>
+</html>

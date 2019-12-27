@@ -1,0 +1,33 @@
+﻿<!DOCTYPE html>
+<HTML>
+<HEAD>
+<script>
+        function getData() {
+            var x1 = +document.getElementById("x1").value,
+                y1 = +document.getElementById("y1").value,
+                x2 = +document.getElementById("x2").value,
+                y2 = +document.getElementById("y2").value,
+                x3 = +document.getElementById("x3").value,
+                y3 = +document.getElementById("y3").value;
+            document.getElementById("result").innerHTML = getSquare(x1, y1, x2, y2, x3, y3);
+        }
+
+        function getSquare(x1, y1, x2, y2, x3, y3) {
+            return Math.abs((x1 - x3) * (y2 - y3) - (x2 - x3) * (y1 - y3)) / 2;
+
+        }
+    </script>
+</HEAD>
+<BODY>
+    <FORM name="form1">
+        <p>A : x<input type="number" id="x1" onfocus="getData()" />, 
+            y<input type="number" id="y1" onfocus="getData()" /></p>
+        <p>B : x<input type="number" id="x2" onfocus="getData()" />, 
+            y<input type="number" id="y2" onfocus="getData()" /></p>
+        <p>C : x<input type="number" id="x3" onfocus="getData()" />, 
+            y<input type="number" id="y3" onfocus="getData()" /></p>
+        <p>Площадь треугольника: <span id="result"></span></p>
+        <input type="reset" class="reset1" value="Сбросить">
+    </FORM>
+</BODY>
+</HTML>

@@ -1,0 +1,60 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Навигация по сайту</title>
+    <link rel="stylesheet " type="text/css " href="style.css ">
+
+    <script>
+        function change(a) {
+			/*
+			Браузеры реализуют “same origin policy” для ифреймов. Она запрещает доступ к ифреймам с 			другого домена и другого протокола (например доступ к https странице с http). Это сделано для 				того, чтобы, любой владелец сайта не мог на своем сайте было загрузить ифрейм с почтой, в 				которой ты залогинен, и нащелкать в нем вместо тебя.
+			*/
+
+
+
+            if (a == 0) {
+                var d = document.getElementById('page');
+            } else {
+                d = a;
+            }
+            var c = top.document.getElementById('content');
+            c.setAttribute('src', d + '.html');
+        }
+    </script>
+</head>
+<body style="background: #9d58f0">
+    <p>menu</p>
+    <select id="page s" size=3 name="question" onChange="change(0)">
+    <option value="11">one<br>
+    <option value="12">two<br>
+    <option value="13">three<br>
+</select>
+    <nav class="main-menu ">
+        <ul>
+            <li>
+                <a onclick="change('11') ">
+                    <i class="fa fa-home fa-2x"></i>
+                    <span class="nav-text ">
+                            11
+                        </span>
+                </a>
+            </li>
+            <li class="has-subnav ">
+                <a onclick="change('12') ">
+                    <i class="fa fa-laptop fa-2x"></i>
+                    <span class="nav-text ">
+                            12
+                        </span>
+                </a>
+            </li>
+            <li class="has-subnav">
+                <a onclick="change('13') ">
+                    <i class="fa fa-list fa-2x"></i>
+                    <span class="nav-text">
+                            13
+                        </span>
+                </a>
+        </ul>
+    </nav>
+</body>
+</html>

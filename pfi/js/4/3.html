@@ -1,0 +1,27 @@
+<HTML>
+
+<HEAD>
+    <TITLE>Отображение по нажатию</TITLE>
+    <script>
+        function setImg(num) {
+
+            if ((num < 1) || (num > 3))
+                alert("Неверно заданы номера рисунков!")
+            else {
+                var z = document.images[num - 1].src;
+                document.getElementById('lastImg').src = z;
+            }
+        }
+    </script>
+</HEAD>
+<BODY>
+    <CENTER>
+        <H4>Галерея рисунков</H4><br>
+        <button onclick="setImg(1)"><IMG src="p1.jpg" width="200"></button>
+        <button onclick="setImg(2)"><IMG src="p2.jpg" width="200"></button>
+        <button onclick="setImg(3)"><IMG src="p3.jpg" width="200"></button> <br>
+        <hr>
+        <img id="lastImg" src="" width="200">
+    </CENTER>
+</BODY>
+</HTML>

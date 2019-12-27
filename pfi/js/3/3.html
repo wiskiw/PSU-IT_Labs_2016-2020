@@ -1,0 +1,30 @@
+<HTML>
+<HEAD>
+    <TITLE>Возможность построения треугольника</TITLE>
+    <script language="JavaScript">
+        function isTriangle(obj) {
+            var a = +obj.num1.value;
+            var b = +obj.num2.value;
+            var c = +obj.num3.value;
+            if (a + b > c && b + c > a && a + c > b) {
+                obj.result.value = "Да"
+            } else {
+                obj.result.value = "Нет"
+            }
+        }
+    </script>
+</HEAD>
+<BODY>
+    <H4>Возможность построения треугольника</H4>
+    <FORM name="nums">
+        Сторона a: <input type="text" name="num1">
+        <hr> Сторона b: <input type="text" name="num2">
+        <hr> Сторона c: <input type="text" name="num3">
+        <hr> Это треугольник?
+        <input type="button" value="Определить" onClick="isTriangle(nums)">
+        <input type="text" name="result">
+        <hr>
+        <input type="reset" value="Очистить">
+    </FORM>
+</BODY>
+</HTML>

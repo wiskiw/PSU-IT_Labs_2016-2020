@@ -1,0 +1,27 @@
+<HTML>
+<HEAD>
+    <TITLE>Данные из формы типа "переключатель". Событие Click
+    </TITLE>
+    <script language="JavaScript">
+        function test(k) {
+            var a = form1.data.value
+            if (a != "")
+                form1.res.value = k * Math.pow(a, 2)
+            else alert("Введите значение")
+        }
+    </script>
+</HEAD>
+<BODY>
+    <FORM name="form1">
+        Введите значение
+        <input type="text" name="data" size=10>
+        <hr> Укажите форму <br>
+        <input type="radio" name="fv" value=1 onClick="test(form1.elements[1].value)">квадрат<br>
+        <input type="radio" name="fv" value=3.14 onClick="test(form1.elements[2].value)">круг<br>
+        <input type="radio" name="fv" value=0.42 onClick="test(form1.elements[3].value)">треугольник
+        <hr>
+        <input type="reset" value="0тменить">
+        <hr> Площадь: <input type="text" name="res" size=10>
+    </FORM>
+</BODY>
+</HTML>

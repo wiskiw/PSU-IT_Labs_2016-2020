@@ -1,0 +1,59 @@
+<HTML>
+
+<HEAD>
+    <SCRIPT>
+        function multi_pulti() {
+            img_array = new Array()
+            for (var i = 0; i < 26; i++) {
+                img_array[i] = new Image();
+            }
+            img_array[0].src = "animation/run1.png";
+            img_array[1].src = "animation/run2.png";
+            img_array[2].src = "animation/run3.png";
+            img_array[3].src = "animation/run4.png";
+            img_array[4].src = "animation/run5.png";
+            img_array[5].src = "animation/run6.png";
+            img_array[6].src = "animation/run7.png";
+            img_array[7].src = "animation/run8.png";
+
+            img_array[8].src = "animation/jump1.png";
+            img_array[9].src = "animation/jump2.png";
+            img_array[10].src = "animation/jump3.png";
+            img_array[11].src = "animation/jump4.png";
+            img_array[12].src = "animation/jump5.png";
+            img_array[13].src = "animation/jump6.png";
+            img_array[14].src = "animation/jump7.png";
+            img_array[15].src = "animation/jump8.png";
+
+
+            img_array[16].src = "animation/attack1.png";
+            img_array[17].src = "animation/attack2.png";
+            img_array[18].src = "animation/attack3.png";
+            img_array[19].src = "animation/attack4.png";
+            img_array[20].src = "animation/attack5.png";
+            img_array[21].src = "animation/attack6.png";
+            img_array[22].src = "animation/attack7.png";
+            img_array[23].src = "animation/attack8.png";
+            img_array[24].src = "animation/attack9.png";
+            img_array[25].src = "animation/attack10.png";
+            var t = new Date()
+            p = -1
+        }
+
+        function s() {
+            p = p + 1
+            document["img"].src = img_array[p].src
+            setTimeout("s()", 90)
+            if (p == 25) p = -1
+        }
+    </SCRIPT>
+</HEAD>
+
+<BODY onLoad="multi_pulti()">
+    <br>
+    <input type="Button" name="But" value="Посмотреть" onClick="s()">
+	<img name="img">
+		
+</body>
+
+</html>

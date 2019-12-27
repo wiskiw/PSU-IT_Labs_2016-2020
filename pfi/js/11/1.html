@@ -1,0 +1,32 @@
+<HTML>
+
+<HEAD>
+    <TITLE>Вывод символов строки в "столбик"</TITLE>
+    <script language="JavaScript">
+        function ttest(s) {
+            var sres = "Прочитанный текст:" + " \r\n" + s + "\r\n" +
+                'Текст в "столбик":' + "\r\n"
+            var cur = ""
+            for (var i = 0; i <= s.length - 1; i += 1) {
+                c = s.charAt(i);
+                cur += c + "\r\n"
+            }
+            sres += cur
+            return sres
+        }
+    </script>
+</HEAD>
+
+<BODY bgcolor="#FFFFCC">
+    <H4>Символы текущей строки в столбик</H4>
+    <FORM name="form1">
+        Введите строку: <input type="text" size=20 name="st1">
+        <hr>
+        <input type="button" value=Bыпoлнить onClick="form1.res.value=ttest(form1.st1.value)">
+        <input type="reset" value=Очистить>
+        <hr>
+        <textarea cols=20 rows=7 name=res></textarea>
+    </FORM>
+</BODY>
+
+</HTML>

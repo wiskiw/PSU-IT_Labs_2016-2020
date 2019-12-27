@@ -1,0 +1,32 @@
+<HTML>
+
+<HEAD>
+    <SCRIPT>
+        function multi_pulti() {
+            img_array = new Array()
+            for (var i = 0; i < 4; i++)
+                img_array[i] = new Image(50, 100)
+            img_array[0].src = "i1.jpg";
+            img_array[1].src = "i2.jpg";
+            img_array[2].src = "i3.jpg";
+            img_array[3].src = "i4.jpg";
+            var t = new Date()
+            p = -1
+        }
+
+        function s() {
+            p = p + 1
+            document["img"].src = img_array[p].src
+            setTimeout("s()", 300)
+            if (p == 3) p = -1
+        }
+    </SCRIPT>
+</HEAD>
+
+<BODY onLoad="multi_pulti()">
+    <input type="Button" name="But" value="Посмотреть" onClick="s()">
+   	<img name="img">
+	<br>
+</body>
+
+</html>
